@@ -1,0 +1,542 @@
+\documentclass[12pt]{article}
+
+\input{defaultPream}
+
+\usepackage{float}
+\usepackage{makecell}
+
+\begin{document}
+
+%----------BEGIN TITLE----------
+
+\title{Constructing a ROCKS Cluster}
+
+\date{\today}
+
+\author{Ryan Wojtyla}
+
+\thispagestyle{empty}
+
+\maketitle
+
+%-----------END TITLE-----------
+
+%----------BEGIN PREPARATION----------
+
+\section{Preparation}
+
+\qq Preparation is key before attempting to build a ROCKS cluster; there are
+many steps to take care of beforehand.
+
+\subsection{Backup Data}
+
+\qq One of the most important preliminary steps is to first backup all the data
+on the devices that are being updated. I backed up the contents of the CE, minus
+{\tt /mnt} and {\tt /cvmfs}, the SE, and both the server and data partitions of
+NAS-0 onto NAS-1. For the CE and SE, {\tt /mnt} was excluded because I don't want
+to backup both of the NASs' data onto NAS-1. {\tt /cvmfs} was excluded for the CE
+because it is externally mounted from CERN, thus eliminating the need for a
+local backup. Unlike the CE and SE, NAS-0 does not have NAS-1 mounted, so the
+{\tt rsync} command had to remotely copy the NAS-0 files from the CE. Since there
+is already an older backup of NAS-0 on NAS-1 and there is not enough space on
+NAS-1 to fully copy another backup of NAS-0, all of the newer files on NAS-0
+were manually copied into the old backup of NAS-0, effectively updating it.
+
+\begin{itemize}
+  \item Backup the CE (command run while logged into the CE):
+    \begin{itemize}
+    \item {\tt rsync -av --exclude '/mnt*' --exclude '/cvmfs' / /mnt/nas1/CEBackup-20180803}
+    \end{itemize}
+  \item Backup the SE (command run while logged into the SE):
+    \begin{itemize}
+    \item {\tt rsync -av --exclude '/mnt' / /mnt/nas1/SEBackup-20180803}
+    \end{itemize}
+  \item Backup the server partition of NAS-0 (command run while logged into the CE):
+    \begin{itemize}
+      \item {\tt rsync -av --exclude '/nas0' root@10.1.255.234:/
+          /mnt/nas1/nas0-bak-20180730/NAS-0}
+      \end{itemize}
+\end{itemize}
+
+\qq Ideally, the entirety of one compute node would also be backed up at this
+point, but due to catastrophic hardware failures preventing the nodes from being
+run (one of the big Tripplite UPSs AND the APC UPS have failed, leaving me with
+only one UPS), I'm going to come back to them later.
+
+\subsection{Create Boot Drives}
+
+\qq Once all of the data is secure, the ISO images of the ROCKS rolls can be
+downloaded and installed. The necessary ROCKS rolls, available
+\href{http://www.rocksclusters.org/downloads/2017-12-01-download-rocks-7-0-manzanita.html
+}{here}, are:
+
+\begin{itemize}
+  \item kernel
+  \item base
+  \item core
+  \item CentOS
+  \item Updates-CentOS
+  \item ganglia
+  \item htcondor
+\end{itemize}
+
+\qq These ISO images may be directly placed on a formated USB using the {\tt dd}
+command. The computer-given name of the USB drive of the form
+{\tt /dev/sd?} ({\tt /dev/disk?} on MacOS) must be determined. On Linux, the
+{\tt lsblk} command may be used to discover this proper name. On Mac, the ``Disk
+Utility'' application may be used.
+
+\qq To create the bootable USB, the {\tt dd} command may be used. The USB must be
+first unmounted, {\tt sudo umount /dev/sd?}, then the following command may be
+run: {\tt sudo dd bs=4M if=INPUT-FILE.iso of=/dev/sd? conv=fdatasync} (for MacOS:
+{\tt sudo dd bs=4m if=INPUT-FILE.iso of=/dev/disk? \&\& sync}). The {\tt bs}
+option determines the block size of each packet transferred at a time, the input
+file is the ISO file of the image to be copied, and the output file is the name of
+the USB to be made bootable. Both the {\tt conv=fdatasync} and {\tt \&\& sync}
+parts of the commands ensure that all data has been written before the next
+packet is sent.
+
+\qq Since coming across eight USBs may be a challenge, the USBs will be created
+as they are needed. The first USB to be made is the one containing the
+``kernel'' roll.
+
+\qq Actually, the firmware doesn't support booting from USB, so I need to go
+get DVDs because CDs are too small.
+
+\qq All the rolls were burnt onto separate DVDs except for the large ``CentOS''
+roll, which is more than 7GB, larger than the 4.7GB discs.
+
+
+\subsection{Ensure NAS-1 Remains Operational}
+
+\qq Because NAS-1 does not need to be updated, and since everyone needs to
+access their data on it, it must be kept running and accessible during the
+rebuild process. Since NAS-1 has never technically been part of the cluster with
+ROCKS, it is independently addressable via its own IP address. This independent
+addressability permits NAS-1 to be mounted and ssh-ed into without the rest of
+the cluster. It just needs to be left on and connected to the router.
+
+%-----------END PREPARATION-----------
+
+%----------BEGIN INSTALLATION----------
+
+\section{Installation}
+
+\subsection{Kernel Installation}
+
+\qq The instructions say to first use the ``kernel'' disc. The CE was turned on
+so that the optical drive has power to open, the disc was quickly inserted, and
+the CE was allowed to continue booting. It automatically booted into the disc,
+and it applies checks before continuing.
+
+\qq Once it has finished booting, the system language must be selected. After
+that, regional information, such as timezone, is entered.
+
+\subsection{Network Configuration}
+
+\qq Select \textit{Network \& Host Name}.
+
+\qq Now, the network must be configured. The option for the 10GB/s ethernet
+connection is turned on.
+
+\qq Next, the ``Configure...'' button is selected. Under the ``IPv4 Settings''
+tab, the ``Method'' is set to \textit{Manual}, and the IP of the CE,
+163.118.42.1, is entered. The netmask, an arbitrary range of IPs for the
+network, is set to 25 in order to encompass the IP range
+163.118.42.1-163.118.42.127. The gateway is the IP address of the router through
+which the computer is connected to the network. It was found by {\tt ssh}-ing
+into NAS-1 and running {\tt ip route}, which displays the default gateway IP,
+163.118.42.126, and the IP of NAS-1, itself. Under the ``IPv6 Settings'' tab,
+the ``Method'' is set to \textit{Link-Local Only}. 
+
+\qq With this information entered, the \textit{Save} button is pressed. The
+ethernet connection may be switched on as before, and the ``Current host name''
+in the bottom right of the screen should read ``uscms1.fltech-grid3.fit.edu'',
+the cluster's hostname. If it reads something else, enter the correct hostname
+on the bottom left of the screen. Once everything here is completed,
+\textit{Done} may be selected.
+
+\qq With network configuration out of the way, all the previously grayed-out
+options are now full of color! Now the local network needs to be
+configured. Select \textit{Cluster Private Network}.
+
+\qq The ``Private Cluster Interface'' dropdown menu is a list of the ethernet
+ports, similar to the list for selecting the public network connection. Since
+the 10GB/s connection is used for the public connection, the normal ethernet
+port is used for the private connection. Refer back to the ``Network \&
+Hostname'' section to see which port is occupied, and select that one in
+the ``Private Cluster Interface'' dropdown menu. All the other fields should not
+need to be altered; the default settings are fine and expected.
+
+\subsection{Rolls}
+
+\qq Now the rolls can be installed! Select ``ROCKS ROLLS''. Here, rolls may be
+installed remotely from the ROCKS website. Select \textit{List Available Rolls}
+to generate the roll list. Select the following rolls:
+
+\begin{itemize}
+  \item base
+  \item CentOS
+  \item core
+  \item ganglia
+  \item htcondor
+  \item kernel
+  \item perl
+  \item python
+  \item Updates-CentOS-<version>
+\end{itemize}
+
+Once all the desired rolls are selected, select \textit{Add Selected
+  Rolls}. After the rolls appear in the ``Selected Rolls'' section, select
+\textit{Done}.
+
+\qq If no network rolls can be found, change ``Network Roll'' to ``CD/DVD''
+Roll, and just install the ``kernel'' roll. The other rolls may be installed later.
+
+\subsection{Cluster Configuration}
+
+\qq Select \textit{CLUSTER CONFIG} to configure the cluster. The fields are
+filled as follows:
+
+\begin{center}
+  \begin{tabular}{|l|l|}
+    \hline
+    Cluster Name & USCMS-FIT-Grid \\
+    \hline
+    Contact & <administrator email> \\
+    \hline
+    Project URL &
+                  \url{https://research.fit.edu/hep/hohlmann-research-group/grid-cluster}
+    \\
+    \hline
+    Latitude/Longitude & N28.0622 W80.6237 \\
+    \hline
+    Certificate Organization & OSG \\
+    \hline
+    Certificate Locality & Melbourne \\
+    \hline
+    Certificate State & Florida \\
+    \hline
+    Certificate Country & US \\
+    \hline
+    NTP Servers & pool.ntp.org \\
+  \end{tabular}
+\end{center}
+
+After the fields have been verified to be correct, select \textit{Done}.
+
+\subsection{Partitioning}
+
+\qq Now the CE must be partitioned. Select \textit{INSTALLATION
+  DESTINATION}. Select both drives from the menu, and select \textit{I will
+  configure partitioning.} under ``Other Storage Options''. Select \textit{Done}
+to be kicked over to Anaconda's partitioning system.
+
+\qq First, the old partition, the CentOS 6 one, was selected, then removed by
+selecting the ``-'' at the bottom of the window. Then the \textit{Click here to
+  create them automatically} option was selected.
+
+\qq The created {\tt /home} partition was removed, because NAS-0 is what holds
+our home directories, and it was renamed {\tt /export} and given 100GB. The
+default {\tt /boot} and {\tt swap} partitions were left untouched, the {\tt /var}
+partition was created and given 100GB, and the {\tt /} partition was allocated
+the remainder of the available space, 256.76GB. The curious ``Unknown'' section
+of the other 233GB drive was not touched.
+
+\qq Once everything is together, select \textit{Done} and carefully review the
+changes. If the changes are correct, select \textit{Accept Changes}.
+
+\subsection{Commit}
+
+\qq If everything is undoubtedly confirmed (to the best of your ability), and
+you're absolutely ready to destroy everything and build it back up, say a quick
+prayer to your deity of choice and select \textit{Begin Installation}. WARNING:
+there is no ``confirm'' to \textit{Begin Installation}
+
+\qq Create a root password when prompted, and do NOT setup a user.
+
+%-----------END INSTALLATION-----------
+
+%----------BEGIN CONFIGURATION----------
+
+\section{Configuration}
+
+
+
+%-----------END CONFIGURATION-----------
+
+%----------BEGIN TROUBLESHOOTING----------
+
+\section{Troubleshooting}
+
+\subsection{Boot Loader Install Failed}
+
+\qq During installation, the boot loader failed to install. Selecting
+\textit{no} on the dialogue box will present an ``unknown error'' screen with a
+log and a debug option. Selecting ``debug'' kicks the screen over to the
+terminal screen.
+
+\qq Navigating to the ``program-log'' tab, the following errors may be found
+after the installer attempted to run {\tt grub2-install --no-floppy /dev/sda}:
+
+\begin{itemize}
+\item {\tt grub2-install: warning: Attempting to install GRUB to a disk with multiple
+    partition labels. This is not supported yet...}
+\item {\tt grub2-install: error: embedding is not possible, but this is required
+    for cross-disk install.}
+\end{itemize}
+
+The decision to try to install to {\tt /dev/sda} is strange because according to
+{\tt fdisk -l /dev/sda} and {\tt fdisk -l /dev/sdb}, run in the ``shell'' tab,
+reveal that {\tt /dev/sdb1} is marked for boot, whereas no such marking is
+present in the single part of {\tt /dev/sda}.
+
+\qq Trying to run {\tt grub2-install --no-floppy /dev/sda} and {\tt grub2-install
+  --no-floppy /dev/sdb} produces the same result: {\tt grub2-install: error:
+  /usr/lib/grub/i386-pc/modinfo.sh doesn't exist. Please specify --target or
+  --directory.} Investigating that path, {\tt /usr/lib/grub} comes up empty. To
+find where that file is actually located, since it has to be somewhere if the
+installer is running that command, I ran {\tt find / -name modinfo.sh}. It
+appears in two places: {\tt /mnt/sysimage/boot/grub2/i386-pc/modinfo.sh} and
+{\tt /mnt/sysimage/usr/lib/grub/i386-pc/modinfo.sh}.
+
+\qq I'm trying to run the installer's command again while specifying the
+location of the file it needs: {\tt grub2-install --no-floppy
+  --directory='/mnt/sysimage/boot/grub2/i386-pc' /dev/sda}. Now it says:
+{\tt grub2-install: error: cannot open
+  '/mnt/sysimage/boot/grub2/i386-pc/kernel.img': No such file or
+  directory.}. Hmm, let's see if that file exists anywhere with: {\tt find /
+  -name kernel.img}. Ahh, it's at
+{\tt /mnt/sysimage/usr/lib/grub/i386-pc/kernel.img}! Let's run the installer's
+command again, but the directory will be changed to
+{\tt /mnt/sysimage/usr/lib/grub/i386-pc}:
+{\tt grub2-install --no-floppy --directory='/mnt/sysimage/usr/lib/grub/i386-pc'
+  /dev/sda}. Ah ha! Now I'm getting the same error as the installer! Let's try
+with {\tt /dev/sdb}: {\tt grub2-install --no-floppy
+  --directory='/mnt/sysimage/usr/lib/grub/i386-pc /dev/sdb}. Ohh!
+{\tt Installation finished. No error reported.}! 
+
+\qq Since the installer crashed, the CE needs to be rebooted. Be sure to swiftly
+eject the disc when it first begins to power on so that it tries to boot
+normally. It will boot to grub rescue mode because, while grub is installed, it
+is not configured correctly.
+
+\qq Running the {\tt ls} command in grub rescue will show that there are two
+drives, (hd0) and (hd1), and {\tt set} will reveal that it is trying to boot into
+{\tt (hd0)}. Running {\tt ls (hd0)} will show that its file system is unknown,
+while {\tt ls (hd1)} shows a recognizable one, such as ext2. The file system of
+(hd0) is unknown because it is the hot spare for the RAID; grub is trying to
+boot into the hot spare, just as it was trying to do during installation.
+
+\qq The {\tt set} command said that the variable {\tt prefix} was set to
+{\tt (hd0)/boot/grub2} and {\tt root} was set to {\tt hd0}. To point those at the
+right place I ran the following two commands:
+
+\begin{itemize}
+  \item {\tt set prefix=(hd1)/boot/grub2}
+  \item {\tt set root=hd1}
+\end{itemize}
+
+\qq Instructions online say after fixing the variables to try loading the normal
+module with {\tt insmod normal}, but I get the error, {\tt error: file
+  '/boot/grub2/i386-pc/normal.mod' not found.}. Running {\tt ls (hd1)/} shows me
+nothing! Does that mean there's nothing on the drive I need, or just that the
+information isn't quite accessible? Hmm. I guess a restart couldn't hurt more;
+let's try that now that the variables are set.
+
+\qq Actually, you know what, I think I discovered the mistake that caused this
+whole mess. I decided to check to box to include the hot spare in the
+installation process. It has no place here; it's managed strictly by the RAID
+card. It got assigned {\tt sda} and messed everything up. I'm just gonna turn all
+this off and redo the installation correctly this time.
+
+\subsection{Remote ROCKS Servers Inaccessible}
+
+\qq Normally, the ROCKS rolls are able to be accessed from the remote ROCKS
+server in the ``ROCKS ROLLS'' section of the installation. After the kerfuffle
+with the boot loader, however, the server seems to be inaccessible even though
+the CE has internet, verified by pinging through the console.
+
+\qq I'm going to use the ability of the installer to remotely obtain the rolls
+to see if the issue is just with the communicating with the server, or if it's a
+larger problem. I've placed all the required rolls on NAS-1, and I'm going to
+try accessing them from there.
+
+\qq To do that, the rolls need to be hosted on an HTTP server on NAS-1. I'm
+installing and setting up Apache.
+
+\qq When I tried to {\tt yum install httpd}, none of the mirrors worked, so the
+installation failed. I tried a {\tt yum update} and a {\tt yum clean all}, but the
+clean just confirmed that there was a serious problem. Now yum reports that
+{\tt mirrors.centos.org} cannot be resolved. {\tt yum repolist all} also runs into
+the same issue; only the 5 recommended steps are listed. 
+
+\qq Turns out {\tt /etc/resolv.conf} was blank, and, amazingly, adding
+{\tt nameserver 9.9.9.9} to it fixed the problem. I wonder if that same file is
+messed up in the installer.
+
+\qq On the installer, by changing the kernel parameters from ``quiet'' to
+``verbose'', or even ``debug'', the booting up of the GUI installer can be seen
+and interrupted, providing access to the shell. {\tt ifconfig} shows the four
+network ports and the local network, just as it should, but nothing is connected
+to the internet. The cables are plugged in, so let's see about enabling the
+internet.
+
+\qq The \href{https://wiki.archlinux.org/index.php/Network_configuration}{Arch
+  Linux wiki page for network configuration} is very detailed and it seems to be
+helpful. I'm going through it.
+
+\qq I've gone through the page, setting the ip manually and editing
+{\tt /etc/hosts}, but no luck. I'm going to try the {\tt /etc/resolv.conf} thing
+that worked on NAS-1.
+
+\qq The ROCKS installation CD on the CE suddenly has internet!  The IP is
+163.118.42.1/25, the broadcast IP is 163.118.42.127, and the gateway IP is
+163.118.42.126 ({\tt ip address add 163.118.42.1/25 broadcast + dev
+  enp10s0f0}). A route was added: {\tt ip route add default via 163.118.42.126
+  dev enp10s0f0}. A nameserver was added to {\tt /etc/resolv.conf},
+{\tt nameserver 9.9.9.9}. The installer can be restarted with {\tt anaconda}.
+
+\qq Now the manual installation via anaconda's CLI can begin. 
+
+The locations of several important lines of code:
+\begin{tabular}{|c|c|}
+  ROCKS Rolls GUI & {\tt /usr/share/anaconda/addons/org\_rocks\_rolls/gui/spokes/RocksRolls.glade} \\
+  GUI Function & {\tt /usr/share/anaconda/addons/org\_rocks\_rolls/gui/spokes/RocksRolls.glade} \\
+  Actual Function & {\tt /opt/rocks/lib/python2.7/site-packages/rocks/media.py} \\
+\end{tabular}
+
+It is difficult to test the individual lines and functions because of so many
+references to ``self'' in the code, which indicates an incredible reliance on
+being in a special running environment to operate properly.
+
+\qq I'm trying something new. I'm installing ROCKS onto a flash drive on another
+machine, then I'm going to {\tt dd} the flash drive image onto the hard drive in
+the cluster. Maybe that will work.
+
+\qq Make sure the USB is COMPLETELY blank ({\tt parted /dev/sd<x> mklabel loop}).
+
+\qq To get to the anaconda command line application:
+\begin{itemize}
+  \item load the Anaconda GUI like normal
+  \item Ctl-Alt-F2 to drop to the base terminal of the CD
+  \item try to run {\tt anaconda}
+  \item when X fails to load properly, select the VNC option
+  \item Although Anaconda will continue to not start up properly, the Anaconda
+    environment (with the tmux bar at the bottom) will load.
+\end{itemize}
+
+\qq Just to try something new, I loaded a ubuntu liveCD onto the CE and had a
+poke around. It looks like everything is where it used to be on the partitions
+of the original drive, {\tt /dev/sdb2}, specifically the {\tt /root}
+partition. A curious note about how those partitions are organized: {\tt
+  /dev/sdb2} is formated as a Linux logical volume, and the logical partitions
+of that logical volume are found under {\tt /dev/rocks\_uscms1/}. {\tt
+  /dev/rocks\_uscms1/root} is the original root file system, and I mounted it
+with {\tt mount /dev/rocks\_uscms1/root /mnt/sdb\_root}. Something interesting I
+found, though, is the contents of {\tt /mnt/sdb\_root/etc/redhat-release}, which
+report that CentOS 7 is installed on the system. Hmm. Did the original install
+do something? Additionally, the {\tt /mnt/sdb\_root/boot} directory is
+blank. While THAT boot directory is blank, however, the specific boot partition
+of {\tt /dev/sdb}, {\tt /dev/sdb1}, is fully populated with an {\tt el7} image
+and an updated grub. 
+
+\qq To enable ssh on a Ubuntu LiveCD, install {\tt openssh-server} with {\tt
+  sudo apt install openssh-server}, and check to make sure the service is running
+with {\tt sudo service ssh status}.
+
+\qq BREAK-THROUGH! After fiddling with GRUB from the LiveCD, namely reinstalling
+it onto the boot partition, the CE still refused to boot! This is because the
+3Ware card was not configured to be booted into on the boot order section of the
+BIOS. This page is accessed by slamming the <Delete> key immediately upon
+turning on the CE. The 3Ware card had its boot status elevated, and I was
+presented with a fully fleshed out GRUB prompt! (In contrast to the extremely
+limited rescue GRUB prompt from earlier.) What is available is summarized in
+Table \ref{tab:grubPartitions}.
+
+\begin{figure}[H]
+  \label{tab:grubPartitions}
+  \caption{A list of the partitions available to us at the GRUB prompt.}
+  \begin{center}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      Partition & Filesystem & Summary of Contents \\
+      \hline
+      {\tt (proc)} & {\tt procfs} & none \\
+      {\tt (hd0)} & n/a & n/a \\
+      {\tt (hd0,msdos2)} & n/a & n/a \\
+      {\tt (hd0,msdos1)} & {\tt ext*} & boot partition of CE data drive \\
+      {\tt (hd1)} & {\tt ext*} & none \\
+      {\tt (hd1,msdos1)} & {\tt ext*} & misc. config files (namely Squid) \\
+      {\tt (fd0)} & n/a & n/a \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{figure}
+
+\qq Let's try to boot into the boot partition. Following some instructions from
+online, the first step is to load the {\tt ext2} module, {\tt insmod
+  ext2}. Next, the root of the prompt needs to be set to the boot partition,
+{\tt set root='(hd0,msdos1)'}. If the root was set correctly, the output of the
+{\tt ls /} command ought to be identical to the output of {\tt ls
+  (hd0,msdos1)}. In the new {\tt /}, there should be two files that start with
+{\tt vmlinuz}. We're only concerned with the one that does not have the word
+``rescue'' in the name. To load the compiled kernel, {\tt linux <non-rescuse
+  vmlinuz>}, then to boot it, {\tt boot}.
+
+\qq Unfortunately, the kernel panics when it tries to boot; the rescue
+kernel was also tried to no avail. The rescue kernel has the panic {\tt not
+syncing: VFS: Unable to mount root fs on unknown-block(0,0)}. A quick search has
+revealed that it might be complaining about not having the {\tt initramfs}
+loaded beforehand. We have that file, but how do we load it properly?
+
+\qq Running the setup commands in a different order, while throwing in a couple
+new ones, produces different results, but nothing successful.
+
+\begin{figure}[H]
+  \label{cmd:grubAttempt1}
+  \begin{tabular}{l|l}
+    {\tt set pager=1} & \makecell{Slow down screen output\\so that it can be read.} \\
+    {\tt set root=(hd0,msdos1)} & \makecell{Set {\tt root} to be whatever the boot
+                                  partition is.} \\
+    {\tt insmod ext2} & Load the module for dealing with the boot partition's
+                        filesystem. \\
+    {\tt linux /vmlinuz root=/dev/sda1} & Load the desired {\tt vmlinuz} image,
+                                          usually not the ``rescue'' one, and
+                                          identify the boot partition on disk. The
+                                          device loosely corresponds with {\tt
+                                          hd0} and its partition with {\tt
+                                          msdos1}. \\
+    {\tt initrd /initrd-plymouth.img} & Load the corresponding {\tt initrd}
+                                        image. \\
+    {\tt boot} & Attempt to boot into the selected image. \\
+  \end{tabular}
+  \caption{An attempt to boot into the OS from GRUB.}
+\end{figure}
+
+Unfortunately, the {\tt pager} setting does not page the output from {\tt boot},
+so we still have no clue what's going on after the button's hit.
+
+\qq I wonder what happens if we use one of the {\tt initramfs} files with {\tt
+  initrd} instead of just the plain {\tt initrd} image. Also, I'm gonna try to
+boot the rescue pair. It worked! I've booted into the rescue image! I think that
+might mean the images aren't ENTIRELY busted. 
+
+\qq Something interesting I've noticed: the {\tt /sysroot} directory seems to be
+the miscellaneous configuration files from {\tt (hd1,msdos1)} from the
+GRUB. We've also got a {\tt /dev} directory with two drives, one with one
+partition ({\tt sda}) and another with two ({\tt sdb}). {\tt mount} reveals that
+{\tt /dev/sda1} is mounted on {\tt sysroot}, and that its filesystem is {\tt
+  ext3}. {\tt /dev/sdb} isn't mounted at all. I've mounted {\tt /dev/sdb1} on a
+directory I created, {\tt /mnt/sdb1}, and it's the boot partition of the data
+drive, {\tt (hd0,msdos1)} from the GRUB. I tried to mount {\tt /dev/sdb2}, but
+it complained that its filesystem was of type {\tt LVM2_member}, which means
+that it's the root filesystem of the CE. Unlike the Ubuntu LiveCD, however,
+there is no {\tt /dev/rocks} directory where those logical partitions would be
+stored. That's enough poking around for now, let's try to load the proper
+initramfs-kernel pair.
+
+\qq What I thought was rescue mode is actually emergency mode; the regular
+images brought me to the same place. What can I do with emergency mode?
+
+\end{document}
