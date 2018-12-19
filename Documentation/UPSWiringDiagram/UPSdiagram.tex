@@ -1,0 +1,101 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage{circuitikz}
+
+\begin{document}
+
+%TITLE
+\begin{center}
+  {\huge \textbf{UPS Electrical Schematic}}
+\end{center}
+
+\begin{center}
+\begin{circuitikz} 
+
+\draw
+%TOP CENTER GROUP
+(2,0)
+to[battery] (2,2)
+to[battery] (2,4)
+-- (-2,4)
+to[battery] (-2,2)
+to[battery] (-2,0)
+;
+\draw
+%TOP RIGHT GROUP
+(6,0)
+to[battery] (6,2)
+to[battery] (6,4)
+-- (4,4)
+to[battery] (4,2)
+to[battery] (4,0)
+;
+\draw
+%TOP LEFT GOURP
+(-4,0)
+to[battery] (-4,2)
+to[battery] (-4,4)
+-- (-6,4)
+to[battery] (-6,2)
+to[battery] (-6,0)
+;
+\draw
+%BOTTOM CENTER GROUP
+(-2,-7)
+to[battery] (-2,-9)
+to[battery] (-2,-11)
+-- (2,-11)
+to[battery] (2,-9)
+to[battery] (2,-7)
+;
+\draw
+%BOTTOM RIGHT GROUP
+(4,-7)
+to[battery] (4,-9)
+to[battery] (4,-11)
+-- (6,-11)
+to[battery] (6,-9)
+to[battery] (6,-7)
+;
+\draw
+%BOTTOM LEFT GROUP
+(-6,-7)
+to[battery] (-6,-9)
+to[battery] (-6,-11)
+-- (-4,-11)
+to[battery] (-4, -9)
+to[battery] (-4,-7)
+;
+\draw
+%NEGATIVE WIRES (groups in same order as above)
+(2,0) -- (-.5,0)
+(6,0) -- (6,-3) -- (-.5,-3)
+(-4,0) -- (-4,-2) -- (-.5,-2) 
+(-2,-7) -- (-.5,-7)
+(4,-7) -- (4,-6) -- (-.5,-6)
+(-6,-7) -- (-6,-4.5) -- (-.5,-4.5)
+;
+\draw [color=red]
+%POSITIVE WIRES (groups in same order as above)
+(-2,0) -- (-2,-1) -- (.5,-1)
+(4,0) -- (4,-2) -- (.5,-2)
+(-6,0) -- (-6,-3.75) -- (.5,-3.75)
+(2,-7) -- (.5,-7)
+(6,-7) -- (6,-4.5) -- (.5,-4.5) 
+(-4,-7) -- (-4,-5.25) -- (.5,-5.25)
+;
+\draw [thick]
+%THICK NEGATIVE WIRE
+(-.5,5) -- (-.5,-7)
+;
+\draw [color=red][thick]
+%THICK POSITIVE WIRE
+(.5,5) -- (.5,-7)
+;
+
+\end{circuitikz}
+\end{center}
+\end{document}\

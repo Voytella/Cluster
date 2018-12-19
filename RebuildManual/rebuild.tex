@@ -146,8 +146,10 @@ network, is set to 25 in order to encompass the IP range
 163.118.42.1-163.118.42.127. The gateway is the IP address of the router through
 which the computer is connected to the network. It was found by {\tt ssh}-ing
 into NAS-1 and running {\tt ip route}, which displays the default gateway IP,
-163.118.42.126, and the IP of NAS-1, itself. Under the ``IPv6 Settings'' tab,
-the ``Method'' is set to \textit{Link-Local Only}. 
+163.118.42.126, and the IP of NAS-1, itself. Provide a DNS server of {\tt
+  8.8.8.8} so that the cluster will recognize its hostname and allow the
+internet to work. Under the ``IPv6 Settings'' tab, the ``Method'' is set to
+\textit{Link-Local Only}.
 
 \qq With this information entered, the \textit{Save} button is pressed. The
 ethernet connection may be switched on as before, and the ``Current host name''
@@ -228,20 +230,20 @@ After the fields have been verified to be correct, select \textit{Done}.
 \subsection{Partitioning}
 
 \qq Now the CE must be partitioned. Select \textit{INSTALLATION
-  DESTINATION}. Select both drives from the menu, and select \textit{I will
-  configure partitioning.} under ``Other Storage Options''. Select \textit{Done}
-to be kicked over to Anaconda's partitioning system.
+  DESTINATION}. Select the larger of the two drives (the smaller one is the hot
+spare and it is NOT TO BE TOUCHED), and select \textit{I will configure
+  partitioning.} under ``Other Storage Options''. Select \textit{Done} to be
+kicked over to Anaconda's partitioning system.
 
 \qq First, the old partition, the CentOS 6 one, was selected, then removed by
 selecting the ``-'' at the bottom of the window. Then the \textit{Click here to
   create them automatically} option was selected.
 
-\qq The created {\tt /home} partition was removed, because NAS-0 is what holds
-our home directories, and it was renamed {\tt /export} and given 100GB. The
-default {\tt /boot} and {\tt swap} partitions were left untouched, the {\tt /var}
+\qq The created {\tt /home} partition was renamed to {\tt /export}, because
+NAS-0 is what holds our home directories, and it was given 100GB. The default
+{\tt /boot} and {\tt swap} partitions were left untouched, the {\tt /var}
 partition was created and given 100GB, and the {\tt /} partition was allocated
-the remainder of the available space, 256.76GB. The curious ``Unknown'' section
-of the other 233GB drive was not touched.
+the remainder of the available space, 256.76GB.
 
 \qq Once everything is together, select \textit{Done} and carefully review the
 changes. If the changes are correct, select \textit{Accept Changes}.
@@ -255,11 +257,25 @@ there is no ``confirm'' to \textit{Begin Installation}
 
 \qq Create a root password when prompted, and do NOT setup a user.
 
+\qq After the installation is complete, reboot as per the instructions. After
+reboot do not enter any further configuration; simply continue. When presented
+with the login prompt, login as root. Congratulations! ROCKS has been installed
+onto the CE!
+
 %-----------END INSTALLATION-----------
 
 %----------BEGIN CONFIGURATION----------
 
 \section{Configuration}
+
+\subsection{Enable SSH}
+
+\qq {\tt ssh} communication with the cluster is paramount in its efficient
+administration. Upon initial installation, the {\tt sshd} service ought to
+already be running. This can be verified with {\tt service sshd status}. If it's
+not running, it can easily set up after a quick internet search.
+
+\subsection{Automatic Mounting of Key Components}
 
 
 
@@ -539,4 +555,11 @@ initramfs-kernel pair.
 \qq What I thought was rescue mode is actually emergency mode; the regular
 images brought me to the same place. What can I do with emergency mode?
 
+\qq The issue with the logical partitions may be a GRUB configuration
+issue. What if GRUB just needs to be configured to look into and properly load
+the logical partitions? When the physical boot partition is loaded, the
+complaint is that the {\tt /etc/os-release} file is not found. That's fine
+because that file is found on the root partition. In our case, however, that
+partition is logical. How can we configure GRUB to boot into a logical
+partition?
 \end{document}

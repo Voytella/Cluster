@@ -1,0 +1,105 @@
+\documentclass{article}
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+% suppresses page number
+\pagenumbering{gobble}
+
+%----------BEGIN FRONT PAGE----------%
+% instructions for those who know the password
+
+\begin{center}
+  \textbf{\huge Emergency Cluster Documentation}
+\end{center}
+
+\section*{\Large Shutdown}
+\begin{enumerate}
+\item Ensure the switcher is set to Channel 1.
+\item Login as root on the CE.
+  \begin{itemize}
+  \item Verify logged into CE: \\{\tt\# hostname \\ uscms1.fltech-grid3.fit.edu}
+  \item Verify logged in as root: \\{\tt\# whoami \\ root}
+  \end{itemize}
+\item Run the command: {\tt totalShutdown}
+\item Once all components have been powered down, turn off the three UPSs.
+\item Unplug the UPSs.
+\item Unplug the two power strips behind the cluster.
+\end{enumerate}
+
+\section*{\Large Powerup}
+\begin{enumerate}
+\item Plug in the two power strips and the three UPSs.
+\item Turn on the UPSs.
+\item Set the switcher to Channel 4, and turn on the monitor.
+\item Powerup NAS-0 and NAS-1.
+\item Wait until a login prompt appears on the monitor to ensure that
+  the NASs have fully powered up.
+\item Set the switcher to Channel 1.
+\item Powerup the CE and SE.
+\item Wait until a login prompt appears on the monitor to ensure that
+  the CE and SE have fully powered up.
+\item Turn on the nodes.
+\end{enumerate}
+
+\begin{large}
+If the cluster MUST be shut down, and the password is unknown, follow
+the instructions on the back of this sheet.
+\end{large}
+
+\pagebreak
+
+%-----------END FRONT PAGE-----------%
+
+%----------BEGIN BACK PAGE----------%
+% for when the cluster MUST be shutdown by those who do not know the password
+
+\begin{center}
+  \section*{Administrator Contact Information}
+  \begin{tabular}{|l|r|}
+    \hline
+    Ryan Wojtyla & (904)613-1863 \\
+    Riley Carlson & (772)214-9723 \\
+    Hannah Blackburn & (919)807-9172 \\
+    \hline
+  \end{tabular}
+\end{center}
+
+  \subsection*{Cluster Force Shutdown}
+  \begin{enumerate}
+  \item
+    In the right cabinet, flip all four ``Geist'' power strips to off.
+  \item
+    In the left cabinet, find the power button of the SE (top-right most
+    button of the lowest computer) then press and hold it until all of the computer's
+    lights turn off.
+  \item
+    In the left cabinet, find the power button of NAS-1 (bottom-left most
+    button of the second lowest computer) then press and hold it until all of the
+    computer's lights turn off.
+  \item
+    In the right cabinet, find the power button of NAS-0 (top-right
+    most button of the larger of the two bottom-most computers) then press
+    and hold it until all of the computer's lights turn off.
+  \item
+    In the right cabinet, find the power button of the CE (top-right
+    most button of the smaller of the two bottom most computers) then press
+    and hold it until all of the computer's lights turn off.
+  \item
+    In the right cabinet, find the power button of the APC UPS (labeled as ``O''
+    on the machine just below NAS-0) then press and hold it until all of the
+    UPS's lights turn off.
+  \item
+    In the right cabinet, find the power buttons of the SmartPro UPSs (the
+    two machines below the APC UPS) then press and hold each of them until
+    all of the UPSs' lights turn off.
+  \item
+    Behind the cluster, unplug the two normal plugs and the three twist-lock
+    plugs. NOTE: The twist-lock plugs must first be twisted so that they may
+    be unplugged.
+  \end{enumerate}
+
+%-----------END BACK PAGE-----------%
+
+\end{document}

@@ -1,0 +1,41 @@
+\documentclass{article}
+
+\begin{document}
+
+% suppresses page number
+\pagenumbering{gobble}
+
+\begin{center}
+  \textbf{\huge Emergency Cluster Documentation}
+\end{center}
+
+\section*{\Large Shutdown}
+\begin{enumerate}
+\item Ensure the switcher is set to Channel 1.
+\item Login as root on the CE.
+  \begin{itemize}
+  \item Verify logged into CE: \\{\tt\# hostname \\ uscms1.fltech-grid3.fit.edu}
+  \item Verify logged in as root: \\{\tt\# whoami \\ root}
+  \end{itemize}
+\item Run the command: {\tt totalShutdown}
+\item Once all components have been powered down, turn off the three UPSs.
+\item Unplug the UPSs.
+\item Unplug the two power strips behind the cluster.
+\end{enumerate}
+
+\section*{\Large Powerup}
+\begin{enumerate}
+\item Plug in the two power strips and the three UPSs.
+\item Turn on the UPSs.
+\item Set the switcher to Channel 4, and turn on the monitor.
+\item Powerup NAS-0 and NAS-1.
+\item Wait until a login prompt appears on the monitor to ensure that
+  the NASs have fully powered up.
+\item Set the switcher to Channel 1.
+\item Powerup the CE and SE.
+\item Wait until a login prompt appears on the monitor to ensure that
+  the CE and SE have fully powered up.
+\item Turn on the nodes.
+\end{enumerate}
+
+\end{document}
