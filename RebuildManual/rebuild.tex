@@ -264,6 +264,24 @@ onto the CE!
 
 %-----------END INSTALLATION-----------
 
+%----------BEGIN UNIFICATION----------
+
+\section{Unification}
+
+\qq Now that ROCKS is installed onto the CE, it can be installed onto the other
+cluster components so that they may be brought into the fold.
+
+\subsection{Nodes}
+
+\qq To begin, login to the CE as root and run {\tt insert-ethers}, the program
+that routes network traffic from the nodes to the ROCKS database for processing.
+From the menu, select \textit{Compute}. The ``Inserted Applicances'' screen that
+appears should initially be blank; nodes must be turned on for them to be
+recognized and configured. 
+
+%-----------END UNIFICATION-----------
+
+
 %----------BEGIN CONFIGURATION----------
 
 \section{Configuration}
@@ -562,4 +580,48 @@ complaint is that the {\tt /etc/os-release} file is not found. That's fine
 because that file is found on the root partition. In our case, however, that
 partition is logical. How can we configure GRUB to boot into a logical
 partition?
+
+\subsection{Nodes not found in {\tt insert-ethers}}
+
+\qq I found the documentation from when Ankit and Christian installed ROCKS 6 on
+all the nodes back in 2014. They said, after running {\tt insert-ethers
+  --cabinet=1} on the CE and selecting \textit{Nodes}, they inserted the ROCKS 6
+disc into a node and booted into it. When the disc was loaded, the node sent out
+a DHCP request that was then picked up by insert-ethers. Let's see about trying
+that out on compute-1-0. Since we don't have a Jumbo DVD for ROCKS 7.0, I'm
+trying with the ROCKS 7.0 kernel disc. 
+
+\qq The kernel disc booted to the language selection screen as
+expected. Unfortunately, however, I seem to be stuck here. The screen requires
+that a mouse be used to select the \textit{Continue} button, but the mouse
+doesn't work (USB or PS2). *sigh* I'm gonna see about restarting the node and
+interrupting the GUI installer like I did before so I can attempt a command line
+installation. 
+
+\qq To do a command line install, the GUI installer must be interrupted before
+it can start up. When greeted with the first splash screen, press TAB to edit
+the kernel settings: change ``quiet'' to ``debug'' so that more text will appear
+on the screen during boot which will allow for more time to cancel the installer
+startup with control-C. With the GUI installer interrupted, navigate to the
+shell and run {\tt anaconda -T} to begin the text-based version of
+anaconda.
+
+\qq Be sure to choose an appropriate time zone. Change the \textit{Software
+  selection} from ``Minimal Install'' to ``Compute Node''. Select
+\textit{Network configuration}, then the correct ethernet device (most
+likely {\tt enp4s0f0}). Configure the device to automatically connect after
+reboot and to apply configuration in the installer. The defaults for the other
+settings ought to be sufficient. Ensure that the software selection was
+successful, create a root password, then begin the installation.
+
+\qq Before we go through banging our heads against that problem, let's make sure
+the CE can actually receive DHCP requests in the first place. I ran {\tt dhcpd}
+to take a peak at the DHCP configuration, and it looks like the DHCP daemon is
+listening on the proper ethernet (enp6s0f0).
+
+\qq I'd like to monitor DHCP traffic to see what's going on. Unfortunately, the
+tool for the job, {\tt tcpdump}, insists on listening to the {\tt virbr0}
+(virtual bridge 0) interface, which is not configured, or even used, as far as I
+can see. 
+
 \end{document}
