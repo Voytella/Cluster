@@ -35,8 +35,25 @@
   \frametitle{Rebuilding the CE (again)}
 
   \begin{itemize}
+    \item After the wiki had been fixed, {\tt insert-ethers} was acting very
+      strangely.
+    \item Several errors were related to the MySQL database.
+    \item Turns out, Ankit and Christian had also tried to install nodes and fix
+      the wiki at the same time.
+      \begin{itemize}
+        \item They reported that the databases had gotten messed up by fixing
+          the wiki, and {\tt insert-ethers} no longer worked.
+      \end{itemize}
+    \item They solved the issue by reinstalling ROCKS onto the CE.
+  \end{itemize}
 
-  
+  \begin{figure}[H]
+    \begin{center}
+      \includegraphics[scale=0.1]{reinstall.JPG}
+    \end{center}
+    \caption{A snapshot of the ROCKS installation process on the CE.}
+  \end{figure}
+
 \end{frame}
 
 %-----------END LATEST TASKS-----------
