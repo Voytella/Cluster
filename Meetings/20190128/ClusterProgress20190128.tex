@@ -22,7 +22,24 @@
 
 \begin{frame}
 
-  \frametitle{}
+  \frametitle{Fixed the Wiki!}
+  \begin{itemize}
+  \item Recap: The website could not contact the database server
+    \begin{itemize}
+    \item The database for the wiki was missing from MySQL on the CE
+    \end{itemize}
+  \item The databases from the CE Backup could not be read by MySQL without the ibdata1 file
+    \begin{itemize}
+    \item Used the old ibdata file to open the databases and create backups that could be imported correctly using 'mysqldump'
+    \end{itemize}
+    \item The wiki page now works!     
+    \end{itemize}
+  \begin{figure}[H]
+    \begin{center}
+      \includegraphics[scale=0.3]{wiki.png}
+    \end{center}
+    \caption{The FLTECH TWIKI page.}
+  \end{figure}
   
 \end{frame}
 
