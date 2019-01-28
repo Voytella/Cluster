@@ -1,4 +1,4 @@
-PWD /Users/Voytella/Documents/Cluster/RebuildManual
+PWD /Users/Voytella/Documents/Cluster/Git/RebuildManual
 INPUT /opt/local/etc/texmf/texmf.cnf
 INPUT /opt/local/var/db/texmf/web2c/pdftex/pdflatex.fmt
 INPUT rebuild.tex
@@ -77,6 +77,7 @@ INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmmi8.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmmi6.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmsy8.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmsy6.tfm
+INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmtt12.tfm
 INPUT rebuild.aux
 INPUT ./rebuild.out
 INPUT ./rebuild.out

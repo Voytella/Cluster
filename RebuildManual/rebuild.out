@@ -9,7 +9,12 @@
 \BOOKMARK [2][-]{subsection.2.4}{Cluster Configuration}{section.2}% 9
 \BOOKMARK [2][-]{subsection.2.5}{Partitioning}{section.2}% 10
 \BOOKMARK [2][-]{subsection.2.6}{Commit}{section.2}% 11
-\BOOKMARK [1][-]{section.3}{Configuration}{}% 12
-\BOOKMARK [1][-]{section.4}{Troubleshooting}{}% 13
-\BOOKMARK [2][-]{subsection.4.1}{Boot Loader Install Failed}{section.4}% 14
-\BOOKMARK [2][-]{subsection.4.2}{Remote ROCKS Servers Inaccessible}{section.4}% 15
+\BOOKMARK [1][-]{section.3}{Unification}{}% 12
+\BOOKMARK [2][-]{subsection.3.1}{Nodes}{section.3}% 13
+\BOOKMARK [1][-]{section.4}{Configuration}{}% 14
+\BOOKMARK [2][-]{subsection.4.1}{Enable SSH}{section.4}% 15
+\BOOKMARK [2][-]{subsection.4.2}{Automatic Mounting of Key Components}{section.4}% 16
+\BOOKMARK [1][-]{section.5}{Troubleshooting}{}% 17
+\BOOKMARK [2][-]{subsection.5.1}{Boot Loader Install Failed}{section.5}% 18
+\BOOKMARK [2][-]{subsection.5.2}{Remote ROCKS Servers Inaccessible}{section.5}% 19
+\BOOKMARK [2][-]{subsection.5.3}{Nodes not found in insert-ethers}{section.5}% 20

@@ -564,7 +564,7 @@ partition ({\tt sda}) and another with two ({\tt sdb}). {\tt mount} reveals that
   ext3}. {\tt /dev/sdb} isn't mounted at all. I've mounted {\tt /dev/sdb1} on a
 directory I created, {\tt /mnt/sdb1}, and it's the boot partition of the data
 drive, {\tt (hd0,msdos1)} from the GRUB. I tried to mount {\tt /dev/sdb2}, but
-it complained that its filesystem was of type {\tt LVM2_member}, which means
+it complained that its filesystem was of type {\tt LVM2\_member}, which means
 that it's the root filesystem of the CE. Unlike the Ubuntu LiveCD, however,
 there is no {\tt /dev/rocks} directory where those logical partitions would be
 stored. That's enough poking around for now, let's try to load the proper
@@ -614,14 +614,39 @@ reboot and to apply configuration in the installer. The defaults for the other
 settings ought to be sufficient. Ensure that the software selection was
 successful, create a root password, then begin the installation.
 
-\qq Before we go through banging our heads against that problem, let's make sure
-the CE can actually receive DHCP requests in the first place. I ran {\tt dhcpd}
-to take a peak at the DHCP configuration, and it looks like the DHCP daemon is
-listening on the proper ethernet (enp6s0f0).
+\qq The installation failed; it's complaining about an attribute not having the
+expected data, ``AttributeError: 'RocksRollsData' object has no attribute
+'info'''. Checking back on {\tt insert-ethers}, however, something interesting
+has revealed itself! {\tt compute-1-0}, the node on which the installation
+failed, is now visible. The ``()'' is empty, which indicates that, while the
+node is visible, it has not requested a kickstart file. I'm guessing, if it
+worked properly, the ``*'' would appear between the ``()'' on its own. Since
+that hasn't happened here, I'm assuming it didn't work, which would make sense
+since the installation failed. Let's try again to see what happens.
 
-\qq I'd like to monitor DHCP traffic to see what's going on. Unfortunately, the
-tool for the job, {\tt tcpdump}, insists on listening to the {\tt virbr0}
-(virtual bridge 0) interface, which is not configured, or even used, as far as I
-can see. 
+\qq Alright, new problem: {\tt insert-ethers} won't close and {\tt tmux} window
+switching won't work. I guess I ought to restart the system (Ctrl-Alt-Delete
+will bring up a GUI shutdown/restart menu). 
+
+\qq After a restart, {\tt insert-ethers} crashes on startup. It reports ``Access
+denied for user 'root'@'localhost''', which is more than a little
+concerning. What happens if I try a hard restart? Let's find out. No
+change. Huh, what an interesting problem to have.
+
+\qq Sam did some MySQL nonsense (detailed in the adminlog) to get a new error:
+``error - unable to download kickstart.''. It also suggests to verify that {\tt
+  httpd} is running; it, in fact, is. She also found a website that recommends a
+course of action in response to this error. Unfortunately, turns out the site is
+6 years old, and not of much help.
+
+\qq Some disappointing news: I read through Ankit's old documentation from when
+he and Christian were building the cluster with ROCKS 6 back in 2014. They were
+trying to set up the wiki and the nodes at the same time, and the MySQL didn't
+like that so much. Sounds familiar! They had to reinstall the CE, so that's what
+we're gonna go do.
+
+\qq I've backed up the adminlog, thrown in the ROCKS 7 kernel CD, and restarted
+the machine. I'm going to follow the installation instructions at the beginning
+of this document.
 
 \end{document}
