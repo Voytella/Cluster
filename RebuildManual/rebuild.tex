@@ -277,7 +277,22 @@ cluster components so that they may be brought into the fold.
 that routes network traffic from the nodes to the ROCKS database for processing.
 From the menu, select \textit{Compute}. The ``Inserted Applicances'' screen that
 appears should initially be blank; nodes must be turned on for them to be
-recognized and configured. 
+recognized and configured.
+
+\qq Insert the ROCKS Kernel disc into the first node, {\tt compute-1-0}, and
+restart it. {\tt compute-1-0} should appear in the ``Inserted Applicances''
+menu. The {\tt ()} in the rightmost column will be blank for now. A star, {\tt
+  *}, will appear between them when the node requests a kickstart file from the
+CE. The node will boot into the Anaconda installation for ROCKS 7.
+
+\subsubsection{Installing ROCKS onto a Compute Node}
+
+\qq The procedure for installing ROCKS on the nodes is simpler than the CE. For
+the ``Network \& Host Name'' section, simply enable the only connected ethernet
+connection. The ``Current host name'' in the bottom right corner should display
+the name of the node, {\tt compute-<x>-<x>}. 
+
+\qq  
 
 %-----------END UNIFICATION-----------
 
@@ -564,7 +579,7 @@ partition ({\tt sda}) and another with two ({\tt sdb}). {\tt mount} reveals that
   ext3}. {\tt /dev/sdb} isn't mounted at all. I've mounted {\tt /dev/sdb1} on a
 directory I created, {\tt /mnt/sdb1}, and it's the boot partition of the data
 drive, {\tt (hd0,msdos1)} from the GRUB. I tried to mount {\tt /dev/sdb2}, but
-it complained that its filesystem was of type {\tt LVM2\_member}, which means
+it complained that its filesystem was of type {\tt LVM2b3\_member}, which means
 that it's the root filesystem of the CE. Unlike the Ubuntu LiveCD, however,
 there is no {\tt /dev/rocks} directory where those logical partitions would be
 stored. That's enough poking around for now, let's try to load the proper

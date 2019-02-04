@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_3) (preloaded format=pdflatex 2018.5.11)  28 JAN 2019 12:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_3) (preloaded format=pdflatex 2018.5.11)  28 JAN 2019 15:10
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -434,7 +434,7 @@ al/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr17.pfb></opt/local/sha
 re/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/local/share/te
 xmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb></opt/local/share/texmf-t
 exlive/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on rebuild.pdf (14 pages, 121455 bytes).
+Output written on rebuild.pdf (14 pages, 121452 bytes).
 PDF statistics:
  189 PDF objects out of 1000 (max. 8388607)
  165 compressed objects within 2 object streams
