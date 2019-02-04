@@ -9,32 +9,27 @@
 \thispagestyle{empty}
 \maketitle
 
-%----begin---%  %\subsection{}, \begin{itmeize} + \item
+%----begin---% 
 (In Progress)
 
 \section{Setting up the Configuraton File}
 
  When first starting MySQL, you need to make sure the correct paths to the socket file and the databases are specified in the configuration file. It is located on the CE at {\tt /etc/my.cnf}
-
  The file {\tt /opt/rocks/mysql/my.cnf} should contain the correct information which can simply be copied over to {\tt /etc/my.cnf}, but this file is not looked at by MySQL when it runs. If this file does not exist, the correct socket should be {\tt socket=/var/opt/rocks/mysql/mysql.sock}, and the data directory should be {\tt datadir=/var/opt/rocks/mysql/}. Make sure to specify the paths under both the [mysqld] and the [client] headings.
-
  After making changes to the configuration file, make sure to restart apachectl and the mysql server.
     {\tt /usr/sbin/apachectl graceful}
     {\tt /opt/rocks/mysql/support-files/mysql.server restart }
 
 \section{Importing Databases}
-%granting privileges, (pass reset, misc. notes, errors)
 The databses used in mysql for the cluster tend to be in ``InnoDB'' format. What that means as far as importing databases go is that one cannot simply copy the folders directly from the old databse to the new one. MySQL cannot read the files this way. Instead, the old databases must be 'dumped' using the mysqldump command.
+
 \subsection{The Proper Procedure}
 To export a database, run the following:
     {\tt mysqldump -u root -p (database) > (database).sql}
-
 To import a database, first create the database in mysql using {\tt ``create database (name);} Then, quit MySQL and run the following: 
     {\tt mysql -u root -p (database) < (database).sql}    
-
 Once you have imported the databases, be sure to give the appropriate permissions. For example, granting permission for apache to access the wikidatabase:
     {\tt GRANT ALL PRIVILEGES ON (database)* TO (user)@localhost}
-
 Be sure to update appripriate config files when changes are made, such as LocalSettings for the wiki page. 
 
 \subsection{The Hard Way}
@@ -54,6 +49,7 @@ The following procedure was performed on a different machine than the new mysql 
 \item If the above step was successful, log out of mysql and use mysqldump as above to create the .sql files and import them as above. If you used the same machine to do this, make sure to rename the current mysql directory to something else, and rename the backup to ``mysql/''
   You should then be able to access the data in the new server. (use (database); show tables; select * from (table);)
 \end{itemize}
+
 %---------------------------------------------------------------------------------------------
 %a number of things including insert-ethers and the website depend on MySQL
 %website - LocalSettings.php file dbuser, pass, etc.
@@ -61,35 +57,50 @@ The following procedure was performed on a different machine than the new mysql 
 %sidenote for website: you need to add a line to the iptables to allow incoming port 80 connections - iptables -I INPUT 5 -p tcp -m state --state NEW,ESTABLISHED -m tcp --dport 80 -j ACCEPT'' to insert a new rule under input at line 5
 %(above the first REJECT) to accept incoming connections to port 80, ``then service iptables save'' to save the file /etc/sysconfig/iptables
 %another note - do not try to fix the website before the nodes are set up, otherwise it messes with insert-ethers and you will have to reinstall the CE and start over. 
+%---------------------------------------
+\section{Errors}
 
-%get the error when trying to run: Error 2002: Can't connect to local MySQL server through socket 'var/lib/mysql/mysql.sock.'
-%The sock file either isnt there or the path specified in /etc/my.cnf is incorrect - see section 1
-% check to see if mysql server is running: ``netstat -tap | grep mysql - it should be, or try /opt/rocks/mysql/bin/mysqld start
-% if you see ``/opt/rocks/mysql/bin/mysqld: Can't change dir to '/var/lib/mysql/' (Errcode: 2 - No such file or directory)'' change my.cnf
-    %mysql --socket=/var/opt/rocks/mysql/mysql.sock  -u (user) -p also works as a temporary measure.
+\subsection{Can't Connect through Socket}
+This error occurs when MySQL can't find the mysql.sock file. The error will look similar to the following: 
+{\tt Error 2002: Can't connect to local MySQL server through socket 'var/lib/mysql/mysql.sock.'}
+The sock file is either missing or the path specified in /etc/my.cnf is incorrect. First, check to see if MySQL is running with the following: 
+{\tt netstat -tap | grep mysql}
+If nothing appears, try starting the MySQL server with {\tt /opt/rocks/mysql/bin/mysqld start}
+If MySQL is running, you need to find where the .sock file is, and specify the path to it in /etc/my.cnf. You may also see an error similar to this in the error log:
+{\tt /opt/rocks/mysql/bin/mysqld: Can't change dir to '/var/lib/mysql/' (Errcode: 2 - No such file or directory) }
+The solution to this error is to change the path to the .sock file in /etc/my.cnf as well.
+The following may be used instead, but is not reccomended because it is long and tedious to type.
+{\tt mysql --socket=/var/opt/rocks/mysql/mysql.sock  -u (user) -p}
 
-    % you will see a similar entry in the error log:
-    %``[Warning] InnoDB: Cannot open table wikidatabase/archive from the internal data dictionary of InnoDB though the .frm file f\
-    %or the table exists. See http://dev.mysql.com/doc/refman/5.6/en/innodb-troubleshooting.html for how you can resolve the problem.'' 
-     %see section - exporting databases the hard way
+\subsection{InnoDB Can't open Table}
+This error may look similar to the following: 
+{\tt [Warning] InnoDB: Cannot open table wikidatabase/archive from the internal data dictionary of InnoDB though the .frm file f\
+or the table exists. See http://dev.mysql.com/doc/refman/5.6/en/innodb-troubleshooting.html for how you can resolve the problem.''} 
+This occurs when MySQL can't read the tables in the databases. This most likely occurs when an InnoDB format database is copied to a different MySQL server without the ibdata1 file, and thus MySQL doesn't know how to read the .frm files contained in the database files. To solve this issue, see subsection ``The Hard Way'' in the section ``Setting up the Configuraton File''. 
 
-% to reset the password
-%warning - a lot of things depend on mysql and if you change the password you will ahve to change it for the other things too like for
-%insert-ethers. 
-%need to edit my.cnf file or you will get errors trying to start mysql-safemode such as 
-%190112 20:40:46 mysqld_safe Starting mysqld daemon with databases from /var/opt/rocks/mysql
-%190112 20:40:46 mysqld_safe mysqld from pid file /var/run/mariadb/mariadb.pid ended
-%2019-01-12 20:55:30 23092 [ERROR] /opt/rocks/mysql/bin/mysqld: Can't create/write to file '/var/run/mariadb/mariadb.pid' (Errcode: 2 - No such file or directory)
-%2019-01-12 20:55:30 23092 [ERROR] Can't start server: can't create PID file: No such file or directory
-% if you get a permission denied error, check permissions of my mysql folder. should be owned my ``mysql'' - do chown -R mysql:mysql (directory)
-%/opt/rocks/mysql/bin/mysqld_safe --basedir=/opt/rocks/mysql --datadir=/var/opt/rocks/mysql --log-error=/var/opt/rocks/mysql/uscms1.fltech-grid3.fit.edu.err --skip-grant-tables
-%(new terminal) mysql --socket=/var/opt/rocks/mysql/mysql.sock -u root
-%UPDATE mysql.user SET authentication_string=PASSWORD('password') WHERE User='root'; or
-%                  SET Password=PASSWORD('password') WHERE User='root';
-%FLUSH PRIVILEGES; (In MySQL 5.7, the password field in mysql.user table field was removed, now the field name is 'authentication_string'.)
-%Quit mysql
-%mysqladmin --socket=/var/opt/rocks/mysql/mysql.sock -u root -p shutdown - at this point mysqlsafe in the first terminal should end
-%start MySQL with /opt/rocks/mysql/support-files/mysql.server start
-%note: LocalSettings.php for the wiki doesn't like double quotes in the password
+\subsection{Resetting the Password}
+If the password, especially the root password, is not known, it can be reset using the following method. The password will also have to be updated in everying that uses MySQL (which is a lot of things), so they can still access the dataases.
+\begin{itemize}
+\item Run {\tt opt/rocks/mysql/bin/mysqld\_safe --skip-grant-tables} in one terminal, and it should continue to run while the password is reset.\
+If the /etc/my.cnf file is not configured correctly, use the additional flags: --basedir=/opt/rocks/mysql --datadir=/var/opt/rocks/mysql --log-error=/var/opt/rocks/mysql/uscms1.fltech-grid3.fit.edu.err
+\item In a new terminal, run {\tt mysql -u root} to log into MySQL. 
+\item Depending on the version of MySQL, this step differs slightly. In MySQL versions before 5.7, which we currently use, run the following:
+  {\tt UPDATE mysql.user SET Password=PASSWORD('password') WHERE User='root';}    (Keep the single quotes.)\
+  If MySQL version 5.7 or above is used, replace {\tt Password=} with {\tt authentication\_string=}
+\item Run {\tt FLUSH PRIVILEGES;} then quit mysql.
+\item Run {\tt mysqladmin -u root -p shutdown}. At this point, mysqld\_safe in the first terminal should end.
+\item Start MySQL with {\tt /opt/rocks/mysql/support-files/mysql.server start}
+\end{itemize}
+
+Note: The LocalSettings file for the wiki does not like having double quotes in a password, since it uses double quotes to surround the password string. It is reccomended to not use double quotes in the password of the user accessing the wikidatabase (In our case, apache). 
+
+\subsubsection*{Errors Starting mysqld\_safe}
+If the correct paths for the socket file and the data directory are not specified in /etc/my.cnf, the following errors might occur: 
+{\tt 190112 20:40:46 mysqld\_safe Starting mysqld daemon with databases from /var/opt/rocks/mysql\
+190112 20:40:46 mysqld\_safe mysqld from pid file /var/run/mariadb/mariadb.pid ended}
+(In the error log)
+{\tt 2019-01-12 20:55:30 23092 [ERROR] /opt/rocks/mysql/bin/mysqld: Can't create/write to file '/var/run/mariadb/mariadb.pid' (Errcode: 2 - No such file or directory) \
+  2019-01-12 20:55:30 23092 [ERROR] Can't start server: can't create PID file: No such file or directory}
+Another error that may occur is ``permission denied''. To fix this, check to make sure that the mysql data directory is owned by mysql. If it is not, run {\tt chown -R mysql:mysql /var/opt/rocks/mysql/ }
 
 \end{document}
