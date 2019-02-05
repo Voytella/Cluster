@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1549321199 "mysql.tex" "mysql.pdf" "mysql" 1549321199
+["pdflatex"] 1549327722 "mysql.tex" "mysql.pdf" "mysql" 1549327722
   "/etc/texmf/web2c/texmf.cnf" 1542566424 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1480098701 1324 c910af8c371558dc20f2d7822f66fe64 ""
@@ -11,18 +11,16 @@
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1480098733 32080 340ef9bf63678554ee606688e7b5339d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1480098733 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1480098733 32362 179c33bbf43f19adbb3825bb4e36e57a ""
-  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1480098733 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb" 1480098733 24252 1e4e051947e12dfb50fee0b7f4e26e3a ""
   "/usr/share/texlive/texmf-dist/tex/latex/base/article.cls" 1523050425 19823 fcbc01552b07b608574cbf8e1977e0c0 ""
-  "/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd" 1523050425 2472 aa08940f0a4dc6c24ae9f943b04ae0b9 ""
   "/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo" 1523050425 8305 4e2a90a380a17c0472dd191689c67cbc ""
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1527251517 32752 ce45b90d2fda49befaa367e6f5986072 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1527251517 32752 ce45b90d2fda49befaa367e6f5986072 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1542566534 127853 b41f58aff49fe1af38af8d065f49d51c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1542566438 789764 37d1d0032c5122d007bb0af5c714ddda ""
-  "mysql.aux" 1549321199 691 d5904389a27918c3f99a3750b703c49b ""
-  "mysql.tex" 1549321197 9462 5c8aa815abd3cf85f036cb17d825baaf ""
+  "mysql.aux" 1549327722 2854 7f6de7a825e5fcfa16437a7599a79f8d ""
+  "mysql.tex" 1549327721 9278 7e6efc51b1ecce7a18fec12da1c58079 ""
   (generated)
-  "mysql.log"
-  "mysql.aux"
   "mysql.pdf"
+  "mysql.aux"
+  "mysql.log"
