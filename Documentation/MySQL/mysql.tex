@@ -53,7 +53,7 @@ The databases used in mysql for the cluster tend to be in ``InnoDB'' format. Wha
 \item Start the mysql service with the following:
   \paragraph{} {\tt /opt/rocks/mysql/support-files/mysql.server start}
 \item Log in to mysql and test access to the data in the database with ``{\tt use (database); show tables; select * from (tablename)}'' You should get a table of data as the output.
-\item If the above step was successful, log out of mysql and use mysqldump as described in Section 2.1 to create the .sql files and import them as above. If you used the same machine to perform this procedure, make sure to rename the current mysql directory to something else, and rename the backup to ``mysql/'' before importing the old datbases into the new MySQL server.
+\item If the above step was successful, log out of mysql and use mysqldump as described in Section 2.1 to create the .sql files and import them as above. If you used the same machine to perform this procedure, make sure to rename the current mysql directory to something else, and rename the backup to ``mysql/'' before importing the old databases into the new MySQL server.
 \paragraph{} You should then be able to access the data in the new server.
 \end{enumerate}
 
@@ -70,7 +70,7 @@ The databases used in mysql for the cluster tend to be in ``InnoDB'' format. Wha
 \paragraph{}You may also see an error similar to this in the error log:
 \paragraph{}{\tt /opt/rocks/mysql/bin/mysqld: Can't change dir to '/var/lib/mysql/' (Errcode: 2 - No such file or directory) }
 \paragraph{}The solution to this error is to change the path to the .sock file in {\tt/etc/my.cnf}.
-\paragraph{}The following may be used instead, but is not reccomended because it is long and tedious to type.
+\paragraph{}The following may be used instead, but is not recommended because it is long and tedious to type.
 \paragraph{}{\tt mysql --socket=/var/opt/rocks/mysql/mysql.sock  -u (user) -p}
 
 \subsection{InnoDB Can't open Table}
