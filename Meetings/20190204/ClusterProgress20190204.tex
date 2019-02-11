@@ -1,0 +1,56 @@
+\documentclass{beamer}
+
+\input{../preamble}
+
+\usetheme{Copenhagen}
+\usecolortheme{beaver}
+
+\title{Cluster Progress}
+\date{\today}
+
+\begin{document}
+
+%----------BEGIN TITLE SLIDE----------
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+%-----------END TITLE SLIDE-----------
+
+%----------BEGIN ROCKS ON NODES----------
+
+\begin{frame}
+
+  \frametitle{Node Installation Challenges}
+
+  \begin{itemize}
+    \item ROCKS 7 Kernel CD does not provide ``compute node'' software package
+    \begin{itemize}
+      \item node installed with ``minimal install'' package (same as CE)
+    \end{itemize}
+    \item node registered in ROCKS on CE as ready to install
+    \item does not show up on {\tt insert-ethers}
+      \begin{itemize}
+        \item has been recognized by {\tt insert-ethers} (DHCP request sent)
+        \item node has never requested kickstart file from CE
+      \end{itemize}
+    \item will attempt to install CERN CentOS 7 onto node
+      \begin{itemize}
+        \item support for ``compute node'' installation package
+      \end{itemize}
+  \end{itemize}
+
+  \begin{figure}[H]
+    \begin{center}
+      \includegraphics[scale=0.4]{mysqlNodes.png}
+    \end{center}
+    \caption{The trial node, known to the CE as ``compute-1-1'', is configured to
+      have ROCKS properly installed.}
+  \end{figure}
+  
+\end{frame}
+
+%-----------END ROCKS ON NODES-----------
+
+\end{document}

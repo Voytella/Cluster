@@ -676,4 +676,65 @@ source at a specific URL, but the only available one is ``minimal install''.
 
 \qq We're gonna try installing the node from itself.
 
+\qq As a last ditch effort, I'm going to try to follow the directions exactly on
+a brand new node. We started {\tt insert-ethers}, selected ``Compute'', and
+booted the new node, {\tt compute-1-2} (the real one), into the Kernel Roll
+CD. We have arrived at the initial ROCKS 7.0 screen where we choose to Install
+ROCKS or test the media. We've selected the normal ``Install ROCKS'' option.
+Upon turning on the network under the ``Network Configuration'' section of the
+installer, {\tt insert-ethers} reports having received a DHCP request from {\tt
+  compute-0-1}, what {\tt compute-1-2} has decided to call itself (this is
+confirmed by what the installer reports to be the ``Current host name''.  We
+noticed something very suspicious on the {\tt insert-ethers} page; it said
+``Opened kickstart access to {\tt 10.1.1.0/255.255.255.0} network''. Hmm, what
+if we point the ``Installation Source'' of the installer at that address?  After
+trying the URLs {\tt 10.1.1.0/255.255.255.0} and {\tt 10.1.1.0}, we just threw
+in {\tt 255.255.255.0} and it seemed to sit longer than the other ones. While it
+was doing its thing, I noticed the ``Cluster Private Network'' section had yet
+to be configured. I clicked that section and, after verifying that the default
+values were in fact the proper ones, clicked ``Done'', which saved the
+configuration. After that had been completed, the grayed-out progress text for
+the ``Installation Source'' changed from ``Probing storage...'' to ``Setting up
+installation source''. It's been sitting at there in that state for quite some
+time. A'ight, it's been sitting here for far too long; we're gonna try the same
+thing on the real {\tt compute-1-3}. This time, we'll configure the private
+network before messing with the ``Installation Source''.
+
+\qq Alright, we've started up the new node, and its calling itself {\tt
+  compute-0-2}. {\tt insert-ethers} has picked it up. We've selected the
+``Cluster Network'' section, verified that the following settings are
+acceptable:
+
+\begin{figure}[H]
+  \caption{The default ``Cluster Network'' settings.}
+  \begin{tabular}{|l|l|}
+    \hline
+    Private Cluster Interface & {\tt enp4s0f1;00:30:48:C2:F4:41} \\
+    Private Domain Name & local \\
+    MTU & 1500 \\
+    IPv4 Address & 10.1.1.1 \\
+    IPv4 Netmask & 255.255.255.0 \\
+    \hline
+  \end{tabular}
+\end{figure}
+
+Selecting ``Done'' saves these settings and completes the configuration. Now
+let's do the ``Installation Source''. We're gonna point the node at the full
+address given to us by {\tt insert-ethers} using HTTP: {\tt
+  10.1.1.0/255.255.255.0} (the use of HTTP was garnered from miscellaneous
+brief mentions in online forums). When ``Done'' is selected, the ``Installation
+Source'' attempt to probe the storage, but it ultimately fails. Let's try just
+{\tt 10.1.1.0}. That failed too, now just {\tt 255.255.255.0}. I discovered
+something interesting: running {\tt rocks list network} on the CE gives the same
+network provided by {\tt insert-ethers}. What if the ``Cluster Private Network''
+section needs to be configured so that it matches THAT network? Let's try that
+on the real {\tt compute-1-4}.
+
+\qq This one's calling itself {\tt compute-0-3}. I've changed the ``IPv4
+Address'' in the ``Cluster Private Network'' section from {\tt 10.1.1.1} to {\tt
+  10.1.1.0}. No dice; fails when pointed at {\tt 10.1.1.0/255.255.255.0} and
+{\tt 10.1.1.0}. Actually, rereading the documentation, it says that kickstart
+files are transferred over HTTPS rather than HTTP. Let's try that setting. Nope,
+nothing. I'm gonna send the 
+
 \end{document}

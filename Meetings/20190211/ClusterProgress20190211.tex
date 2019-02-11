@@ -1,0 +1,54 @@
+\documentclass{beamer}
+
+\input{../preamble}
+
+\usetheme{Copenhagen}
+\usecolortheme{beaver}
+
+\title{Cluster Progress}
+\date{\today}
+
+\begin{document}
+
+%----------BEGIN TITLE SLIDE----------
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+%-----------END TITLE SLIDE-----------
+
+%----------BEGIN ROCKS ON NODES----------
+
+\begin{frame}
+
+  \frametitle{Node Installation Challenges (cont.)}
+
+  \begin{itemize}
+  \item We have attempted several different methods.
+    \begin{itemize}
+      \item tried installing CERN CentOS's ``compute node'' package
+        \begin{itemize}
+        \item looked like old nodes; no kickstart file requested
+        \end{itemize}
+      \item tried pointing Anaconda installer at the address provided by {\tt
+          insert-ethers}
+        \begin{itemize}
+        \item fails to find anything
+        \end{itemize}
+    \end{itemize}
+  \item We've submitted a lengthy forum post to Hypernews in hopes someone will
+    be able to help us.
+  \end{itemize}
+
+  \begin{figure}[H]
+    \begin{center}
+      \includegraphics[scale=0.7]{forumPost.png}
+    \end{center}
+  \end{figure}
+    
+\end{frame}
+
+%-----------END ROCKS ON NODES-----------
+
+\end{document}
