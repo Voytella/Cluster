@@ -737,4 +737,44 @@ Address'' in the ``Cluster Private Network'' section from {\tt 10.1.1.1} to {\tt
 files are transferred over HTTPS rather than HTTP. Let's try that setting. Nope,
 nothing. I'm gonna send the 
 
+\qq We've made a Hypernews post asking for help. In the mean time, we're putting
+ROCKS Kernel on a node again to play with for a bit. When we turned it on, it
+complained of a kernel error and said to run {\tt abrt-cli list} to view it. The
+reason it gave was ``nobody cared (try booting with the {\tt irqpoll}
+option''. A quick search revealed that the error means an interrupt was not
+handled, usually a symptom of buggy firmware. To boot with the {\tt irqpoll}
+option, which will, when an interrupt is encountered, poll all interrupt
+handlers in an attempt to resolve the interruption. 
+
+\qq While it doesn't seem like the CE and the ROCKS node can see each other
+(they have both assigned themselves a local IP of 10.1.1.1), they can both see a
+machine with local IP 10.1.1.254 (MAC: 00:25:90:33:A3:D8). What is this machine?
+It's not NAS-0, the SE (which is off), or the network switch. Also, what's {\tt
+  compute-0-0}? Well, mystery solved; I ssh-ed into 10.1.1.254 to find that it
+is NAS-1. 
+
+\qq We're gonna try wiping all the stuff {\tt insert-ethers} has done and try
+again. The command is {\tt insert-ethers --remove <host name>}, and the list of
+host names can be found with {\tt rocks list host}. Now that {\tt insert-ethers}
+has been cleared, let's see what we can do with it now. It was also recommended
+that {\tt httpd}, {\tt dhcpd}, and some other services be synced and restarted:
+
+\begin{itemize}
+\item {\tt service dhcpd restart}
+\item {\tt service httpd restart}
+\item {\tt service foundation-mysql restart}
+\item {\tt service autofs restart}
+\item {\tt rocks sync config}
+\item {\tt rocks sync users}
+\end{itemize}
+
+Just to see what would happen, I then ran {\tt insert-ethers} on the CE and
+restarted {\tt compute-1-0}, the node with the ROCKS Kernel on it. Nothing
+happened with that, so I booted it back into the ROCKS Kernel CD. This time,
+when we turned networking on, it called itself {\tt compute-0-1}! That's still
+not {\tt compute-1-0}, but it's closer. Also, {\tt insert-ethers} has seen {\tt
+  compute-0-1}. In the Anaconda installer we manually changed the host name from
+{\tt compute-0-1} to {\tt compute-1-0}, but that change was not reflected in
+{\tt insert-ethers}; we're not even sure if that change was real.
+
 \end{document}
