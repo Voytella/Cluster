@@ -287,18 +287,25 @@ CE. The node will boot into the Anaconda installation for ROCKS 7.
 
 \subsubsection{Installing ROCKS onto a Compute Node}
 
-\qq The procedure for installing ROCKS on the nodes is simpler than the CE. For
-the ``Network \& Host Name'' section, simply enable the only connected ethernet
-connection. The ``Current host name'' in the bottom right corner should display
-the name of the node, {\tt compute-<x>-<x>}. 
+\qq The CE hosts a kickstart file that the nodes use to configure their
+installation. In order to fetch this file on startup, the nodes must be
+configured for PXE network booting. This is achieved by ensuring PXE is at the
+top of the boot order in the BIOS.
 
-\qq We're trying an entirely new approach. We discovered that if the proper URL
-is provided to the ``Installation Source'' in the Anaconda of CERN CentOS 7 (not
-the ROCKS Kernel disk), we get a whole bunch of options in the ``Software
-Selection'' section; one of which, is ``Compute Node''! We're gonna try to
-install CERN CentOS 7 with the ``Compute Node'' software package, and hope that
-does something.
- 
+\qq NOTE: If the CE is on while this is being completed, when the nodes restart,
+they will immediately grab the kickstart file from the CE regardless if {\tt
+  insert-ethers} is running or not. If this is undesired behavior, shutdown the
+CE before configuring the nodes.
+
+\qq To enter a node's BIOS, spam the DELETE key on start up until ``Entering
+SETUP'' is displayed. To modify the boot order, navigate to the ``Boot'' tab and
+follow the on screen directions to place {\tt PCI BEV: IBA GE Slot 0400 v1236}
+(the ethernet port connected to the router; ethernet device {\tt enp4s0f0}) in
+slot 1. Slot 2 should be the CD drive, {\tt IDE CD}, and slot 3 should be the
+regular hard drive, {\tt PCI SCSI}. The remaining boot options can be
+excluded. Once these changes have been made, Save and Exit.
+
+% include screenshot of boot order
 
 %-----------END UNIFICATION-----------
 
@@ -776,5 +783,15 @@ not {\tt compute-1-0}, but it's closer. Also, {\tt insert-ethers} has seen {\tt
   compute-0-1}. In the Anaconda installer we manually changed the host name from
 {\tt compute-0-1} to {\tt compute-1-0}, but that change was not reflected in
 {\tt insert-ethers}; we're not even sure if that change was real.
+
+\qq Daniel Campos is investigating the cluster. He's gotten into the BIOS of
+{\tt compute-1-0} by spamming DELETE. The nodes DO have support for
+PXE boot! He changed the boot order to prioritize the ethernet port. On the head
+node, he set up {\tt tcpdump} to monitor network traffic to see if the head node
+will pick up anything from the node. It booted into the Anaconda installer after
+downloading the kickstart file from the head node, and it said it got all the
+configurations from the kickstart file. 
+
+% placement of port 69 (TFTP) rules in iptables
 
 \end{document}
