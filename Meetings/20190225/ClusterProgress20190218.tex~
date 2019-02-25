@@ -1,0 +1,44 @@
+\documentclass{beamer}
+
+\input{../preamble}
+
+\usetheme{Copenhagen}
+\usecolortheme{beaver}
+
+\title{Cluster Progress}
+\date{\today}
+
+\begin{document}
+
+%----------BEGIN TITLE----------
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+%-----------END TITLE-----------
+
+%----------BEGIN NODES----------
+
+\begin{frame}
+
+  \frametitle{Installing ROCKS on the Nodes!}
+
+  \begin{itemize}
+  \item Daniel shoed us howto pxe boot the nodes
+  \item we changed the bios boot order on all the nodes
+    \item on a fresh installation of the CE, we ran insert-ethers and the nodes requested the kickstart files successfully! 
+  \end{itemize}
+
+  \begin{figure}[H]
+    \begin{center}
+      \includegraphics[scale=0.2]{insert-ethers.png}
+    \end{center}
+    \caption{Insert-ethers shows 4 of the nodes here. the (*) indicates that they have successfully receied their kickstart files.}
+  \end{figure}
+
+\end{frame}
+
+%-----------END NODES-----------
+
+\end{document}
