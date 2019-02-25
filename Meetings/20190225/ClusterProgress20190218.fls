@@ -274,9 +274,9 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmss12.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmss8.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmss8.tfm
 INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
-INPUT compute-1-0.png
-INPUT ./compute-1-0.png
-INPUT ./compute-1-0.png
+INPUT compute-1-1.png
+INPUT ./compute-1-1.png
+INPUT ./compute-1-1.png
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmss10.tfm
 OUTPUT ClusterProgress20190218.nav
 OUTPUT ClusterProgress20190218.toc

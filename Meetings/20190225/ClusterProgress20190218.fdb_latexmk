@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1551118131 "ClusterProgress20190218.tex" "ClusterProgress20190218.pdf" "ClusterProgress20190218" 1551118132
+["pdflatex"] 1551120320 "ClusterProgress20190218.tex" "ClusterProgress20190218.pdf" "ClusterProgress20190218" 1551120321
   "../preamble.tex" 1548697710 91 4ab99e81ab5d3f76b23fef24e95658fa ""
   "/etc/texmf/web2c/texmf.cnf" 1542566424 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
@@ -155,16 +155,16 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1527251517 32752 ce45b90d2fda49befaa367e6f5986072 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1542566534 127853 b41f58aff49fe1af38af8d065f49d51c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1542566438 789764 37d1d0032c5122d007bb0af5c714ddda ""
-  "ClusterProgress20190218.aux" 1551118132 1219 502c224f52675e0be6750553db409c3d ""
-  "ClusterProgress20190218.nav" 1551118132 395 640a03f4d3f0f705896c1d8375ddfa75 ""
-  "ClusterProgress20190218.out" 1551118132 0 d41d8cd98f00b204e9800998ecf8427e ""
-  "ClusterProgress20190218.tex" 1551118130 935 03ae1135c14025603c2ac5974db2ba63 ""
-  "compute-1-0.png" 1551118000 108191 b06beeafc18d7f19c14e721cf4a5f01f ""
+  "ClusterProgress20190218.aux" 1551120321 1219 502c224f52675e0be6750553db409c3d ""
+  "ClusterProgress20190218.nav" 1551120321 395 640a03f4d3f0f705896c1d8375ddfa75 ""
+  "ClusterProgress20190218.out" 1551120321 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "ClusterProgress20190218.tex" 1551120177 935 a6c311d9f5a3ae8c49e47af821466625 ""
+  "compute-1-1.png" 1551120295 47233 0b8c90133e3b66ed95ec247aabac70d0 ""
   (generated)
   "ClusterProgress20190218.nav"
-  "ClusterProgress20190218.aux"
+  "ClusterProgress20190218.log"
   "ClusterProgress20190218.pdf"
   "ClusterProgress20190218.snm"
+  "ClusterProgress20190218.aux"
   "ClusterProgress20190218.toc"
-  "ClusterProgress20190218.log"
   "ClusterProgress20190218.out"

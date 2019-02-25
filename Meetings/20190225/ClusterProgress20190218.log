@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2018.11.18)  25 FEB 2019 13:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2018.11.18)  25 FEB 2019 13:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -814,14 +814,14 @@ Dictionary: translator-theorem-dictionary, Language: English
 ) (./ClusterProgress20190218.nav) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<compute-1-0.png, id=47, 1083.04625pt x 379.4175pt>
-File: compute-1-0.png Graphic file (type png)
-<use compute-1-0.png>
-Package pdftex.def Info: compute-1-0.png  used on input line 40.
-(pdftex.def)             Requested size: 216.60541pt x 75.88214pt.
+<compute-1-1.png, id=47, 707.64375pt x 229.85875pt>
+File: compute-1-1.png Graphic file (type png)
+<use compute-1-1.png>
+Package pdftex.def Info: compute-1-1.png  used on input line 40.
+(pdftex.def)             Requested size: 141.52625pt x 45.97093pt.
  [2
 
- <./compute-1-0.png>]
+ <./compute-1-1.png>]
 \tf@nav=\write6
 \openout6 = `ClusterProgress20190218.nav'.
 
@@ -851,7 +851,7 @@ Here is how much of TeX's memory you used:
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb>
-Output written on ClusterProgress20190218.pdf (2 pages, 144663 bytes).
+Output written on ClusterProgress20190218.pdf (2 pages, 83700 bytes).
 PDF statistics:
  86 PDF objects out of 1000 (max. 8388607)
  69 compressed objects within 1 object stream
