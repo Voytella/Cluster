@@ -165,10 +165,11 @@ configured. Select \textit{Cluster Private Network}.
 \qq The ``Private Cluster Interface'' dropdown menu is a list of the ethernet
 ports, similar to the list for selecting the public network connection. Since
 the 10GB/s connection is used for the public connection, the normal ethernet
-port is used for the private connection. Refer back to the ``Network \&
-Hostname'' section to see which port is occupied, and select that one in
-the ``Private Cluster Interface'' dropdown menu. All the other fields should not
-need to be altered; the default settings are fine and expected.
+port, usually of the form {\tt enp6s0f0}, is used for the private
+connection. Refer back to the ``Network \& Hostname'' section to see which port
+is occupied, and select that one in the ``Private Cluster Interface'' dropdown
+menu. All the other fields should not need to be altered; the default settings
+are fine and expected.
 
 \subsection{Rolls}
 
@@ -185,7 +186,7 @@ to generate the roll list. Select the following rolls:
   \item kernel
   \item perl
   \item python
-  \item Updates-CentOS-<version>
+  \item Updates-CentOS-\textless version\textgreater
 \end{itemize}
 
 Once all the desired rolls are selected, select \textit{Add Selected
@@ -205,7 +206,7 @@ filled as follows:
     \hline
     Cluster Name & USCMS-FIT-Grid \\
     \hline
-    Contact & <administrator email> \\
+    Contact & \textless administrator email\textgreater \\
     \hline
     Project URL &
                   \url{https://research.fit.edu/hep/hohlmann-research-group/grid-cluster}
@@ -213,7 +214,7 @@ filled as follows:
     \hline
     Latitude/Longitude & N28.0622 W80.6237 \\
     \hline
-    Certificate Organization & OSG \\
+    Certificate Organization & Florida Institute of Technology \\
     \hline
     Certificate Locality & Melbourne \\
     \hline
@@ -222,6 +223,7 @@ filled as follows:
     Certificate Country & US \\
     \hline
     NTP Servers & pool.ntp.org \\
+    \hline
   \end{tabular}
 \end{center}
 
@@ -236,14 +238,15 @@ spare and it is NOT TO BE TOUCHED), and select \textit{I will configure
 kicked over to Anaconda's partitioning system.
 
 \qq First, the old partition, the CentOS 6 one, was selected, then removed by
-selecting the ``-'' at the bottom of the window. Then the \textit{Click here to
+selecting the ``-'' at the bottom of the window and checking the box for
+deleting all file systems. Then the \textit{Click here to
   create them automatically} option was selected.
 
 \qq The created {\tt /home} partition was renamed to {\tt /export}, because
-NAS-0 is what holds our home directories, and it was given 100GB. The default
+NAS-0 is what holds our home directories, and it was given 100 GiB. The default
 {\tt /boot} and {\tt swap} partitions were left untouched, the {\tt /var}
-partition was created and given 100GB, and the {\tt /} partition was allocated
-the remainder of the available space, 256.76GB.
+partition was created and given 100 GiB, and the {\tt /} partition was allocated
+the remainder of the available space, 256.76 GiB.
 
 \qq Once everything is together, select \textit{Done} and carefully review the
 changes. If the changes are correct, select \textit{Accept Changes}.
@@ -306,6 +309,51 @@ regular hard drive, {\tt PCI SCSI}. The remaining boot options can be
 excluded. Once these changes have been made, Save and Exit.
 
 % include screenshot of boot order
+
+\qq Now that the boot order of all the nodes has been corrected, we're going to
+reinstall ROCKS onto the CE. With a fresh CE, we can boot the nodes up with {\tt
+  insert-ethers} running and get them sorted properly. 
+
+\qq All the nodes, except for {\tt compute-1-9} and {\tt compute-2-9}, have been
+brought under control of the CE!
+
+\subsubsection{Incorporate NAS-0}
+
+\qq Now that the nodes are in, let's see about bringing NAS-0 into the
+fold. Similar to the nodes, it's boot order must also be changed so that
+ethernet boot is enabled. After spamming the DELETE key on startup and
+navigating to the boot menu of the BIOS, I placed {\tt PCI BEV: IBA GE Slot 0600
+  v1236} (the ethernet port in use) on top, followed by {\tt IDE CD} and {\tt
+  PCI SCSI: 3ware Storage Controller} (the RAID card).
+
+\qq After that configuration, I ran {\tt insert-ethers} on the CE and selected
+\textit{NAS Appliance}. Now we're ready to save our boot options on NAS-0 and
+reboot! Let's see if it works.
+
+\qq We're in! NAS-0 has booted into ROCKS's Anaconda installer via the kickstart
+file. {\tt insert-ethers} also recognizes NAS-0! Let's see about going through
+the installer.
+
+\qq The first thing I decided to tackle is \textit{Installation
+  Destination}. This section is a bit tricky because all the disks attached to
+the RAID card are also displayed and care must be taken to not install the OS on
+a RAID disk. There are 13 disks listed in the ``Local Standard Disks'' section
+({\tt sd[a-m]}) and one disk listed in the ``Specialized \& Network Disk'' ({\tt
+  mpatha}). That's a total of 14 disks out of NAS-0's 16. I'm guessing the two
+unlisted disks are the two I dedicated to housing the OS, which is unfortunate
+because those are the only two we need. Hmm.
+
+\subsubsection{Configuring the Nodes}
+
+\qq NOTE: The root password of the nodes may not have been set (they cannot be
+directly accessed from themselves). They can be accessed, however, from the
+CE. To set the root password, simply ssh into a node from the CE with {\tt ssh
+  compute-[0-1]-[0-9]} and run {\tt passwd} to set the root password. 
+
+\qq Since the UPSs are having problems providing power for all the nodes at
+once, I'm gonna configure the nodes in two equally sized groups: {\tt
+  compute-*-[0-4]} and {\tt compute-*-[5-9]}. Let's arrange the nodes into that
+first one.
 
 %-----------END UNIFICATION-----------
 

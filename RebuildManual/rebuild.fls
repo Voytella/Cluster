@@ -70,9 +70,11 @@ INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmsy10.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmbx12.tfm
 INPUT /opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmti12.tfm
+INPUT /opt/local/share/texmf-texlive/tex/latex/base/omlcmr.fd
+INPUT /opt/local/share/texmf-texlive/tex/latex/base/omlcmr.fd
+INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmmi12.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmr8.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmr6.tfm
-INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmmi12.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmmi8.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmmi6.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmsy8.tfm
@@ -82,6 +84,7 @@ INPUT rebuild.aux
 INPUT ./rebuild.out
 INPUT ./rebuild.out
 INPUT /opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb
+INPUT /opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi12.pfb
 INPUT /opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr12.pfb
 INPUT /opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr17.pfb
 INPUT /opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb

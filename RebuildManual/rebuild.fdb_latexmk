@@ -1,6 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1550686147 "rebuild.tex" "rebuild.pdf" "rebuild" 1550686147
-  "./rebuild.out" 1550686147 1366 694e616a60ab7d6a172350ecc7a6ed1c ""
+["pdflatex"] 1551050634 "rebuild.tex" "rebuild.pdf" "rebuild" 1551050634
+  "./rebuild.out" 1551050634 1366 694e616a60ab7d6a172350ecc7a6ed1c ""
   "/opt/local/etc/texmf/texmf.cnf" 1526053094 30503 9a61e6893861ec0a56455c8e9c9c514e ""
   "/opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmbx12.tfm" 1467164723 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmmi12.tfm" 1467164723 1524 4414a8315f39513458b80dfc63bff03a ""
@@ -16,6 +16,7 @@
   "/opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmti12.tfm" 1467164723 1484 ed72f8f5cf654cda15ecc8e32bfcbee5 ""
   "/opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmtt12.tfm" 1467164723 772 9a936b7f5e2ff0557fce0f62822f0bbf ""
   "/opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1467164862 32080 340ef9bf63678554ee606688e7b5339d ""
+  "/opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi12.pfb" 1467164862 36741 fa121aac0049305630cf160b86157ee4 ""
   "/opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1467164862 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1467164862 32362 179c33bbf43f19adbb3825bb4e36e57a ""
   "/opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1467164862 32569 5e5ddc8df908dea60932f3c484a54c0d ""
@@ -26,6 +27,7 @@
   "/opt/local/share/texmf-texlive/tex/generic/oberdiek/hobsub-generic.sty" 1493155075 185082 1fb09d7d24834377f95006300bc91fd2 ""
   "/opt/local/share/texmf-texlive/tex/generic/oberdiek/hobsub-hyperref.sty" 1493155075 70864 bcd5b216757bd619ae692a151d90085d ""
   "/opt/local/share/texmf-texlive/tex/latex/base/article.cls" 1467165121 19821 310da678527a7dfe2a02c88af38079b7 ""
+  "/opt/local/share/texmf-texlive/tex/latex/base/omlcmr.fd" 1467165122 2257 15f13452fccbf1841cc4a62831b0d32a ""
   "/opt/local/share/texmf-texlive/tex/latex/base/omscmr.fd" 1467165122 2256 80ce1168fb4ce6a85583a9cf8972c013 ""
   "/opt/local/share/texmf-texlive/tex/latex/base/size12.clo" 1467165122 8303 1d67e16498f00f63da792fab169302fc ""
   "/opt/local/share/texmf-texlive/tex/latex/float/float.sty" 1467165137 6749 16d2656a1984957e674b149555f1ea1d ""
@@ -44,9 +46,9 @@
   "/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map" 1526053282 325361 6ec96feaf59b7aa88318abce1b15d893 ""
   "/opt/local/var/db/texmf/web2c/pdftex/pdflatex.fmt" 1526053119 723151 13059fc6e2f6e9a067c035a039dadbdb ""
   "/usr/local/texlive/texmf-local/tex/latex/preambles/defaultPream.tex" 1509303087 105 7913245d137beac5c7a163b7e71f413a ""
-  "rebuild.aux" 1550686147 3344 814d59dfc77dc571eec65ad645208da9 ""
-  "rebuild.out" 1550686147 1366 694e616a60ab7d6a172350ecc7a6ed1c ""
-  "rebuild.tex" 1550686133 38830 396f60f32280a55c280a53a6022d25f8 ""
+  "rebuild.aux" 1551050634 3344 814d59dfc77dc571eec65ad645208da9 ""
+  "rebuild.out" 1551050634 1366 694e616a60ab7d6a172350ecc7a6ed1c ""
+  "rebuild.tex" 1551050633 39114 947d6669e942c489724c069a19e6e213 ""
   (generated)
   "rebuild.log"
   "rebuild.aux"
