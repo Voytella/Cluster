@@ -1,0 +1,43 @@
+\documentclass{beamer}
+
+\input{../preamble}
+
+\usetheme{Copenhagen}
+\usecolortheme{beaver}
+
+\title{Cluster Progress}
+\date{\today}
+
+\begin{document}
+
+%----------BEGIN TITLE----------
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+%-----------END TITLE-----------
+
+%----------BEGIN NODES----------
+
+\begin{frame}
+
+  \frametitle{Installing ROCKS on the Nodes!}
+
+  \begin{itemize}
+  \item Daniel came in Wednesday and helped us figure out the issue with the nodes. 
+  \item We set the nodes to network boot (PXE) in the BIOS, so they would request the kickstart file upon restart. 
+    \item We ran insert-ethers and the nodes requested the kickstart files successfully! 
+  \end{itemize}
+
+  \begin{figure}[H]
+    \begin{center}
+      \includegraphics[scale=0.2]{compute-1-1.png}
+    \end{center}
+    \caption{The installation of ROCKS 7 onto the node was successful!}
+  \end{figure}
+
+\end{frame}
+%-----------END NODES-----------
+
+\end{document}
