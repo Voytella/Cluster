@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1552258018 "ClusterProgress20190311.tex" "ClusterProgress20190311.pdf" "ClusterProgress20190311" 1552258019
+["pdflatex"] 1552309718 "ClusterProgress20190311.tex" "ClusterProgress20190311.pdf" "ClusterProgress20190311" 1552309718
   "../preamble.tex" 1552257884 143 1fc55bc14be09196329a8093b4cb4fc2 ""
   "./CEHostList.png" 1552257703 140986 9e658e9d648c81c4e1053e0574c900af ""
-  "./ClusterProgress20190311.out" 1552258019 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "./ClusterProgress20190311.out" 1552309718 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/opt/local/etc/texmf/texmf.cnf" 1526053094 30503 9a61e6893861ec0a56455c8e9c9c514e ""
   "/opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmr10.tfm" 1467164723 1296 45809c5a464d5f32c8f98ba97c1bb47f ""
   "/opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmss10.tfm" 1467164723 1316 b636689f1933f24d1294acdf6041daaa ""
@@ -159,15 +159,15 @@
   "/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map" 1526053282 325361 6ec96feaf59b7aa88318abce1b15d893 ""
   "/opt/local/var/db/texmf/web2c/pdftex/pdflatex.fmt" 1526053119 723151 13059fc6e2f6e9a067c035a039dadbdb ""
   "CEHostList.png" 1552257703 140986 9e658e9d648c81c4e1053e0574c900af ""
-  "ClusterProgress20190311.aux" 1552258019 1342 93e41289fe726061869c58838c8e1913 ""
-  "ClusterProgress20190311.nav" 1552258019 482 4d48abee38f27ca4dd90f51fc2bf6f1a ""
-  "ClusterProgress20190311.out" 1552258019 0 d41d8cd98f00b204e9800998ecf8427e ""
-  "ClusterProgress20190311.tex" 1552258016 1864 6ac4e2c0c3254db522a1c6f01fc5aaa9 ""
+  "ClusterProgress20190311.aux" 1552309718 1342 93e41289fe726061869c58838c8e1913 ""
+  "ClusterProgress20190311.nav" 1552309718 482 4d48abee38f27ca4dd90f51fc2bf6f1a ""
+  "ClusterProgress20190311.out" 1552309718 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "ClusterProgress20190311.tex" 1552309715 1864 6ac4e2c0c3254db522a1c6f01fc5aaa9 ""
   (generated)
   "ClusterProgress20190311.pdf"
   "ClusterProgress20190311.toc"
-  "ClusterProgress20190311.aux"
-  "ClusterProgress20190311.nav"
   "ClusterProgress20190311.snm"
+  "ClusterProgress20190311.nav"
+  "ClusterProgress20190311.aux"
   "ClusterProgress20190311.log"
   "ClusterProgress20190311.out"
