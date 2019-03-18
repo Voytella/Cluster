@@ -1,0 +1,56 @@
+\documentclass{beamer}
+
+\input{../preamble}
+
+\usetheme{Copenhagen}
+\usecolortheme{beaver}
+
+\title{Cluster Progress}
+\date{\today}
+
+\begin{document}
+
+%----------BEGIN TITLE----------
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+%-----------END TITLE-----------
+
+%----------BEGIN NODES----------
+
+\begin{frame}
+
+  \frametitle{Incorporating the Nodes}
+  
+  \begin{multicols}{2}
+
+    \begin{itemize}
+    \item The ethernet issues with compute-1-9 have been fixed!
+      \begin{itemize}
+        \item PXE booting was disabled in the BIOS configuration.
+      \end{itemize}
+
+    \item Compute-0-9 is still having ethernet issues. 
+    \end{itemize}
+    
+    \columnbreak
+    
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[scale=0.35]{rockshost_compute19.png}
+      \end{center}
+      \caption{{\tt Compute-1-9} has been brought into the cluster!}
+    \end{figure}
+  
+  \end{multicols}
+  
+\end{frame}
+
+
+%-----------END NODES-----------
+
+
+\end{document}
+
