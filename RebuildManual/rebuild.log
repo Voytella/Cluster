@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_3) (preloaded format=pdflatex 2018.5.11)  10 MAR 2019 18:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_3) (preloaded format=pdflatex 2018.5.11)  18 MAR 2019 13:43
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -262,146 +262,141 @@ e \OT1/cmr/m/n/12 and care-fully re-view the changes.
  []
 
 [6] [7]
-Overfull \hbox (26.19946pt too wide) in paragraph at lines 353--357
+Overfull \hbox (26.19946pt too wide) in paragraph at lines 368--372
 \OT1/cmr/m/n/12 once, I'm gonna con-fig-ure the nodes in two equally sized grou
 ps: \OT1/cmtt/m/n/12 compute-*-[0-4]
  []
 
 [8]
-Overfull \hbox (1.15933pt too wide) in paragraph at lines 389--391
+Overfull \hbox (1.15933pt too wide) in paragraph at lines 404--406
 \OT1/cmr/m/n/12 af-ter the in-staller at-tempted to run \OT1/cmtt/m/n/12 grub2-
 install --no-floppy /dev/sda\OT1/cmr/m/n/12 : 
  []
 
 
-Overfull \hbox (22.22488pt too wide) in paragraph at lines 393--395
+Overfull \hbox (22.22488pt too wide) in paragraph at lines 408--410
 []\OT1/cmtt/m/n/12 grub2-install: warning: Attempting to install GRUB to a disk
 
  []
 
 
-Overfull \hbox (16.04988pt too wide) in paragraph at lines 393--395
+Overfull \hbox (16.04988pt too wide) in paragraph at lines 408--410
 \OT1/cmtt/m/n/12 with multiple partition labels. This is not supported yet... 
  []
 
 
-Overfull \hbox (3.69987pt too wide) in paragraph at lines 395--397
+Overfull \hbox (3.69987pt too wide) in paragraph at lines 410--412
 []\OT1/cmtt/m/n/12 grub2-install: error: embedding is not possible, but this
  []
 
 
-Overfull \hbox (17.72392pt too wide) in paragraph at lines 404--412
+Overfull \hbox (17.72392pt too wide) in paragraph at lines 419--427
 [] \OT1/cmr/m/n/12 Try-ing to run \OT1/cmtt/m/n/12 grub2-install --no-floppy /d
 ev/sda \OT1/cmr/m/n/12 and \OT1/cmtt/m/n/12 grub2-install
  []
 
 
-Overfull \hbox (3.6904pt too wide) in paragraph at lines 404--412
+Overfull \hbox (3.6904pt too wide) in paragraph at lines 419--427
 \OT1/cmtt/m/n/12 --no-floppy /dev/sdb \OT1/cmr/m/n/12 pro-duces the same re-sul
 t: \OT1/cmtt/m/n/12 grub2-install: error:
  []
 
 
-Overfull \hbox (54.60022pt too wide) in paragraph at lines 404--412
+Overfull \hbox (54.60022pt too wide) in paragraph at lines 419--427
 \OT1/cmtt/m/n/12 /usr/lib/grub/i386-pc/modinfo.sh doesn't exist. Please specify
  --target
  []
 
-
-Overfull \hbox (172.49066pt too wide) in paragraph at lines 413--428
+[9]
+Overfull \hbox (172.49066pt too wide) in paragraph at lines 428--443
 \OT1/cmr/m/n/12 tion of the file it needs: \OT1/cmtt/m/n/12 grub2-install --no-
 floppy --directory='/mnt/sysimage/boot/grub2/i386-pc'
  []
 
 
-Overfull \hbox (238.55183pt too wide) in paragraph at lines 413--428
+Overfull \hbox (238.55183pt too wide) in paragraph at lines 428--443
 \OT1/cmtt/m/n/12 /dev/sda\OT1/cmr/m/n/12 . Now it says: \OT1/cmtt/m/n/12 grub2-
 install: error: cannot open '/mnt/sysimage/boot/grub2/i386-pc/kernel.img':
  []
 
 
-Overfull \hbox (131.29314pt too wide) in paragraph at lines 413--428
+Overfull \hbox (131.29314pt too wide) in paragraph at lines 428--443
 \OT1/cmr/m/n/12 with: \OT1/cmtt/m/n/12 find / -name kernel.img\OT1/cmr/m/n/12 .
  Ahh, it's at \OT1/cmtt/m/n/12 /mnt/sysimage/usr/lib/grub/i386-pc/kernel.img\OT
 1/cmr/m/n/12 !
  []
 
 
-Overfull \hbox (3.63956pt too wide) in paragraph at lines 413--428
+Overfull \hbox (3.63956pt too wide) in paragraph at lines 428--443
 \OT1/cmtt/m/n/12 --directory='/mnt/sysimage/usr/lib/grub/i386-pc' /dev/sda\OT1/
 cmr/m/n/12 . Ah ha!
  []
 
 
-Overfull \hbox (60.77522pt too wide) in paragraph at lines 413--428
+Overfull \hbox (60.77522pt too wide) in paragraph at lines 428--443
 \OT1/cmtt/m/n/12 grub2-install --no-floppy --directory='/mnt/sysimage/usr/lib/g
 rub/i386-pc
  []
 
-[9]
-Overfull \hbox (28.29039pt too wide) in paragraph at lines 441--444
+
+Overfull \hbox (28.29039pt too wide) in paragraph at lines 456--459
 [] \OT1/cmr/m/n/12 The \OT1/cmtt/m/n/12 set \OT1/cmr/m/n/12 com-mand said that 
 the vari-able \OT1/cmtt/m/n/12 prefix \OT1/cmr/m/n/12 was set to \OT1/cmtt/m/n/
 12 (hd0)/boot/grub2
  []
 
 
-Overfull \hbox (135.12354pt too wide) in paragraph at lines 450--456
+Overfull \hbox (135.12354pt too wide) in paragraph at lines 465--471
 \OT1/cmr/m/n/12 mod-ule with \OT1/cmtt/m/n/12 insmod normal\OT1/cmr/m/n/12 , bu
 t I get the er-ror, \OT1/cmtt/m/n/12 error: file '/boot/grub2/i386-pc/normal.mo
 d'
  []
 
 [10]
-Overfull \hbox (23.75995pt too wide) in paragraph at lines 484--487
+Overfull \hbox (23.75995pt too wide) in paragraph at lines 499--502
 [] \OT1/cmr/m/n/12 Turns out \OT1/cmtt/m/n/12 /etc/resolv.conf \OT1/cmr/m/n/12 
 was blank, and, amaz-ingly, adding \OT1/cmtt/m/n/12 nameserver
  []
 
 
-Overfull \hbox (15.10341pt too wide) in paragraph at lines 499--502
+Overfull \hbox (15.10341pt too wide) in paragraph at lines 514--517
 [] \OT1/cmr/m/n/12 I've gone through the page, set-ting the ip man-u-ally and e
 dit-ing \OT1/cmtt/m/n/12 /etc/hosts\OT1/cmr/m/n/12 ,
  []
 
-
-Overfull \hbox (44.30695pt too wide) in paragraph at lines 503--509
+[11]
+Overfull \hbox (44.30695pt too wide) in paragraph at lines 518--524
 \OT1/cmtt/m/n/12 dev enp10s0f0\OT1/cmr/m/n/12 ). A route was added: \OT1/cmtt/m
 /n/12 ip route add default via 163.118.42.126
  []
 
 
-Overfull \hbox (4.17732pt too wide) in paragraph at lines 503--509
+Overfull \hbox (4.17732pt too wide) in paragraph at lines 518--524
 \OT1/cmtt/m/n/12 dev enp10s0f0\OT1/cmr/m/n/12 . A name-server was added to \OT1
 /cmtt/m/n/12 /etc/resolv.conf\OT1/cmr/m/n/12 , \OT1/cmtt/m/n/12 nameserver
  []
 
 
-Overfull \hbox (404.4109pt too wide) in paragraph at lines 512--518
+Overfull \hbox (404.4109pt too wide) in paragraph at lines 527--533
 []\OT1/cmr/m/n/12 The lo-ca-tions of sev-eral im-por-tant lines of code: [] 
  []
 
-[11]
-Overfull \hbox (19.05461pt too wide) in paragraph at lines 527--528
+
+Overfull \hbox (19.05461pt too wide) in paragraph at lines 542--543
 [] \OT1/cmr/m/n/12 Make sure the USB is COM-PLETELY blank (\OT1/cmtt/m/n/12 par
 ted /dev/sd<x> mklabel
  []
 
-
-Overfull \hbox (8.30438pt too wide) in paragraph at lines 558--566
+[12]
+Overfull \hbox (8.30438pt too wide) in paragraph at lines 573--581
 [] \OT1/cmr/m/n/12 BREAK-THROUGH! Af-ter fid-dling with GRUB from the LiveCD, n
 amely
  []
 
-[12]
-Overfull \hbox (35.39296pt too wide) in paragraph at lines 587--596
+
+Overfull \hbox (35.39296pt too wide) in paragraph at lines 602--611
 \OT1/cmr/m/n/12 root of the prompt needs to be set to the boot par-ti-tion, \OT
 1/cmtt/m/n/12 set root='(hd0,msdos1)'\OT1/cmr/m/n/12 .
- []
-
-
-Overfull \hbox (715.54044pt too wide) in paragraph at lines 608--624
-[][]
  []
 
 [13pdfTeX warning (ext4): destination with the same identifier (name{figure.1})
@@ -409,11 +404,10 @@ Overfull \hbox (715.54044pt too wide) in paragraph at lines 608--624
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.626 
-      ]
-Overfull \hbox (18.07822pt too wide) in paragraph at lines 662--669
-\OT1/cmr/m/n/12 ROCKS 6 on all the nodes back in 2014. They said, af-ter run-ni
-ng \OT1/cmtt/m/n/12 insert-ethers
+l.612 \qq
+          Unfortunately, the kernel panics when it tries to boot; the rescue]
+Overfull \hbox (715.54044pt too wide) in paragraph at lines 623--639
+[][]
  []
 
 [14pdfTeX warning (ext4): destination with the same identifier (name{figure.2})
@@ -421,9 +415,15 @@ ng \OT1/cmtt/m/n/12 insert-ethers
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.669 
-      ] [15] [16]
-Overfull \hbox (4.04526pt too wide) in paragraph at lines 758--762
+l.666 
+      ]
+Overfull \hbox (18.07822pt too wide) in paragraph at lines 677--684
+\OT1/cmr/m/n/12 ROCKS 6 on all the nodes back in 2014. They said, af-ter run-ni
+ng \OT1/cmtt/m/n/12 insert-ethers
+ []
+
+[15] [16]
+Overfull \hbox (4.04526pt too wide) in paragraph at lines 773--777
 [] \OT1/cmr/m/n/12 Al-right, we've started up the new node, and its call-ing it
 -self \OT1/cmtt/m/n/12 compute-0-2\OT1/cmr/m/n/12 .
  []
@@ -433,30 +433,29 @@ Overfull \hbox (4.04526pt too wide) in paragraph at lines 758--762
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.795 \qq
-          We've made a Hypernews post asking for help. In the mean time, we'...
-]
-Overfull \hbox (21.89714pt too wide) in paragraph at lines 811--816
+l.802 
+      ]
+Overfull \hbox (21.89714pt too wide) in paragraph at lines 826--831
 \OT1/cmr/m/n/12 list of host names can be found with \OT1/cmtt/m/n/12 rocks lis
 t host\OT1/cmr/m/n/12 . Now that \OT1/cmtt/m/n/12 insert-ethers
  []
 
 [18]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 845.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 860.
  [19]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 845.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 860.
  (./rebuild.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 845.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 845.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 860.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 860.
 Package rerunfilecheck Info: File `rebuild.out' has not changed.
-(rerunfilecheck)             Checksum: 07EA996312417594D16E14E3736733A2;1524.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 845.
+(rerunfilecheck)             Checksum: 4F50EE76A1EA1ED3552B81C1B87348EA;1598.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 860.
  ) 
 Here is how much of TeX's memory you used:
- 4614 strings out of 494936
- 68455 string characters out of 6180785
+ 4616 strings out of 494936
+ 68495 string characters out of 6180785
  147264 words of memory out of 5000000
- 7872 multiletter control sequences out of 15000+600000
+ 7873 multiletter control sequences out of 15000+600000
  9493 words of font info for 34 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  28i,14n,29p,183b,433s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -467,10 +466,10 @@ are/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr17.pfb></opt/local/share/te
 xmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/local/share/texmf-t
 exlive/fonts/type1/public/amsfonts/cm/cmti12.pfb></opt/local/share/texmf-texliv
 e/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on rebuild.pdf (19 pages, 140726 bytes).
+Output written on rebuild.pdf (19 pages, 141708 bytes).
 PDF statistics:
- 228 PDF objects out of 1000 (max. 8388607)
- 198 compressed objects within 2 object streams
- 46 named destinations out of 1000 (max. 500000)
- 185 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 233 PDF objects out of 1000 (max. 8388607)
+ 202 compressed objects within 3 object streams
+ 47 named destinations out of 1000 (max. 500000)
+ 193 words of extra memory for PDF output out of 10000 (max. 10000000)
 

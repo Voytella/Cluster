@@ -343,6 +343,48 @@ a RAID disk. There are 13 disks listed in the ``Local Standard Disks'' section
 unlisted disks are the two I dedicated to housing the OS, which is unfortunate
 because those are the only two we need. Hmm.
 
+\qq Lol, the OS mirror is degraded; one of the drives failed. That's fine; we're
+just booting into NAS-0 normally to replace the drive, then we should be good to
+go. We'll also be making note of what all the various groups are named to we can
+keep track of them in the installer.
+
+\qq REPLACING NAS-0 OS DRIVE: NAS-0's RAID card is accessible via {\tt tw_cli}. 
+We investigated the health of the OS RAID by running {\tt tw_cli /c0/u0 show},
+which reported that the array was degraded; unit {\tt u0-0} was DEGRADED, while
+unit {\tt u0-1}, said to be in port 1, was OK. To formally remove the degraded
+drive, we ran {\tt tw_cli maint remove c0 p0}, which said that the port was
+empty. This makes sense, since unit {\tt u0-0} does not have a port listed. We
+are going to simply remove the drive 0:0 and throw a new drive in its place.
+
+\subsubsection{Incorporate SE}
+
+\qq The SE acts as a node (before, it was named {\tt compute-0-0}). So we'll see
+about adding it in as a node. First, like the nodes, the SE's boot order must be
+modified. The procedure is the same as the nodes. There are two ethernet ports
+listed, we chose the one titled {\tt PCI BEV: IBA GE Slot 0600 v1324}. 
+
+\qq Now that the boot order's been fixed, we can run {\tt insert-ethers} on the
+CE and select \textit{Compute}. Go back to the SE, and select ``Save and Exit''
+to restart with the new boot order. The SE successfully requested the kickstart
+file and brought us to the installer.
+
+\qq The installer needs to be told where to install ROCKS 7. There are two disks
+on display, a 250GB {\tt sda} and a 1TB {\tt sdb}. I'm gonna boot into the
+current disk to investigate how these drives are put together so I can make an
+informed decision regarding how to install ROCKS 7 (I'm learning from my
+previous mistakes born of haste). I changed the boot order to prioritize the
+hard drive to get where I need to go. The little 250GB drive is, in fact, the OS
+drive, and the large 1TB drive is a dedicated backup drive, so we will be
+installing ROCKS 7 on just the 250GB drive. We changed the boot order back to
+favor PXE and restarted.
+
+\qq The installer decided to automatically begin the installation. I saw some
+{\tt /dev/sda} stuff flash by without seeing any {\tt /dev/sdb} stuff, so I
+guess it figured itself out. Don't forget to set the root password during the
+install! If it's not entered before the install is completed, it can be set
+using ROCKS commands on the CE: {\tt rocks set host sec_attr compute-x-x
+  attr=root_pw}, {\tt rocks sync host sec_attr compute-x-x}.
+
 \subsubsection{Configuring the Nodes}
 
 \qq NOTE: The root password of the nodes may not have been set (they cannot be
