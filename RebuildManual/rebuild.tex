@@ -420,6 +420,20 @@ what we can do. We installed ROCKS onto the CE with the Condor Roll, so it's
 already on the system. Running a {\tt condor_status} shows that condor already
 recognizes all the nodes' CPUs! Very nice. 
 
+\qq I'm following the HT-Condor installation instructions provided by OSG
+(https://opensciencegrid.org/docs/compute-element/install-htcondor-ce/). Before
+we begin tackling the installation, the instructions ask us to verify that some
+prerequisites have been performed. The first of which is the creation of two
+user IDs: {\tt condor}, which has already been created, and {\tt gratia}, which
+hasn't yet. It says {\tt gratia} will be created during installation, but, since
+I think HTCondor is already installed from the ROCKS Roll, we might have to
+manually create it. We'll hold off on that for now.
+
+\qq Another prerequisite we need concern ourselves with is the acquisition of a
+new host certificate. We get to request the first hostcert of the new system!
+Exciting! Unfortunately, the hostcerts need to be requested for both the CE and
+SE, so let's see about getting the SE setup first!
+
 %-----------END CONFIGURATION-----------
 
 %----------BEGIN TROUBLESHOOTING----------
