@@ -413,7 +413,12 @@ not running, it can easily set up after a quick internet search.
 
 \subsection{Automatic Mounting of Key Components}
 
+\subsection{HTCondor}
 
+\qq We've got the bare minimum set up to start playing with condor! Let's see
+what we can do. We installed ROCKS onto the CE with the Condor Roll, so it's
+already on the system. Running a {\tt condor_status} shows that condor already
+recognizes all the nodes' CPUs! Very nice. 
 
 %-----------END CONFIGURATION-----------
 
@@ -883,5 +888,109 @@ downloading the kickstart file from the head node, and it said it got all the
 configurations from the kickstart file. 
 
 % placement of port 69 (TFTP) rules in iptables
+
+\subsection{NAS-0 RAID Issues}
+
+\qq After discovering a drive failure in NAS-0, we tried to replace it with a
+new drive and were surprised to find that it could not discover the new
+drive. Upon further examination, we found that the newly inserted drive decided
+to become a part of unit 1 rather than rebuild itself as part of unit 0, the
+mirror array. Now the RAID card thinks it has 1 degraded mirror array and 15
+JBOD units; that's a total of 17 drives, even though there are only 16 drives
+plugged in. NAS-0 can't do math! Hmm. Let's see what ZFS says about all this.
+
+\qq On startup, we got a ZFS error: the zpool {\tt nas0} couldn't be imported
+because {\tt /var/lib/dkms/zfs/0.7.5/source/dkms.conf} doesn't exist. To see if
+a {\tt dkms.conf} exists anywhere on NAS-0, we ran {\tt locate dkms.conf} and
+found four files: {\tt /usr/src/spl-0.7.5/dkms.conf}, {\tt
+  /usr/src/spl-0.7.9/dkms.conf}, {\tt /usr/src/zfs-0.7.9/dkms.conf}, and {\tt
+  /var/lib/dkms/zfs/0.7.9/build/dkms.conf}. What's suspicious here, is that
+several of these files seem to be of a newer version, 0.7.9 rather than the
+apparently expected 0.7.5. 
+
+\qq To investigate {\tt dkms} itself, we ran {\tt dkms status}, which, again,
+reported that the {\tt dkms.conf} file didn't exist, but it also warned that the
+built and installed modules are different! I suspect a version conflict because
+{\tt dkms status} identifies as version 0.7.5, while all but one of the {\tt
+  dkms.conf} files available are version 0.7.9. Additionally, the {\tt /var}
+{\tt dkms.conf} file is under a {\tt build} directory, which gives further
+credence to {\tt dkms status}'s warning. 
+
+\qq We embarked upon a spelunking expedition to investigate what happened to
+{\tt /var/lib/dkms/zfs/0.7.5/source/dkms.conf}, and found something of interest!
+Within {\tt /var/lib/dkms/zfs/0.7.5}, the {\tt source} ``directory'' is actually
+a broken symbolic link pointing to {\tt /usr/src/zfs-0.7.5}, where the other
+{\tt dkms.conf}s are found! Unfortunately, however, there is only a {\tt
+  /usr/src/zfs-0.7.9} directory, while {\tt /usr/src/zfs-0.7.5} is suspiciously
+absent. 
+
+\qq NOTE: Before proceeding, we performed a quick check to make sure NAS-0's
+data was all nicely backed up on NAS-1. Always make sure the data's backed up
+before messing with where it's stored!
+
+\qq We have a question to answer to help us diagnose the cause of the problem:
+Is ZFS telling DKMS to look in the wrong spot, or is DKMS looking in the wrong
+spot all on its own? Let's find where DKMS is told to check for {\tt dkms.conf}
+at {\tt /var/lib/dkms/zfs/0.7.5/source/dkms.conf}. 
+
+\qq Just to see what would happen, we changed the broken symlink in {\tt
+  /var/lib/dkms/zfs/0.7.5} from {\tt source -> /usr/src/zfs-0.7.5} to {\tt
+  source -> /usr/src/zfs-0.7.9}. {\tt dkms status} now successfully adds the ZFS
+module, despite continued warnings proclaiming that the built and installed
+modules are different. Although the ZFS module has been added and the commands
+work, {\tt zpool list} returns no pools! Huh. Does this have to do with our jank
+method of making DKMS work, or is there something more sinister going on? 
+
+\qq Now that {\tt dkms.conf} can be found, let's restart NAS-0 to see what the
+ZFS boot message says now. The ZFS error saying it couldn't import the pool {\tt
+  nas0} is still there, but DKMS now runs some pre-build script that appears to
+hang at {\tt checking spl build directory...}. After sitting there for a while,
+it reported that the build directory was {\tt
+  /var/lib/dkms/spl/0.7.9/2.6.32-431.11.2.el6.x86\_64/x86\_64}, then threw a
+configuration error saying to make sure that the {\tt kmod spl devel <kernel>}
+package is installed for our distribution; it failed to find {\tt spl\_config.h}
+in either {\tt /usr/src/spl-0.7.9/2.6.32-431.11.2.el6.x86\_64} or {\tt
+  /usr/src/spl-0.7.9}. It then failed to build the ZFS module and continued the
+normal booting process. 
+
+\qq {\tt dkms status} reports that SPL 0.7.5 and ZFS 0.7.9 have been added, but
+it warns that there is a difference between the build and installed modules of
+SPL. 
+
+\qq While {\tt zpool status} shows that there are no pools available, {\tt zpool
+  import} happily shows us that the {\tt nas0} pool is alive and well in the
+ONLINE state. The ``action'' says that ``The pool can be imported using its name
+or numeric identifier.'', which implies that the pool need just be imported to
+work. {\tt zpool import nas0} seems to have done the trick; {\tt zpool status}
+shows the status of the data drives. While all the main drives are reported to
+be online, the two hot spares, {\tt sdo} and {\tt sdi}, have failed; they're
+state is FAULTED. Another peculiar note is that, while most of the drives are
+represented by their SCSI identifiers, two are simply identified by their names,
+{\tt sdg} and {\tt sdh}. The drives both have the status ONLINE, however, so
+this may not be an issue. Interestingly enough, {\tt tw_cli /c0 show} does not
+show that the two hot spares are damaged; they appear fine to the RAID
+card. Perhaps the two drives are merely suffering from a ZFS issue that can be
+easily corrected? Additionally, {\tt tw_cli /c0 show} reports a further drive
+failure in {\tt p5}. Unfortunately, it insists on reporting the RAID-1 OS array
+as degraded while assigning each individual drive its own individual unit. 
+
+\qq While investigating {\tt /dev/sd*}, we noticed that {\tt /dev/sdb} and the
+other drives all had two partitions, {\tt /dev/sdx1} and {\tt /dev/sdx9}, while
+{\tt /dev/sda}, the drive we presumably just replaced, only has one partition,
+{\tt /dev/sda1}. 
+
+\qq The root issue still appears to be that the new, replacement drive {\tt
+  /dev/sda} in port 0, has been mislabeled as part of unit 1, when it ought to
+be part of unit 0 alongside the drive in port 1, {\tt /dev/sdb} to form a RAID-1
+array. The RAID-1 array still exists as unit 0, albeit in a DEGRADED state for
+the time being. Let's see what we can do about changing {\tt p0}'s unit
+affiliation from unit 1 to unit 0. 
+
+\qq We found some interesting instructions! It looks like we can delete the
+extra unit, unit 1, then tell the drive to make itself a part of the degraded
+array. Let's give it a shot! First, we delete unit 1: {\tt tw_cli maint
+  deleteunit c0 u1}. Then, we explicitly begin the rebuild: {\tt tw_cli /c0/u0
+  start rebuild disk=0}. Unit 0 is being properly rebuilt! The status of the
+rebuild process can be monitored with {\tt tw_cli /c0/u0 show rebuildstatus}. 
 
 \end{document}
