@@ -18,7 +18,10 @@
 \BOOKMARK [1][-]{section.4}{Configuration}{}% 18
 \BOOKMARK [2][-]{subsection.4.1}{Enable SSH}{section.4}% 19
 \BOOKMARK [2][-]{subsection.4.2}{Automatic Mounting of Key Components}{section.4}% 20
-\BOOKMARK [1][-]{section.5}{Troubleshooting}{}% 21
-\BOOKMARK [2][-]{subsection.5.1}{Boot Loader Install Failed}{section.5}% 22
-\BOOKMARK [2][-]{subsection.5.2}{Remote ROCKS Servers Inaccessible}{section.5}% 23
-\BOOKMARK [2][-]{subsection.5.3}{Nodes not found in insert-ethers}{section.5}% 24
+\BOOKMARK [2][-]{subsection.4.3}{HTCondor}{section.4}% 21
+\BOOKMARK [2][-]{subsection.4.4}{Setup SE}{section.4}% 22
+\BOOKMARK [1][-]{section.5}{Troubleshooting}{}% 23
+\BOOKMARK [2][-]{subsection.5.1}{Boot Loader Install Failed}{section.5}% 24
+\BOOKMARK [2][-]{subsection.5.2}{Remote ROCKS Servers Inaccessible}{section.5}% 25
+\BOOKMARK [2][-]{subsection.5.3}{Nodes not found in insert-ethers}{section.5}% 26
+\BOOKMARK [2][-]{subsection.5.4}{NAS-0 RAID Issues}{section.5}% 27

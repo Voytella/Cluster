@@ -13,34 +13,47 @@
 
 \date{\today}
 
-\author{Ryan Wojtyla}
-
 \thispagestyle{empty}
 
 \maketitle
 
+\newpage
+
 %-----------END TITLE-----------
+
+%----------BEGIN TABLE OF CONTENTS----------
+
+\tableofcontents
+
+\newpage
+
+%-----------END TABLE OF CONTENTS-----------
 
 %----------BEGIN PREPARATION----------
 
 \section{Preparation}
 
-\qq Preparation is key before attempting to build a ROCKS cluster; there are
-many steps to take care of beforehand.
+\qq Before any major overhaul of a Rocks cluster, it is imperative that it be
+properly prepared. The key components of the cluster must be backed up so that
+they may be available for reference while setting up the new system, and the
+components not undergoing modification, namely NAS-1, ought to remain
+operational.
 
 \subsection{Backup Data}
 
 \qq One of the most important preliminary steps is to first backup all the data
-on the devices that are being updated. I backed up the contents of the CE, minus
-{\tt /mnt} and {\tt /cvmfs}, the SE, and both the server and data partitions of
-NAS-0 onto NAS-1. For the CE and SE, {\tt /mnt} was excluded because I don't want
-to backup both of the NASs' data onto NAS-1. {\tt /cvmfs} was excluded for the CE
-because it is externally mounted from CERN, thus eliminating the need for a
-local backup. Unlike the CE and SE, NAS-0 does not have NAS-1 mounted, so the
-{\tt rsync} command had to remotely copy the NAS-0 files from the CE. Since there
-is already an older backup of NAS-0 on NAS-1 and there is not enough space on
-NAS-1 to fully copy another backup of NAS-0, all of the newer files on NAS-0
-were manually copied into the old backup of NAS-0, effectively updating it.
+on the devices that are being updated. We backed up the contents of the CE,
+omitting {\tt /mnt} and {\tt /cvmfs}, the OS (250 GB) and data (1 TB) drives of
+the SE, and both the server and data partitions of NAS-0 onto NAS-1. For the CE
+and SE, {\tt /mnt} was excluded because we only want to backup data of the CE
+and SE rather than the data of other mounted systems. {\tt /cvmfs} was excluded
+for the CE because it is externally mounted from CERN, thus eliminating the need
+for a local backup. Unlike the CE and SE, NAS-0 does not have NAS-1 mounted, so
+NAS-0's files had to be copied remotely via the CE before being stored in NAS-1,
+mounted on the CE. Since there is already an older backup of NAS-0 on NAS-1 and
+there is not enough space on NAS-1 to fully copy another backup of NAS-0, all of
+the newer files on NAS-0 were manually copied into the old backup of NAS-0,
+effectively updating it.
 
 \begin{itemize}
   \item Backup the CE (command run while logged into the CE):
@@ -348,11 +361,11 @@ just booting into NAS-0 normally to replace the drive, then we should be good to
 go. We'll also be making note of what all the various groups are named to we can
 keep track of them in the installer.
 
-\qq REPLACING NAS-0 OS DRIVE: NAS-0's RAID card is accessible via {\tt tw_cli}. 
-We investigated the health of the OS RAID by running {\tt tw_cli /c0/u0 show},
+\qq REPLACING NAS-0 OS DRIVE: NAS-0's RAID card is accessible via {\tt tw\_cli}. 
+We investigated the health of the OS RAID by running {\tt tw\_cli /c0/u0 show},
 which reported that the array was degraded; unit {\tt u0-0} was DEGRADED, while
 unit {\tt u0-1}, said to be in port 1, was OK. To formally remove the degraded
-drive, we ran {\tt tw_cli maint remove c0 p0}, which said that the port was
+drive, we ran {\tt tw\_cli maint remove c0 p0}, which said that the port was
 empty. This makes sense, since unit {\tt u0-0} does not have a port listed. We
 are going to simply remove the drive 0:0 and throw a new drive in its place.
 
@@ -382,8 +395,8 @@ favor PXE and restarted.
 {\tt /dev/sda} stuff flash by without seeing any {\tt /dev/sdb} stuff, so I
 guess it figured itself out. Don't forget to set the root password during the
 install! If it's not entered before the install is completed, it can be set
-using ROCKS commands on the CE: {\tt rocks set host sec_attr compute-x-x
-  attr=root_pw}, {\tt rocks sync host sec_attr compute-x-x}.
+using ROCKS commands on the CE: {\tt rocks set host sec\_attr compute-x-x
+  attr=root\_pw}, {\tt rocks sync host sec\_attr compute-x-x}.
 
 \subsubsection{Configuring the Nodes}
 
@@ -398,7 +411,6 @@ once, I'm gonna configure the nodes in two equally sized groups: {\tt
 first one.
 
 %-----------END UNIFICATION-----------
-
 
 %----------BEGIN CONFIGURATION----------
 
@@ -417,7 +429,7 @@ not running, it can easily set up after a quick internet search.
 
 \qq We've got the bare minimum set up to start playing with condor! Let's see
 what we can do. We installed ROCKS onto the CE with the Condor Roll, so it's
-already on the system. Running a {\tt condor_status} shows that condor already
+already on the system. Running a {\tt condor\_status} shows that condor already
 recognizes all the nodes' CPUs! Very nice. 
 
 \qq I'm following the HT-Condor installation instructions provided by OSG
@@ -437,7 +449,7 @@ SE, so let's see about getting the SE setup first!
 \qq We tried to run a condor job on the CE to see what would happen, but it
 didn't work. Turns out, even though the nodes' CPUs are seen by condor, it
 doesn't look like condor is installed on the nodes! They don't have {\tt
-  /etc/condor/config.d/00personal_condor.config} files. 
+  /etc/condor/config.d/00personal\_condor.config} files. 
 
 \qq After
 
@@ -455,6 +467,8 @@ SE.
       \hline
       xrootd & \\
       PhEDEx & \\
+      squid & \\
+      globus & \\
     \end{tabular}
   \end{center}
 \end{figure}
@@ -1006,10 +1020,10 @@ be online, the two hot spares, {\tt sdo} and {\tt sdi}, have failed; they're
 state is FAULTED. Another peculiar note is that, while most of the drives are
 represented by their SCSI identifiers, two are simply identified by their names,
 {\tt sdg} and {\tt sdh}. The drives both have the status ONLINE, however, so
-this may not be an issue. Interestingly enough, {\tt tw_cli /c0 show} does not
+this may not be an issue. Interestingly enough, {\tt tw\_cli /c0 show} does not
 show that the two hot spares are damaged; they appear fine to the RAID
 card. Perhaps the two drives are merely suffering from a ZFS issue that can be
-easily corrected? Additionally, {\tt tw_cli /c0 show} reports a further drive
+easily corrected? Additionally, {\tt tw\_cli /c0 show} reports a further drive
 failure in {\tt p5}. Unfortunately, it insists on reporting the RAID-1 OS array
 as degraded while assigning each individual drive its own individual unit. 
 
@@ -1027,10 +1041,10 @@ affiliation from unit 1 to unit 0.
 
 \qq We found some interesting instructions! It looks like we can delete the
 extra unit, unit 1, then tell the drive to make itself a part of the degraded
-array. Let's give it a shot! First, we delete unit 1: {\tt tw_cli maint
-  deleteunit c0 u1}. Then, we explicitly begin the rebuild: {\tt tw_cli /c0/u0
+array. Let's give it a shot! First, we delete unit 1: {\tt tw\_cli maint
+  deleteunit c0 u1}. Then, we explicitly begin the rebuild: {\tt tw\_cli /c0/u0
   start rebuild disk=0}. Unit 0 is being properly rebuilt! The status of the
-rebuild process can be monitored with {\tt tw_cli /c0/u0 show rebuildstatus}. 
+rebuild process can be monitored with {\tt tw\_cli /c0/u0 show rebuildstatus}. 
 
 \qq The drive was successfully rebuilt! Unfortunately, two of the drives in the
 first {\tt raidz2} group decided to fail, {\tt /dev/sdg} and {\tt /dev/sdh}. We
