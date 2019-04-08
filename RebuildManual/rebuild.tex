@@ -434,6 +434,31 @@ new host certificate. We get to request the first hostcert of the new system!
 Exciting! Unfortunately, the hostcerts need to be requested for both the CE and
 SE, so let's see about getting the SE setup first!
 
+\qq We tried to run a condor job on the CE to see what would happen, but it
+didn't work. Turns out, even though the nodes' CPUs are seen by condor, it
+doesn't look like condor is installed on the nodes! They don't have {\tt
+  /etc/condor/config.d/00personal_condor.config} files. 
+
+\qq After
+
+\subsection{Setup SE}
+
+\qq Several different pieces of software must be installed and configured on the
+SE.
+
+\begin{figure}[H]
+  \caption{A list of all the software that must be installed on the SE.}
+  \begin{center}
+    \begin{tabular}{|l|l|}
+      \hline
+      HDFS & The SE's data drive is formatted with HDFS. \\
+      \hline
+      xrootd & \\
+      PhEDEx & \\
+    \end{tabular}
+  \end{center}
+\end{figure}
+
 %-----------END CONFIGURATION-----------
 
 %----------BEGIN TROUBLESHOOTING----------
@@ -1006,5 +1031,15 @@ array. Let's give it a shot! First, we delete unit 1: {\tt tw_cli maint
   deleteunit c0 u1}. Then, we explicitly begin the rebuild: {\tt tw_cli /c0/u0
   start rebuild disk=0}. Unit 0 is being properly rebuilt! The status of the
 rebuild process can be monitored with {\tt tw_cli /c0/u0 show rebuildstatus}. 
+
+\qq The drive was successfully rebuilt! Unfortunately, two of the drives in the
+first {\tt raidz2} group decided to fail, {\tt /dev/sdg} and {\tt /dev/sdh}. We
+threw the two spares in to replace them with {\tt zpool replace nas0 <number of
+  failed drive> sdx}, where {\tt sdx} is the identifier for the spare. While
+those were resilvering, yet another drive, {\tt /dev/sdf}, failed in the same
+{\tt raidz2} group as the other two failed drives. We've now got three drives
+rebuilding in one {\tt raidz2} group, which has a tolerance of two drive
+failures. The progress of the scan is still increasing, however, so we remain
+hopeful. 
 
 \end{document}
