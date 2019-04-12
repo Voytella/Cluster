@@ -4,12 +4,17 @@
 
 \usepackage{float}
 \usepackage{makecell}
+\usepackage[margin=0.59in]{geometry}
+\usepackage{textcomp}
+\usepackage{tcolorbox}
+\usepackage{minted}
+\usepackage{multicol}
 
 \begin{document}
 
 %----------BEGIN TITLE----------
 
-\title{Constructing a ROCKS Cluster}
+\title{Constructing a Rocks Cluster}
 
 \date{\today}
 
@@ -29,105 +34,131 @@
 
 %-----------END TABLE OF CONTENTS-----------
 
+%----------BEGIN BACKGROUND----------
+
+\section{Background}
+
+\qq 
+
+% introduction to the cluster
+% hardware terminology and function
+
+%-----------END BACKGROUND-----------
+
 %----------BEGIN PREPARATION----------
 
 \section{Preparation}
 
-\qq Before any major overhaul of a Rocks cluster, it is imperative that it be
-properly prepared. The key components of the cluster must be backed up so that
-they may be available for reference while setting up the new system, and the
-components not undergoing modification, namely NAS-1, ought to remain
-operational.
+\qq Before a major overhaul of any computer system, it is imperative that it
+first be properly prepared. The key components must be backed up so that they
+may be available for reference while setting up the new system, and the
+continued operation of tangential components not participating in the update
+must be ensured.
 
 \subsection{Backup Data}
 
 \qq One of the most important preliminary steps is to first backup all the data
-on the devices that are being updated. We backed up the contents of the CE,
-omitting {\tt /mnt} and {\tt /cvmfs}, the OS (250 GB) and data (1 TB) drives of
-the SE, and both the server and data partitions of NAS-0 onto NAS-1. For the CE
-and SE, {\tt /mnt} was excluded because we only want to backup data of the CE
-and SE rather than the data of other mounted systems. {\tt /cvmfs} was excluded
-for the CE because it is externally mounted from CERN, thus eliminating the need
-for a local backup. Unlike the CE and SE, NAS-0 does not have NAS-1 mounted, so
-NAS-0's files had to be copied remotely via the CE before being stored in NAS-1,
-mounted on the CE. Since there is already an older backup of NAS-0 on NAS-1 and
-there is not enough space on NAS-1 to fully copy another backup of NAS-0, all of
-the newer files on NAS-0 were manually copied into the old backup of NAS-0,
-effectively updating it.
+on the devices that are being updated. Onto NAS-1, we backed up the contents of
+the CE, omitting {\tt /mnt} and {\tt /cvmfs}, the OS (250 GB) and data (1 TB)
+drives of the SE, and both the server and data partitions of NAS-0. For the CE
+and SE, {\tt /mnt} was excluded because we only want to back up data on the CE
+and SE rather than the data of other systems that may be mounted. {\tt /cvmfs}
+was excluded for the CE because it is externally mounted from CERN, thus
+eliminating the need for a local backup. Unlike the CE and SE, NAS-0 does not
+have NAS-1 mounted, so NAS-0's files had to be copied remotely via the CE, on
+which NAS-1 is mounted, before being stored in NAS-1. Since there is already an
+older backup of NAS-0 on NAS-1 and there is not enough space on NAS-1 to fully
+copy another backup of NAS-0, all of the newer files on NAS-0 were manually
+copied into the old backup of NAS-0, effectively updating it.
 
-\begin{itemize}
-  \item Backup the CE (command run while logged into the CE):
-    \begin{itemize}
-    \item {\tt rsync -av --exclude '/mnt*' --exclude '/cvmfs' / /mnt/nas1/CEBackup-20180803}
-    \end{itemize}
-  \item Backup the SE (command run while logged into the SE):
-    \begin{itemize}
-    \item {\tt rsync -av --exclude '/mnt' / /mnt/nas1/SEBackup-20180803}
-    \end{itemize}
-  \item Backup the server partition of NAS-0 (command run while logged into the CE):
-    \begin{itemize}
-      \item {\tt rsync -av --exclude '/nas0' root@10.1.255.234:/
-          /mnt/nas1/nas0-bak-20180730/NAS-0}
-      \end{itemize}
-\end{itemize}
+\begin{tcolorbox}[title=Backup the CE (executed in CE), colback=white,
+  colframe=black, coltitle=green]
+  \begin{minted}{bash}
+    rsync -av --exclude '/mnt*' --exclude '/cvmfs' / /mnt/nas1/CEBackup-20180803
+  \end{minted}
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Backup the SE (executed in SE), colback=white,
+  colframe=black, coltitle=green]
+  \begin{minted}{bash}
+    rsync -av --exclude '/mnt' / /mnt/nas1/SEBackup-20180803
+  \end{minted}  
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Backup the server partition of NAS-0 (executed in CE),
+  colback=white, colframe=black, coltitle=green]
+  \begin{minted}{bash}
+    rsync -av --exclude '/nas0' root@10.1.255.234:/mnt/nas1/nas0-bak-20180730/NAS-0
+  \end{minted}
+\end{tcolorbox}
 
 \qq Ideally, the entirety of one compute node would also be backed up at this
 point, but due to catastrophic hardware failures preventing the nodes from being
 run (one of the big Tripplite UPSs AND the APC UPS have failed, leaving me with
 only one UPS), I'm going to come back to them later.
 
-\subsection{Create Boot Drives}
+\subsection{Burn Boot Disc}
 
-\qq Once all of the data is secure, the ISO images of the ROCKS rolls can be
-downloaded and installed. The necessary ROCKS rolls, available
-\href{http://www.rocksclusters.org/downloads/2017-12-01-download-rocks-7-0-manzanita.html
-}{here}, are:
+\qq Once all of the data is safely stored away, a bootable DVD must be
+created. The ISO for the Rocks kernel can be found on their
+\href{http://www.rocksclusters.org/downloads/2017-12-01-download-rocks-7-0-manzanita.html}{website}. Although
+there are several rolls (software package ISOs) labeled \textbf{required} on the
+website, only the ``kernel'' roll is required; the other rolls will be
+downloaded and installed from the installer on the kernel roll. Because the
+firmware of the CE does not support USB boot, the 1GB ISO must be burned onto a
+DVD.
 
-\begin{itemize}
-  \item kernel
-  \item base
-  \item core
-  \item CentOS
-  \item Updates-CentOS
-  \item ganglia
-  \item htcondor
-\end{itemize}
-
-\qq These ISO images may be directly placed on a formated USB using the {\tt dd}
-command. The computer-given name of the USB drive of the form
-{\tt /dev/sd?} ({\tt /dev/disk?} on MacOS) must be determined. On Linux, the
-{\tt lsblk} command may be used to discover this proper name. On Mac, the ``Disk
-Utility'' application may be used.
-
-\qq To create the bootable USB, the {\tt dd} command may be used. The USB must be
-first unmounted, {\tt sudo umount /dev/sd?}, then the following command may be
-run: {\tt sudo dd bs=4M if=INPUT-FILE.iso of=/dev/sd? conv=fdatasync} (for MacOS:
-{\tt sudo dd bs=4m if=INPUT-FILE.iso of=/dev/disk? \&\& sync}). The {\tt bs}
-option determines the block size of each packet transferred at a time, the input
-file is the ISO file of the image to be copied, and the output file is the name of
-the USB to be made bootable. Both the {\tt conv=fdatasync} and {\tt \&\& sync}
-parts of the commands ensure that all data has been written before the next
-packet is sent.
-
-\qq Since coming across eight USBs may be a challenge, the USBs will be created
-as they are needed. The first USB to be made is the one containing the
-``kernel'' roll.
-
-\qq Actually, the firmware doesn't support booting from USB, so I need to go
-get DVDs because CDs are too small.
-
-\qq All the rolls were burnt onto separate DVDs except for the large ``CentOS''
-roll, which is more than 7GB, larger than the 4.7GB discs.
+%\qq Once all of the data is secure, the ISO images of the Rocks rolls can be
+%downloaded and installed. The necessary ROCKS rolls, available
+%\href{http://www.rocksclusters.org/downloads/2017-12-01-download-rocks-7-0-manzanita.html
+%}{here}, are:
+%
+%\begin{itemize}
+%  \item kernel
+%  \item base
+%  \item core
+%  \item CentOS
+%  \item Updates-CentOS
+%  \item ganglia
+%  \item htcondor
+%\end{itemize}
+%
+%\qq These ISO images may be directly placed on a formated USB using the {\tt dd}
+%command. The computer-given name of the USB drive of the form
+%{\tt /dev/sd?} ({\tt /dev/disk?} on MacOS) must be determined. On Linux, the
+%{\tt lsblk} command may be used to discover this proper name. On Mac, the ``Disk
+%Utility'' application may be used.
+%
+%\qq To create the bootable USB, the {\tt dd} command may be used. The USB must be
+%first unmounted, {\tt sudo umount /dev/sd?}, then the following command may be
+%run: {\tt sudo dd bs=4M if=INPUT-FILE.iso of=/dev/sd? conv=fdatasync} (for MacOS:
+%{\tt sudo dd bs=4m if=INPUT-FILE.iso of=/dev/disk? \&\& sync}). The {\tt bs}
+%option determines the block size of each packet transferred at a time, the input
+%file is the ISO file of the image to be copied, and the output file is the name of
+%the USB to be made bootable. Both the {\tt conv=fdatasync} and {\tt \&\& sync}
+%parts of the commands ensure that all data has been written before the next
+%packet is sent.
+%
+%\qq Since coming across eight USBs may be a challenge, the USBs will be created
+%as they are needed. The first USB to be made is the one containing the
+%``kernel'' roll.
+%
+%\qq Actually, the firmware doesn't support booting from USB, so I need to go
+%get DVDs because CDs are too small.
+%
+%\qq All the rolls were burnt onto separate DVDs except for the large ``CentOS''
+%roll, which is more than 7GB, larger than the 4.7GB discs.
 
 
 \subsection{Ensure NAS-1 Remains Operational}
 
 \qq Because NAS-1 does not need to be updated, and since everyone needs to
-access their data on it, it must be kept running and accessible during the
-rebuild process. Since NAS-1 has never technically been part of the cluster with
-ROCKS, it is independently addressable via its own IP address. This independent
-addressability permits NAS-1 to be mounted and ssh-ed into without the rest of
-the cluster. It just needs to be left on and connected to the router.
+access their data, it must be kept running and accessible during the rebuild
+process. Since NAS-1 has never technically been part of the cluster with Rocks,
+it is independently addressable via its own IP address. This independent
+addressability permits NAS-1 to be mounted and remotely accessed via ssh
+without the rest of the cluster. It just needs to be left on and connected to
+the router.
 
 %-----------END PREPARATION-----------
 
@@ -135,60 +166,115 @@ the cluster. It just needs to be left on and connected to the router.
 
 \section{Installation}
 
-\subsection{Kernel Installation}
+\subsection{Loading the Installer on the CE}
 
-\qq The instructions say to first use the ``kernel'' disc. The CE was turned on
-so that the optical drive has power to open, the disc was quickly inserted, and
-the CE was allowed to continue booting. It automatically booted into the disc,
-and it applies checks before continuing.
+\qq The kernel DVD made earlier will be used to boot the CE into the Anaconda
+installer. Before the CE can be booted into the DVD, its boot order must
+configured to prioritize booting from its disc drive. It's BIOS can be accessed
+by spamming the DELETE key on startup. 
 
-\qq Once it has finished booting, the system language must be selected. After
-that, regional information, such as timezone, is entered.
+\qq Once the CE's boot order has been properly configured, the kernel DVD may be
+inserted and the CE booted. The CE will then boot into the Anaconda installer
+after performing several checks.
 
-\subsection{Network Configuration}
+%\subsection{Kernel Installation}
+%
+%\qq The instructions say to first use the ``kernel'' disc. The CE was turned on
+%so that the optical drive has power to open, the disc was quickly inserted, and
+%the CE was allowed to continue booting. It automatically booted into the disc,
+%and it applies checks before continuing.
+%
+%\qq Once it has finished booting, the system language must be selected. After
+%that, regional information, such as timezone, is entered.
 
-\qq Select \textit{Network \& Host Name}.
+\subsection{Public Network Configuration}
 
-\qq Now, the network must be configured. The option for the 10GB/s ethernet
-connection is turned on.
+\qq The first step of the installation process is configuring the network so
+that the other necessary software packages can be installed. Select
+\textit{Network \& Host Name}, and ensure that the 10GB/s ethernet connection
+(ethernet device usually beginning with {\tt enp10}) is turned on. Further
+configuration takes place behind the ``Configure...'' button:
 
-\qq Next, the ``Configure...'' button is selected. Under the ``IPv4 Settings''
-tab, the ``Method'' is set to \textit{Manual}, and the IP of the CE,
-163.118.42.1, is entered. The netmask, an arbitrary range of IPs for the
-network, is set to 25 in order to encompass the IP range
-163.118.42.1-163.118.42.127. The gateway is the IP address of the router through
-which the computer is connected to the network. It was found by {\tt ssh}-ing
-into NAS-1 and running {\tt ip route}, which displays the default gateway IP,
-163.118.42.126, and the IP of NAS-1, itself. Provide a DNS server of {\tt
-  8.8.8.8} so that the cluster will recognize its hostname and allow the
-internet to work. Under the ``IPv6 Settings'' tab, the ``Method'' is set to
-\textit{Link-Local Only}.
+\begin{itemize}
+\item Under the ``IPv4 Settings'' tab:
+  \begin{itemize}
+  \item ``Method'' is set to \textbf{Manual}.
+  \item The IP is set to the CE's IP: \textbf{163.118.42.1}.
+  \item The netmask is set to \textbf{25} to encompass the IP range
+    163.118.42.1-163.118.42.127.
+  \item The gateway IP is \textbf{163.118.42.126}, and it was found running
+    {\tt ip route} in NAS-1.
+  \item A DNS server, such as \textbf{8.8.8.8}, must be provided so that
+    hostnames, including the CE's, can be resolved.
+  \end{itemize}
+\item Under the ``IPv6 Settings'' tab:
+  \begin{itemize}
+  \item ``Method'' is set to \textbf{Link-Local Only}.
+  \end{itemize}
+\end{itemize}
 
-\qq With this information entered, the \textit{Save} button is pressed. The
-ethernet connection may be switched on as before, and the ``Current host name''
-in the bottom right of the screen should read ``uscms1.fltech-grid3.fit.edu'',
-the cluster's hostname. If it reads something else, enter the correct hostname
-on the bottom left of the screen. Once everything here is completed,
-\textit{Done} may be selected.
+\qq With this configuration in place, select \textit{Save} and switch on the
+ethernet connection. If the ``Current host name'' text box contains
+``uscms1.fltech-grid3.fit.edu'', the hostname of the cluster, then the CE should
+be connected to the internet, and the installation can continue! 
 
-\qq With network configuration out of the way, all the previously grayed-out
-options are now full of color! Now the local network needs to be
-configured. Select \textit{Cluster Private Network}.
+\subsection{Private Network Configuration}
 
-\qq The ``Private Cluster Interface'' dropdown menu is a list of the ethernet
-ports, similar to the list for selecting the public network connection. Since
-the 10GB/s connection is used for the public connection, the normal ethernet
-port, usually of the form {\tt enp6s0f0}, is used for the private
-connection. Refer back to the ``Network \& Hostname'' section to see which port
-is occupied, and select that one in the ``Private Cluster Interface'' dropdown
-menu. All the other fields should not need to be altered; the default settings
-are fine and expected.
+\qq With internet access obtained, all the previously grayed-out options are now
+full of color! The next step is to configure the \textit{Cluster Private
+  Network}. The only thing that must be done here, is to verify that the correct
+ethernet port is selected. The CE has a 10GB/s ethernet connection for internet
+use, it has already been configured, and a 1GB/s ethernet connection (ethernet
+device usually beginning with {\tt enp6}) for internal communication with the
+other cluster components. The 1GB/s connection should be selected by default,
+and the other default settings are correct. This section can usually be closed
+without having altered any of the settings.
+
+%\qq Select \textit{Network \& Host Name}.
+%
+%\qq Now, the network must be configured. The option for the 10GB/s ethernet
+%connection is turned on.
+%
+%\qq Next, the ``Configure...'' button is selected. Under the ``IPv4 Settings''
+%tab, the ``Method'' is set to \textit{Manual}, and the IP of the CE,
+%163.118.42.1, is entered. The netmask, an arbitrary range of IPs for the
+%network, is set to 25 in order to encompass the IP range
+%163.118.42.1-163.118.42.127. The gateway is the IP address of the router through
+%which the computer is connected to the network. It was found by {\tt ssh}-ing
+%into NAS-1 and running {\tt ip route}, which displays the default gateway IP,
+%163.118.42.126, and the IP of NAS-1, itself. Provide a DNS server of {\tt
+%  8.8.8.8} so that the cluster will recognize its hostname and allow the
+%internet to work. Under the ``IPv6 Settings'' tab, the ``Method'' is set to
+%\textit{Link-Local Only}.
+%
+%\qq With this information entered, the \textit{Save} button is pressed. The
+%ethernet connection may be switched on as before, and the ``Current host name''
+%in the bottom right of the screen should read ``uscms1.fltech-grid3.fit.edu'',
+%the cluster's hostname. If it reads something else, enter the correct hostname
+%on the bottom left of the screen. Once everything here is completed,
+%\textit{Done} may be selected.
+%
+%\qq With network configuration out of the way, all the previously grayed-out
+%options are now full of color! Now the local network needs to be
+%configured. Select \textit{Cluster Private Network}.
+%
+%\qq The ``Private Cluster Interface'' dropdown menu is a list of the ethernet
+%ports, similar to the list for selecting the public network connection. Since
+%the 10GB/s connection is used for the public connection, the normal ethernet
+%port, usually of the form {\tt enp6s0f0}, is used for the private
+%connection. Refer back to the ``Network \& Hostname'' section to see which port
+%is occupied, and select that one in the ``Private Cluster Interface'' dropdown
+%menu. All the other fields should not need to be altered; the default settings
+%are fine and expected.
 
 \subsection{Rolls}
 
-\qq Now the rolls can be installed! Select ``ROCKS ROLLS''. Here, rolls may be
-installed remotely from the ROCKS website. Select \textit{List Available Rolls}
-to generate the roll list. Select the following rolls:
+\qq Now the rolls can be installed! Rolls are software packages that are
+installed alongside the operating system. Select ``ROCKS ROLLS''. Here, rolls
+may be installed remotely from the Rocks website. Select \textit{List Available
+  Rolls} to generate the roll list. Select the following rolls:
+
+\begin{multicols}{3}
 
 \begin{itemize}
   \item base
@@ -202,47 +288,56 @@ to generate the roll list. Select the following rolls:
   \item Updates-CentOS-\textless version\textgreater
 \end{itemize}
 
+\end{multicols}
+
 Once all the desired rolls are selected, select \textit{Add Selected
   Rolls}. After the rolls appear in the ``Selected Rolls'' section, select
 \textit{Done}.
 
-\qq If no network rolls can be found, change ``Network Roll'' to ``CD/DVD''
-Roll, and just install the ``kernel'' roll. The other rolls may be installed later.
-
 \subsection{Cluster Configuration}
 
-\qq Select \textit{CLUSTER CONFIG} to configure the cluster. The fields are
-filled as follows:
+\qq Select \textit{CLUSTER CONFIG} to configure the cluster. The fields ought to
+resemble those in Table \ref{tab:clusterConfig}.
 
-\begin{center}
-  \begin{tabular}{|l|l|}
+\begin{table}[H]
+  \caption{A recommendation on how to fill in the cluster configuration fields.}
+  \begin{center}
+    \begin{tabular}{|l|l|}
+      \hline
+      Cluster Name & USCMS-FIT-Grid \\
+      \hline
+      Contact & \textless administrator email\textgreater \\
+      \hline
+      Project URL &
+                    \url{https://research.fit.edu/hep/hohlmann-research-group/grid-cluster}
+      \\
+      \hline
+      Latitude/Longitude & N28.0622 W80.6237 \\
+      \hline
+      Certificate Organization & Florida Institute of Technology \\
+      \hline
+      Certificate Locality & Melbourne \\
+      \hline
+      Certificate State & Florida \\
+      \hline
+      Certificate Country & US \\
+      \hline
+      NTP Servers & pool.ntp.org \\
     \hline
-    Cluster Name & USCMS-FIT-Grid \\
-    \hline
-    Contact & \textless administrator email\textgreater \\
-    \hline
-    Project URL &
-                  \url{https://research.fit.edu/hep/hohlmann-research-group/grid-cluster}
-    \\
-    \hline
-    Latitude/Longitude & N28.0622 W80.6237 \\
-    \hline
-    Certificate Organization & Florida Institute of Technology \\
-    \hline
-    Certificate Locality & Melbourne \\
-    \hline
-    Certificate State & Florida \\
-    \hline
-    Certificate Country & US \\
-    \hline
-    NTP Servers & pool.ntp.org \\
-    \hline
-  \end{tabular}
-\end{center}
+    \end{tabular}
+  \end{center}
+  \label{tab:clusterConfig}
+\end{table}
 
 After the fields have been verified to be correct, select \textit{Done}.
 
 \subsection{Partitioning}
+
+\begin{tcolorbox}[title=WARNING, colback=white, colframe=yellow, coltitle=black]
+  When installing a new operating system, be SURE that the destination drive is
+  correct. Hot spares and data partitions will show up alongside OS drives in
+  the installer.
+\end{tcolorbox}
 
 \qq Now the CE must be partitioned. Select \textit{INSTALLATION
   DESTINATION}. Select the larger of the two drives (the smaller one is the hot
@@ -255,27 +350,52 @@ selecting the ``-'' at the bottom of the window and checking the box for
 deleting all file systems. Then the \textit{Click here to
   create them automatically} option was selected.
 
-\qq The created {\tt /home} partition was renamed to {\tt /export}, because
-NAS-0 is what holds our home directories, and it was given 100 GiB. The default
-{\tt /boot} and {\tt swap} partitions were left untouched, the {\tt /var}
-partition was created and given 100 GiB, and the {\tt /} partition was allocated
-the remainder of the available space, 256.76 GiB.
+\qq Since NAS-0 holds the home directories, the default {\tt /home} partition is
+renamed to {\tt /export}, and a new {\tt /var} partition is created. The
+partition scheme ought to match what is shown in Table \ref{tab:partition}.
+
+%\qq The created {\tt /home} partition was renamed to {\tt /export}, because
+%NAS-0 is what holds our home directories, and it was given 100 GiB. The default
+%{\tt /boot} and {\tt swap} partitions were left untouched, the {\tt /var}
+%partition was created and given 100 GiB, and the {\tt /} partition was allocated
+%the remainder of the available space, 256.76 GiB.
+
+\begin{table}[H]
+  \caption{The partitioning configuration for a fresh CE.}
+  \begin{center}
+    \begin{tabular}{|l|l|}
+      \hline
+      Partition Name & Allocated Memory \\
+      \hline
+      {\tt /export} & 100 GiB \\
+      {\tt /var} & 100 GiB \\
+      {\tt /boot} & default \\
+      {\tt swap} & default \\
+      {\tt /} & remaining \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \label{tab:partition}
+\end{table}
 
 \qq Once everything is together, select \textit{Done} and carefully review the
 changes. If the changes are correct, select \textit{Accept Changes}.
 
 \subsection{Commit}
 
+\begin{tcolorbox}[title=WARNING, colback=white, colframe=yellow, coltitle=black]
+  There is NO ``Are you sure?'' when \textit{Begin Installation} is pressed!
+\end{tcolorbox}
+
 \qq If everything is undoubtedly confirmed (to the best of your ability), and
 you're absolutely ready to destroy everything and build it back up, say a quick
-prayer to your deity of choice and select \textit{Begin Installation}. WARNING:
-there is no ``confirm'' to \textit{Begin Installation}
+prayer to your deity of choice and select \textit{Begin Installation}.
 
 \qq Create a root password when prompted, and do NOT setup a user.
 
 \qq After the installation is complete, reboot as per the instructions. After
 reboot do not enter any further configuration; simply continue. When presented
-with the login prompt, login as root. Congratulations! ROCKS has been installed
+with the login prompt, login as root. Congratulations! Rocks has been installed
 onto the CE!
 
 %-----------END INSTALLATION-----------
@@ -284,77 +404,114 @@ onto the CE!
 
 \section{Unification}
 
-\qq Now that ROCKS is installed onto the CE, it can be installed onto the other
+\qq Now that Rocks is installed onto the CE, it can be installed onto the other
 cluster components so that they may be brought into the fold.
 
 \subsection{Nodes}
 
 \qq To begin, login to the CE as root and run {\tt insert-ethers}, the program
-that routes network traffic from the nodes to the ROCKS database for processing.
+that routes network traffic from the nodes to the Rocks database for processing.
 From the menu, select \textit{Compute}. The ``Inserted Applicances'' screen that
 appears should initially be blank; nodes must be turned on for them to be
 recognized and configured.
 
-\qq Insert the ROCKS Kernel disc into the first node, {\tt compute-1-0}, and
+\qq Insert the Rocks kernel disc into the first node, {\tt compute-1-0}, and
 restart it. {\tt compute-1-0} should appear in the ``Inserted Applicances''
-menu. The {\tt ()} in the rightmost column will be blank for now. A star, {\tt
-  *}, will appear between them when the node requests a kickstart file from the
-CE. The node will boot into the Anaconda installation for ROCKS 7.
+menu. The {\tt ()} in the rightmost column will be blank for now. A star ({\tt
+  *}) will appear when the node requests a kickstart file from the
+CE. The node will boot into the Anaconda installation for Rocks 7.
 
-\subsubsection{Installing ROCKS onto a Compute Node}
+\subsubsection{Installing Rocks onto a Compute Node}
 
 \qq The CE hosts a kickstart file that the nodes use to configure their
 installation. In order to fetch this file on startup, the nodes must be
 configured for PXE network booting. This is achieved by ensuring PXE is at the
 top of the boot order in the BIOS.
 
-\qq NOTE: If the CE is on while this is being completed, when the nodes restart,
-they will immediately grab the kickstart file from the CE regardless if {\tt
-  insert-ethers} is running or not. If this is undesired behavior, shutdown the
-CE before configuring the nodes.
+\begin{tcolorbox}[title=NOTE, colback=white, colframe=blue]
+  If the CE is on while this is being completed, when the nodes restart,
+  they will immediately grab the kickstart file from the CE regardless if {\tt
+    insert-ethers} is running or not. If this is undesired behavior, shutdown the
+  CE before configuring the nodes.
+\end{tcolorbox}
 
-\qq To enter a node's BIOS, spam the DELETE key on start up until ``Entering
+%\qq To enter a node's BIOS, spam the DELETE key on start up until ``Entering
+%SETUP'' is displayed. To modify the boot order, navigate to the ``Boot'' tab and
+%follow the on screen directions to place {\tt PCI BEV: IBA GE Slot 0400 v1236}
+%(the ethernet port connected to the router; ethernet device {\tt enp4s0f0}) in
+%slot 1. Slot 2 should be the CD drive, {\tt IDE CD}, and slot 3 should be the
+%regular hard drive, {\tt PCI SCSI}. The remaining boot options can be
+%excluded. Once these changes have been made, Save and Exit.
+
+\qq To enter a node's BIOS, spam the DELETE key on startup until ``Entering
 SETUP'' is displayed. To modify the boot order, navigate to the ``Boot'' tab and
-follow the on screen directions to place {\tt PCI BEV: IBA GE Slot 0400 v1236}
-(the ethernet port connected to the router; ethernet device {\tt enp4s0f0}) in
-slot 1. Slot 2 should be the CD drive, {\tt IDE CD}, and slot 3 should be the
-regular hard drive, {\tt PCI SCSI}. The remaining boot options can be
-excluded. Once these changes have been made, Save and Exit.
+follow the on screen directions to adjust the boot order so that it matches what
+is shown in Table \ref{tab:bootOrderNodes}.
 
-% include screenshot of boot order
+\begin{table}[H]
+  \caption{The boot order of the nodes.}
+  \begin{center}
+    \begin{tabular}{|l|l|l|}
+      \hline
+      1 & {\tt PCI BEV: IBA GE Slot 0400 v1236} & ethernet (PXE boot) \\
+      2 & {\tt IDE CD} & boot from disc drive \\
+      3 & {\tt PCI SCSI} & internal hard drive \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \label{tab:bootOrderNodes}
+\end{table}
 
-\qq Now that the boot order of all the nodes has been corrected, we're going to
-reinstall ROCKS onto the CE. With a fresh CE, we can boot the nodes up with {\tt
-  insert-ethers} running and get them sorted properly. 
-
-\qq All the nodes, except for {\tt compute-1-9} and {\tt compute-2-9}, have been
-brought under control of the CE!
+%\qq Now that the boot order of all the nodes has been corrected, we're going to
+%reinstall Rocks onto the CE. With a fresh CE, we can boot the nodes up with {\tt
+%  insert-ethers} running and get them sorted properly. 
+%
+%\qq All the nodes, except for {\tt compute-1-9} and {\tt compute-2-9}, have been
+%brought under control of the CE!
 
 \subsubsection{Incorporate NAS-0}
 
 \qq Now that the nodes are in, let's see about bringing NAS-0 into the
-fold. Similar to the nodes, it's boot order must also be changed so that
+fold. Similar to the nodes, its boot order must also be changed so that
 ethernet boot is enabled. After spamming the DELETE key on startup and
-navigating to the boot menu of the BIOS, I placed {\tt PCI BEV: IBA GE Slot 0600
-  v1236} (the ethernet port in use) on top, followed by {\tt IDE CD} and {\tt
-  PCI SCSI: 3ware Storage Controller} (the RAID card).
+navigating to the boot menu of the BIOS, the boot order was arranged as is shown
+in Table \ref{tab:bootOrderNAS0}.
 
-\qq After that configuration, I ran {\tt insert-ethers} on the CE and selected
-\textit{NAS Appliance}. Now we're ready to save our boot options on NAS-0 and
-reboot! Let's see if it works.
+\begin{table}[H]
+  \caption{The proper boot order of NAS-0.}
+  \begin{center}
+    \begin{tabular}{|l|l|l|}
+      \hline
+      1 & {\tt PCI BEV: IBA GE Slot 0600 v1236} & ethernet (PXE boot) \\
+      2 & {\tt IDE CD} & boot from disc drive \\
+      3 & {\tt PCI SCSI: 3ware Storage Controller} & boot from RAID card \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \label{tab:bootOrderNAS0}
+\end{table}
 
-\qq We're in! NAS-0 has booted into ROCKS's Anaconda installer via the kickstart
+%I placed {\tt PCI BEV: IBA GE Slot 0600
+%  v1236} (the ethernet port in use) on top, followed by {\tt IDE CD} and {\tt
+%  PCI SCSI: 3ware Storage Controller} (the RAID card).
+
+\qq After that configuration, {\tt insert-ethers} was run on the CE and
+\textit{NAS Appliance} was selected. Now we're ready to save our boot options on
+NAS-0 and reboot! Let's see if it works.
+
+\qq We're in! NAS-0 has booted into Rock's Anaconda installer via the kickstart
 file. {\tt insert-ethers} also recognizes NAS-0! Let's see about going through
 the installer.
 
-\qq The first thing I decided to tackle is \textit{Installation
-  Destination}. This section is a bit tricky because all the disks attached to
-the RAID card are also displayed and care must be taken to not install the OS on
-a RAID disk. There are 13 disks listed in the ``Local Standard Disks'' section
-({\tt sd[a-m]}) and one disk listed in the ``Specialized \& Network Disk'' ({\tt
-  mpatha}). That's a total of 14 disks out of NAS-0's 16. I'm guessing the two
-unlisted disks are the two I dedicated to housing the OS, which is unfortunate
-because those are the only two we need. Hmm.
+%--------------------------TROUBLESHOOTING--------------------------------
+\qq The most pressing issue is \textit{Installation Destination}. This section
+is a bit tricky because all the disks attached to the RAID card are also
+displayed and care must be taken to not install the OS on a RAID disk. There are
+13 disks listed in the ``Local Standard Disks'' section ({\tt sd[a-m]}) and one
+disk listed in the ``Specialized \& Network Disk'' ({\tt mpatha}). That's a
+total of 14 disks out of NAS-0's 16. I'm guessing the two unlisted disks are the
+two I dedicated to housing the OS, which is unfortunate because those are the
+only two we need. Hmm.
 
 \qq Lol, the OS mirror is degraded; one of the drives failed. That's fine; we're
 just booting into NAS-0 normally to replace the drive, then we should be good to
@@ -368,47 +525,59 @@ unit {\tt u0-1}, said to be in port 1, was OK. To formally remove the degraded
 drive, we ran {\tt tw\_cli maint remove c0 p0}, which said that the port was
 empty. This makes sense, since unit {\tt u0-0} does not have a port listed. We
 are going to simply remove the drive 0:0 and throw a new drive in its place.
+%----------------------------------------------------------------------
 
 \subsubsection{Incorporate SE}
 
 \qq The SE acts as a node (before, it was named {\tt compute-0-0}). So we'll see
 about adding it in as a node. First, like the nodes, the SE's boot order must be
-modified. The procedure is the same as the nodes. There are two ethernet ports
-listed, we chose the one titled {\tt PCI BEV: IBA GE Slot 0600 v1324}. 
+modified. The procedure is the same as the nodes, shown in Table
+\ref{tab:bootOrderNodes}. However, on the SE, there are two ethernet ports
+listed, and we chose the one titled {\tt PCI BEV: IBA GE Slot 0600 v1324}.
 
-\qq Now that the boot order's been fixed, we can run {\tt insert-ethers} on the
+\qq Now that the boot order has been fixed, we can run {\tt insert-ethers} on the
 CE and select \textit{Compute}. Go back to the SE, and select ``Save and Exit''
-to restart with the new boot order. The SE successfully requested the kickstart
-file and brought us to the installer.
+to restart with the new boot order. The SE will request the kickstart
+file and load the Anaconda installer.
 
-\qq The installer needs to be told where to install ROCKS 7. There are two disks
-on display, a 250GB {\tt sda} and a 1TB {\tt sdb}. I'm gonna boot into the
-current disk to investigate how these drives are put together so I can make an
-informed decision regarding how to install ROCKS 7 (I'm learning from my
-previous mistakes born of haste). I changed the boot order to prioritize the
-hard drive to get where I need to go. The little 250GB drive is, in fact, the OS
-drive, and the large 1TB drive is a dedicated backup drive, so we will be
-installing ROCKS 7 on just the 250GB drive. We changed the boot order back to
-favor PXE and restarted.
+\begin{tcolorbox}[title=ASIDE, colback=white, colframe=blue]
+  The installer needs to be told where to install Rocks 7. There are two disks
+  on display, a 250GB {\tt sda} and a 1TB {\tt sdb}. I'm gonna boot into the
+  current disk to investigate how these drives are put together so I can make an
+  informed decision regarding how to install ROCKS 7 (I'm learning from my
+  previous mistakes born of haste). I changed the boot order to prioritize the
+  hard drive to get where I need to go. The little 250GB drive is, in fact, the OS
+  drive, and the large 1TB drive is a dedicated backup drive, so we will be
+  installing ROCKS 7 on just the 250GB drive. We changed the boot order back to
+  favor PXE and restarted.
+\end{tcolorbox}
 
-\qq The installer decided to automatically begin the installation. I saw some
-{\tt /dev/sda} stuff flash by without seeing any {\tt /dev/sdb} stuff, so I
-guess it figured itself out. Don't forget to set the root password during the
-install! If it's not entered before the install is completed, it can be set
-using ROCKS commands on the CE: {\tt rocks set host sec\_attr compute-x-x
-  attr=root\_pw}, {\tt rocks sync host sec\_attr compute-x-x}.
+\qq The installer decided to automatically begin the installation. Some
+{\tt /dev/sda} stuff flashed by without any {\tt /dev/sdb} stuff, so it appears
+to have figured itself out. 
+
+\begin{tcolorbox}[title=NOTE, colback=white, colframe=blue]
+  Do not forget to set the root password during the
+  install! If it is not entered before the install is completed, it can be set
+  using Rocks commands on the CE: 
+  \begin{itemize}
+  \item {\tt rocks set host sec\_attr compute-x-x attr=root\_pw} 
+  \item {\tt rocks sync host sec\_attr compute-x-x}
+  \end{itemize}
+\end{tcolorbox}
 
 \subsubsection{Configuring the Nodes}
 
-\qq NOTE: The root password of the nodes may not have been set (they cannot be
-directly accessed from themselves). They can be accessed, however, from the
-CE. To set the root password, simply ssh into a node from the CE with {\tt ssh
-  compute-[0-1]-[0-9]} and run {\tt passwd} to set the root password. 
+\begin{tcolorbox}[title=NOTE, colback=white, colframe=blue]
+  The root password of the nodes may not have been set (they cannot be
+  directly accessed from themselves). They can be accessed, however, from the
+  CE. To set the root password, simply ssh into a node from the CE with {\tt ssh
+    compute-[0-1]-[0-9]} and run {\tt passwd} to set the root password. 
+\end{tcolorbox}
 
 \qq Since the UPSs are having problems providing power for all the nodes at
-once, I'm gonna configure the nodes in two equally sized groups: {\tt
-  compute-*-[0-4]} and {\tt compute-*-[5-9]}. Let's arrange the nodes into that
-first one.
+once, the nodes will be configured in two equally sized groups: {\tt
+  compute-*-[0-4]} and {\tt compute-*-[5-9]}.
 
 %-----------END UNIFICATION-----------
 
@@ -427,31 +596,38 @@ not running, it can easily set up after a quick internet search.
 
 \subsection{HTCondor}
 
-\qq We've got the bare minimum set up to start playing with condor! Let's see
-what we can do. We installed ROCKS onto the CE with the Condor Roll, so it's
-already on the system. Running a {\tt condor\_status} shows that condor already
-recognizes all the nodes' CPUs! Very nice. 
+\qq HTCondor is the cluster's job submission and routing software; it receives
+jobs and sends them to the nodes to be computed. Since the HTCondor roll was
+installed alongside Rocks, HTCondor is available on the CE straight away; {\tt
+  condor\_status} shows that HTCondor recognized the nodes' CPUs. Unfortunately,
+however, job submission does not immediately work. Submitted jobs are held
+without begin computed.
 
-\qq I'm following the HT-Condor installation instructions provided by OSG
-(https://opensciencegrid.org/docs/compute-element/install-htcondor-ce/). Before
-we begin tackling the installation, the instructions ask us to verify that some
-prerequisites have been performed. The first of which is the creation of two
-user IDs: {\tt condor}, which has already been created, and {\tt gratia}, which
-hasn't yet. It says {\tt gratia} will be created during installation, but, since
-I think HTCondor is already installed from the ROCKS Roll, we might have to
-manually create it. We'll hold off on that for now.
-
-\qq Another prerequisite we need concern ourselves with is the acquisition of a
-new host certificate. We get to request the first hostcert of the new system!
-Exciting! Unfortunately, the hostcerts need to be requested for both the CE and
-SE, so let's see about getting the SE setup first!
-
-\qq We tried to run a condor job on the CE to see what would happen, but it
-didn't work. Turns out, even though the nodes' CPUs are seen by condor, it
-doesn't look like condor is installed on the nodes! They don't have {\tt
-  /etc/condor/config.d/00personal\_condor.config} files. 
-
-\qq After
+%\qq We've got the bare minimum set up to start playing with condor! Let's see
+%what we can do. We installed ROCKS onto the CE with the Condor Roll, so it's
+%already on the system. Running a {\tt condor\_status} shows that condor already
+%recognizes all the nodes' CPUs! Very nice. 
+%
+%\qq I'm following the HT-Condor installation instructions provided by OSG
+%(https://opensciencegrid.org/docs/compute-element/install-htcondor-ce/). Before
+%we begin tackling the installation, the instructions ask us to verify that some
+%prerequisites have been performed. The first of which is the creation of two
+%user IDs: {\tt condor}, which has already been created, and {\tt gratia}, which
+%hasn't yet. It says {\tt gratia} will be created during installation, but, since
+%I think HTCondor is already installed from the ROCKS Roll, we might have to
+%manually create it. We'll hold off on that for now.
+%
+%\qq Another prerequisite we need concern ourselves with is the acquisition of a
+%new host certificate. We get to request the first hostcert of the new system!
+%Exciting! Unfortunately, the hostcerts need to be requested for both the CE and
+%SE, so let's see about getting the SE setup first!
+%
+%\qq We tried to run a condor job on the CE to see what would happen, but it
+%didn't work. Turns out, even though the nodes' CPUs are seen by condor, it
+%doesn't look like condor is installed on the nodes! They don't have {\tt
+%  /etc/condor/config.d/00personal\_condor.config} files. 
+%
+%\qq After
 
 \subsection{Setup SE}
 
@@ -463,68 +639,127 @@ SE.
   \begin{center}
     \begin{tabular}{|l|l|}
       \hline
-      HDFS & The SE's data drive is formatted with HDFS. \\
+      HDFS & Hadoop Distributed File System for the SE's data drive \\
+      xrootd & data storage system\\
+      PhEDEx & CERN data routing\\
+      squid & caching proxy to aide data transfers\\
       \hline
-      xrootd & \\
-      PhEDEx & \\
-      squid & \\
-      globus & \\
     \end{tabular}
   \end{center}
 \end{figure}
 
 %-----------END CONFIGURATION-----------
 
+\newpage
+
 %----------BEGIN TROUBLESHOOTING----------
 
-\section{Troubleshooting}
+\section{Troubleshooting Log}
 
 \subsection{Boot Loader Install Failed}
 
-\qq During installation, the boot loader failed to install. Selecting
-\textit{no} on the dialogue box will present an ``unknown error'' screen with a
-log and a debug option. Selecting ``debug'' kicks the screen over to the
-terminal screen.
+\qq During the first attempted installation of Rocks 7 onto the CE, the boot
+loader failed to install. Selecting \textit{no} on the dialogue box will present
+an ``unknown error'' screen with a log and a debug option. Selecting ``debug''
+kicks the screen over to the terminal screen.
 
 \qq Navigating to the ``program-log'' tab, the following errors may be found
-after the installer attempted to run {\tt grub2-install --no-floppy /dev/sda}:
+after the installer attempted to run the following command:
 
-\begin{itemize}
-\item {\tt grub2-install: warning: Attempting to install GRUB to a disk with multiple
-    partition labels. This is not supported yet...}
-\item {\tt grub2-install: error: embedding is not possible, but this is required
-    for cross-disk install.}
-\end{itemize}
+\begin{tcolorbox}[colback=white, colframe=black]
+  \begin{minted}{bash}
+    grub2-install --no-floppy /dev/sda
+  \end{minted}
+  \tcblower
+    {\tt grub2-install: warning: Attempting to install GRUB to a disk with multiple
+    partition labels. This is not supported yet...} \\
+    {\tt grub2-install: error: embedding is not possible, but this is required for
+    cross-disk install.}
+\end{tcolorbox}
 
 The decision to try to install to {\tt /dev/sda} is strange because according to
-{\tt fdisk -l /dev/sda} and {\tt fdisk -l /dev/sdb}, run in the ``shell'' tab,
-reveal that {\tt /dev/sdb1} is marked for boot, whereas no such marking is
+{\tt fdisk -l /dev/sda} and {\tt fdisk -l /dev/sdb}, both run in the ``shell''
+tab, reveal that {\tt /dev/sdb1} is marked for boot, whereas no such marking is
 present in the single part of {\tt /dev/sda}.
 
-\qq Trying to run {\tt grub2-install --no-floppy /dev/sda} and {\tt grub2-install
-  --no-floppy /dev/sdb} produces the same result: {\tt grub2-install: error:
-  /usr/lib/grub/i386-pc/modinfo.sh doesn't exist. Please specify --target or
-  --directory.} Investigating that path, {\tt /usr/lib/grub} comes up empty. To
+\qq Attempting to install GRUB onto {\tt /dev/sda} or {\tt /dev/sdb} yields the
+same result:
+
+\begin{tcolorbox}[colback=white, colframe=black]
+\begin{minted}{bash}
+  grub2-install --no-floppy /dev/sda 
+\end{minted}
+\begin{minted}{bash}
+  grub2-install  --no-floppy /dev/sdb 
+\end{minted}
+\tcblower
+{\tt grub2-install: error: /usr/lib/grub/i386-pc/modinfo.sh doesn't
+  exist. Please specify --target or --directory.} 
+\end{tcolorbox}
+
+Investigating that path, {\tt /usr/lib/grub} comes up empty. To
 find where that file is actually located, since it has to be somewhere if the
-installer is running that command, I ran {\tt find / -name modinfo.sh}. It
-appears in two places: {\tt /mnt/sysimage/boot/grub2/i386-pc/modinfo.sh} and
-{\tt /mnt/sysimage/usr/lib/grub/i386-pc/modinfo.sh}.
+installer is running that command, the following command was run:
+
+\begin{tcolorbox}[colback=white, colframe=black]
+  \begin{minted}{bash}
+    find / -name modinfo.sh
+  \end{minted}
+  \tcblower
+  {\tt /mnt/sysimage/boot/grub2/i386-pc/modinfo.sh}\\
+
+  {\tt /mnt/sysimage/usr/lib/grub/i386-pc/modinfo.sh}
+\end{tcolorbox}
 
 \qq I'm trying to run the installer's command again while specifying the
-location of the file it needs: {\tt grub2-install --no-floppy
-  --directory='/mnt/sysimage/boot/grub2/i386-pc' /dev/sda}. Now it says:
-{\tt grub2-install: error: cannot open
-  '/mnt/sysimage/boot/grub2/i386-pc/kernel.img': No such file or
-  directory.}. Hmm, let's see if that file exists anywhere with: {\tt find /
-  -name kernel.img}. Ahh, it's at
-{\tt /mnt/sysimage/usr/lib/grub/i386-pc/kernel.img}! Let's run the installer's
-command again, but the directory will be changed to
-{\tt /mnt/sysimage/usr/lib/grub/i386-pc}:
-{\tt grub2-install --no-floppy --directory='/mnt/sysimage/usr/lib/grub/i386-pc'
-  /dev/sda}. Ah ha! Now I'm getting the same error as the installer! Let's try
-with {\tt /dev/sdb}: {\tt grub2-install --no-floppy
-  --directory='/mnt/sysimage/usr/lib/grub/i386-pc /dev/sdb}. Ohh!
-{\tt Installation finished. No error reported.}! 
+location of the file it needs: 
+
+\begin{tcolorbox}[colback=white, colframe=black]
+  \begin{minted}{bash}
+    grub2-install --no-floppy --directory='/mnt/sysimage/boot/grub2/i386-pc'
+    /dev/sda
+  \end{minted}
+  \tcblower
+  {\tt grub2-install: error: cannot open
+    '/mnt/sysimage/boot/grub2/i386-pc/kernel.img': No such file or
+    directory.}
+\end{tcolorbox}
+
+Hmm, let's see if that file exists anywhere with: 
+
+\begin{tcolorbox}[colback=white, colframe=black]
+  \begin{minted}{bash}
+    find / -name kernel.img
+  \end{minted}
+  \tcblower
+  {\tt /mnt/sysimage/usr/lib/grub/i386-pc/kernel.img}
+\end{tcolorbox}
+
+Ah ha! Let's run the installer's command again, but the directory will be
+changed to {\tt /mnt/sysimage/usr/lib/grub/i386-pc}: 
+
+\begin{tcolorbox}[colback=white, colframe=black]
+  \begin{minted}{bash}
+    grub2-install --no-floppy --directory='/mnt/sysimage/usr/lib/grub/i386-pc'
+    /dev/sda
+  \end{minted}
+  \tcblower
+  {\tt /mnt/sysimage/usr/lib/grub/i386-pc/kernel.img}
+\end{tcolorbox}
+
+Now I'm getting the same error as the installer! Let's try with {\tt
+  /dev/sdb}: 
+
+\begin{tcolorbox}[colback=white, colframe=black]
+  \begin{minted}{bash}
+    grub2-install --no-floppy --directory='/mnt/sysimage/usr/lib/grub/i386-pc
+    /dev/sdb'
+  \end{minted}
+  \tcblower
+  {\tt Installation finished. No error reported.}
+\end{tcolorbox}
+
+Exciting news!
 
 \qq Since the installer crashed, the CE needs to be rebooted. Be sure to swiftly
 eject the disc when it first begins to power on so that it tries to boot
@@ -542,10 +777,14 @@ boot into the hot spare, just as it was trying to do during installation.
 {\tt (hd0)/boot/grub2} and {\tt root} was set to {\tt hd0}. To point those at the
 right place I ran the following two commands:
 
-\begin{itemize}
-  \item {\tt set prefix=(hd1)/boot/grub2}
-  \item {\tt set root=hd1}
-\end{itemize}
+\begin{tcolorbox}[colback=white, colframe=black]
+  \begin{minted}{bash}
+    set prefix=(hd1)/boot/grub2
+  \end{minted}
+  \begin{minted}{bash}
+    set root=hd1
+  \end{minted}
+\end{tcolorbox}
 
 \qq Instructions online say after fixing the variables to try loading the normal
 module with {\tt insmod normal}, but I get the error, {\tt error: file
@@ -554,15 +793,17 @@ nothing! Does that mean there's nothing on the drive I need, or just that the
 information isn't quite accessible? Hmm. I guess a restart couldn't hurt more;
 let's try that now that the variables are set.
 
-\qq Actually, you know what, I think I discovered the mistake that caused this
-whole mess. I decided to check to box to include the hot spare in the
-installation process. It has no place here; it's managed strictly by the RAID
-card. It got assigned {\tt sda} and messed everything up. I'm just gonna turn all
-this off and redo the installation correctly this time.
+\begin{tcolorbox}[title=RESOLUTION, colback=white, colframe=green!40!black]
+  Actually, you know what, I think I discovered the mistake that caused this
+  whole mess. I decided to check the box to include the hot spare in the
+  installation process. It has no place here; it's managed strictly by the RAID
+  card. It got assigned {\tt sda} and messed everything up. I'm just gonna turn all
+  this off and redo the installation correctly this time.
+\end{tcolorbox}
 
-\subsection{Remote ROCKS Servers Inaccessible}
+\subsection{Remote Rocks Servers Inaccessible}
 
-\qq Normally, the ROCKS rolls are able to be accessed from the remote ROCKS
+\qq Normally, the Rocks rolls are able to be accessed from the remote Rocks
 server in the ``ROCKS ROLLS'' section of the installation. After the kerfuffle
 with the boot loader, however, the server seems to be inaccessible even though
 the CE has internet, verified by pinging through the console.
@@ -600,31 +841,38 @@ helpful. I'm going through it.
 {\tt /etc/hosts}, but no luck. I'm going to try the {\tt /etc/resolv.conf} thing
 that worked on NAS-1.
 
-\qq The ROCKS installation CD on the CE suddenly has internet!  The IP is
+\qq The Rocks installation CD on the CE suddenly has internet!  The IP is
 163.118.42.1/25, the broadcast IP is 163.118.42.127, and the gateway IP is
-163.118.42.126 ({\tt ip address add 163.118.42.1/25 broadcast + dev
-  enp10s0f0}). A route was added: {\tt ip route add default via 163.118.42.126
-  dev enp10s0f0}. A nameserver was added to {\tt /etc/resolv.conf},
-{\tt nameserver 9.9.9.9}. The installer can be restarted with {\tt anaconda}.
+163.118.42.126 
 
-\qq Now the manual installation via anaconda's CLI can begin. 
+\begin{tcolorbox}[title=Enable Internet in Boot CD, colback=white,
+  colframe=black, coltitle=green]
+  \begin{minted}{bash}
+    ip address add 163.118.42.1/25 broadcast + dev enp10s0f0
+  \end{minted}
+  \begin{minted}{bash}
+    ip route add default via 163.118.42.126 dev enp10s0f0
+  \end{minted}
+  \begin{minted}{bash}
+    echo "nameserver 9.9.9.9" >> /etc/resolv.conf
+  \end{minted}
+\end{tcolorbox}
 
-The locations of several important lines of code:
-\begin{tabular}{|c|c|}
-  ROCKS Rolls GUI & {\tt /usr/share/anaconda/addons/org\_rocks\_rolls/gui/spokes/RocksRolls.glade} \\
-  GUI Function & {\tt /usr/share/anaconda/addons/org\_rocks\_rolls/gui/spokes/RocksRolls.glade} \\
-  Actual Function & {\tt /opt/rocks/lib/python2.7/site-packages/rocks/media.py} \\
-\end{tabular}
+\qq Now the manual installation via anaconda's CLI can begin.  It is difficult
+to test individual lines of code and functions because of so many references to
+``self'' in the code, which indicates an incredible reliance on being in a
+special running environment to operate properly.
 
-It is difficult to test the individual lines and functions because of so many
-references to ``self'' in the code, which indicates an incredible reliance on
-being in a special running environment to operate properly.
-
-\qq I'm trying something new. I'm installing ROCKS onto a flash drive on another
+\qq I'm trying something new. I'm installing Rocks onto a flash drive on another
 machine, then I'm going to {\tt dd} the flash drive image onto the hard drive in
 the cluster. Maybe that will work.
 
-\qq Make sure the USB is COMPLETELY blank ({\tt parted /dev/sd<x> mklabel loop}).
+\begin{tcolorbox}[title=Completely Wipe USB, colback=white, colframe=black,
+  coltitle=green]
+  \begin{minted}{bash}
+    parted /dev/sd<x> mklabel loop
+  \end{minted}
+\end{tcolorbox}
 
 \qq To get to the anaconda command line application:
 \begin{itemize}
@@ -658,13 +906,13 @@ with {\tt sudo service ssh status}.
 \qq BREAK-THROUGH! After fiddling with GRUB from the LiveCD, namely reinstalling
 it onto the boot partition, the CE still refused to boot! This is because the
 3Ware card was not configured to be booted into on the boot order section of the
-BIOS. This page is accessed by slamming the <Delete> key immediately upon
+BIOS. This page is accessed by slamming the DELETE key immediately upon
 turning on the CE. The 3Ware card had its boot status elevated, and I was
 presented with a fully fleshed out GRUB prompt! (In contrast to the extremely
 limited rescue GRUB prompt from earlier.) What is available is summarized in
 Table \ref{tab:grubPartitions}.
 
-\begin{figure}[H]
+\begin{table}[H]
   \label{tab:grubPartitions}
   \caption{A list of the partitions available to us at the GRUB prompt.}
   \begin{center}
@@ -682,7 +930,7 @@ Table \ref{tab:grubPartitions}.
       \hline
     \end{tabular}
   \end{center}
-\end{figure}
+\end{table}
 
 \qq Let's try to boot into the boot partition. Following some instructions from
 online, the first step is to load the {\tt ext2} module, {\tt insmod
@@ -699,33 +947,6 @@ kernel was also tried to no avail. The rescue kernel has the panic {\tt not
 syncing: VFS: Unable to mount root fs on unknown-block(0,0)}. A quick search has
 revealed that it might be complaining about not having the {\tt initramfs}
 loaded beforehand. We have that file, but how do we load it properly?
-
-\qq Running the setup commands in a different order, while throwing in a couple
-new ones, produces different results, but nothing successful.
-
-\begin{figure}[H]
-  \label{cmd:grubAttempt1}
-  \begin{tabular}{l|l}
-    {\tt set pager=1} & \makecell{Slow down screen output\\so that it can be read.} \\
-    {\tt set root=(hd0,msdos1)} & \makecell{Set {\tt root} to be whatever the boot
-                                  partition is.} \\
-    {\tt insmod ext2} & Load the module for dealing with the boot partition's
-                        filesystem. \\
-    {\tt linux /vmlinuz root=/dev/sda1} & Load the desired {\tt vmlinuz} image,
-                                          usually not the ``rescue'' one, and
-                                          identify the boot partition on disk. The
-                                          device loosely corresponds with {\tt
-                                          hd0} and its partition with {\tt
-                                          msdos1}. \\
-    {\tt initrd /initrd-plymouth.img} & Load the corresponding {\tt initrd}
-                                        image. \\
-    {\tt boot} & Attempt to boot into the selected image. \\
-  \end{tabular}
-  \caption{An attempt to boot into the OS from GRUB.}
-\end{figure}
-
-Unfortunately, the {\tt pager} setting does not page the output from {\tt boot},
-so we still have no clue what's going on after the button's hit.
 
 \qq I wonder what happens if we use one of the {\tt initramfs} files with {\tt
   initrd} instead of just the plain {\tt initrd} image. Also, I'm gonna try to
@@ -757,15 +978,21 @@ because that file is found on the root partition. In our case, however, that
 partition is logical. How can we configure GRUB to boot into a logical
 partition?
 
+\begin{tcolorbox}[title=RESOLUTION, colback=white, colframe=green!40!black]
+  The CE was not getting internet because a DNS server was not specified in the
+  ``Network Configuration'' section in the Anaconda installer. Throwing {\tt
+    8.8.8.8} in the DNS slot fixed the problem! Internet is back!
+\end{tcolorbox}
+
 \subsection{Nodes not found in {\tt insert-ethers}}
 
-\qq I found the documentation from when Ankit and Christian installed ROCKS 6 on
+\qq I found the documentation from when Ankit and Christian installed Rocks 6 on
 all the nodes back in 2014. They said, after running {\tt insert-ethers
-  --cabinet=1} on the CE and selecting \textit{Nodes}, they inserted the ROCKS 6
+  --cabinet=1} on the CE and selecting \textit{Nodes}, they inserted the Rocks 6
 disc into a node and booted into it. When the disc was loaded, the node sent out
 a DHCP request that was then picked up by insert-ethers. Let's see about trying
-that out on compute-1-0. Since we don't have a Jumbo DVD for ROCKS 7.0, I'm
-trying with the ROCKS 7.0 kernel disc. 
+that out on compute-1-0. Since we don't have a Jumbo DVD for Rocks 7.0, I'm
+trying with the Rocks 7.0 kernel disc. 
 
 \qq The kernel disc booted to the language selection screen as
 expected. Unfortunately, however, I seem to be stuck here. The screen requires
@@ -816,17 +1043,17 @@ course of action in response to this error. Unfortunately, turns out the site is
 6 years old, and not of much help.
 
 \qq Some disappointing news: I read through Ankit's old documentation from when
-he and Christian were building the cluster with ROCKS 6 back in 2014. They were
+he and Christian were building the cluster with Rocks 6 back in 2014. They were
 trying to set up the wiki and the nodes at the same time, and the MySQL didn't
 like that so much. Sounds familiar! They had to reinstall the CE, so that's what
 we're gonna go do.
 
-\qq I've backed up the adminlog, thrown in the ROCKS 7 kernel CD, and restarted
+\qq I've backed up the adminlog, thrown in the Rocks 7 kernel CD, and restarted
 the machine. I'm going to follow the installation instructions at the beginning
 of this document.
 
-\qq We've thrown the same ROCKS 7 on the node that's on the CE. We were hoping
-to get a ROCKS software package ``compute node'' by pointing the installation
+\qq We've thrown the same Rocks 7 on the node that's on the CE. We were hoping
+to get a Rocks software package ``compute node'' by pointing the installation
 source at a specific URL, but the only available one is ``minimal install''. 
 
 \qq We're gonna try installing the node from itself.
@@ -834,8 +1061,8 @@ source at a specific URL, but the only available one is ``minimal install''.
 \qq As a last ditch effort, I'm going to try to follow the directions exactly on
 a brand new node. We started {\tt insert-ethers}, selected ``Compute'', and
 booted the new node, {\tt compute-1-2} (the real one), into the Kernel Roll
-CD. We have arrived at the initial ROCKS 7.0 screen where we choose to Install
-ROCKS or test the media. We've selected the normal ``Install ROCKS'' option.
+CD. We have arrived at the initial Rocks 7.0 screen where we choose to Install
+Rocks or test the media. We've selected the normal ``Install Rocks'' option.
 Upon turning on the network under the ``Network Configuration'' section of the
 installer, {\tt insert-ethers} reports having received a DHCP request from {\tt
   compute-0-1}, what {\tt compute-1-2} has decided to call itself (this is
@@ -860,18 +1087,20 @@ network before messing with the ``Installation Source''.
 ``Cluster Network'' section, verified that the following settings are
 acceptable:
 
-\begin{figure}[H]
+\begin{table}[H]
   \caption{The default ``Cluster Network'' settings.}
-  \begin{tabular}{|l|l|}
-    \hline
-    Private Cluster Interface & {\tt enp4s0f1;00:30:48:C2:F4:41} \\
-    Private Domain Name & local \\
-    MTU & 1500 \\
-    IPv4 Address & 10.1.1.1 \\
-    IPv4 Netmask & 255.255.255.0 \\
-    \hline
-  \end{tabular}
-\end{figure}
+  \begin{center}
+    \begin{tabular}{|l|l|}
+      \hline
+      Private Cluster Interface & {\tt enp4s0f1;00:30:48:C2:F4:41} \\
+      Private Domain Name & local \\
+      MTU & 1500 \\
+      IPv4 Address & 10.1.1.1 \\
+      IPv4 Netmask & 255.255.255.0 \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
 
 Selecting ``Done'' saves these settings and completes the configuration. Now
 let's do the ``Installation Source''. We're gonna point the node at the full
@@ -893,7 +1122,7 @@ files are transferred over HTTPS rather than HTTP. Let's try that setting. Nope,
 nothing. I'm gonna send the 
 
 \qq We've made a Hypernews post asking for help. In the mean time, we're putting
-ROCKS Kernel on a node again to play with for a bit. When we turned it on, it
+Rocks Kernel on a node again to play with for a bit. When we turned it on, it
 complained of a kernel error and said to run {\tt abrt-cli list} to view it. The
 reason it gave was ``nobody cared (try booting with the {\tt irqpoll}
 option''. A quick search revealed that the error means an interrupt was not
@@ -901,7 +1130,7 @@ handled, usually a symptom of buggy firmware. To boot with the {\tt irqpoll}
 option, which will, when an interrupt is encountered, poll all interrupt
 handlers in an attempt to resolve the interruption. 
 
-\qq While it doesn't seem like the CE and the ROCKS node can see each other
+\qq While it doesn't seem like the CE and the Rocks node can see each other
 (they have both assigned themselves a local IP of 10.1.1.1), they can both see a
 machine with local IP 10.1.1.254 (MAC: 00:25:90:33:A3:D8). What is this machine?
 It's not NAS-0, the SE (which is off), or the network switch. Also, what's {\tt
@@ -924,21 +1153,23 @@ that {\tt httpd}, {\tt dhcpd}, and some other services be synced and restarted:
 \end{itemize}
 
 Just to see what would happen, I then ran {\tt insert-ethers} on the CE and
-restarted {\tt compute-1-0}, the node with the ROCKS Kernel on it. Nothing
-happened with that, so I booted it back into the ROCKS Kernel CD. This time,
+restarted {\tt compute-1-0}, the node with the Rocks Kernel on it. Nothing
+happened with that, so I booted it back into the Rocks Kernel CD. This time,
 when we turned networking on, it called itself {\tt compute-0-1}! That's still
 not {\tt compute-1-0}, but it's closer. Also, {\tt insert-ethers} has seen {\tt
   compute-0-1}. In the Anaconda installer we manually changed the host name from
 {\tt compute-0-1} to {\tt compute-1-0}, but that change was not reflected in
 {\tt insert-ethers}; we're not even sure if that change was real.
 
-\qq Daniel Campos is investigating the cluster. He's gotten into the BIOS of
+\begin{tcolorbox}[title=RESOLUTION, colback=white, colframe=green!40!black]
+Daniel Campos is investigating the cluster. He's gotten into the BIOS of
 {\tt compute-1-0} by spamming DELETE. The nodes DO have support for
 PXE boot! He changed the boot order to prioritize the ethernet port. On the head
 node, he set up {\tt tcpdump} to monitor network traffic to see if the head node
 will pick up anything from the node. It booted into the Anaconda installer after
 downloading the kickstart file from the head node, and it said it got all the
-configurations from the kickstart file. 
+configurations from the kickstart file!
+\end{tcolorbox}
 
 % placement of port 69 (TFTP) rules in iptables
 
@@ -953,13 +1184,22 @@ JBOD units; that's a total of 17 drives, even though there are only 16 drives
 plugged in. NAS-0 can't do math! Hmm. Let's see what ZFS says about all this.
 
 \qq On startup, we got a ZFS error: the zpool {\tt nas0} couldn't be imported
-because {\tt /var/lib/dkms/zfs/0.7.5/source/dkms.conf} doesn't exist. To see if
-a {\tt dkms.conf} exists anywhere on NAS-0, we ran {\tt locate dkms.conf} and
-found four files: {\tt /usr/src/spl-0.7.5/dkms.conf}, {\tt
-  /usr/src/spl-0.7.9/dkms.conf}, {\tt /usr/src/zfs-0.7.9/dkms.conf}, and {\tt
-  /var/lib/dkms/zfs/0.7.9/build/dkms.conf}. What's suspicious here, is that
-several of these files seem to be of a newer version, 0.7.9 rather than the
-apparently expected 0.7.5. 
+because \\ {\tt /var/lib/dkms/zfs/0.7.5/source/dkms.conf} doesn't exist. To see if
+a {\tt dkms.conf} exists anywhere on NAS-0, we ran: 
+
+\begin{tcolorbox}[colback=white, colframe=black]
+  \begin{minted}{bash}
+    locate dkms.conf
+  \end{minted}
+  \tcblower
+  {\tt /usr/src/spl-0.7.5/dkms.conf} \\
+  {\tt /usr/src/spl-0.7.9/dkms.conf} \\
+  {\tt /usr/src/zfs-0.7.9/dkms.conf} \\
+  {\tt /var/lib/dkms/zfs/0.7.9/build/dkms.conf} \\ 
+\end{tcolorbox}
+
+What's suspicious here, is that several of these files seem to be of a newer
+version, 0.7.9 rather than the apparently expected 0.7.5.
 
 \qq To investigate {\tt dkms} itself, we ran {\tt dkms status}, which, again,
 reported that the {\tt dkms.conf} file didn't exist, but it also warned that the
@@ -969,17 +1209,20 @@ built and installed modules are different! I suspect a version conflict because
 {\tt dkms.conf} file is under a {\tt build} directory, which gives further
 credence to {\tt dkms status}'s warning. 
 
-\qq We embarked upon a spelunking expedition to investigate what happened to
-{\tt /var/lib/dkms/zfs/0.7.5/source/dkms.conf}, and found something of interest!
+\qq We embarked upon a spelunking expedition to investigate what happened to\\
+{\tt /var/lib/dkms/zfs/0.7.5/source/dkms.conf}, and found something of
+interest!\\
 Within {\tt /var/lib/dkms/zfs/0.7.5}, the {\tt source} ``directory'' is actually
 a broken symbolic link pointing to {\tt /usr/src/zfs-0.7.5}, where the other
 {\tt dkms.conf}s are found! Unfortunately, however, there is only a {\tt
   /usr/src/zfs-0.7.9} directory, while {\tt /usr/src/zfs-0.7.5} is suspiciously
-absent. 
+absent.
 
-\qq NOTE: Before proceeding, we performed a quick check to make sure NAS-0's
-data was all nicely backed up on NAS-1. Always make sure the data's backed up
-before messing with where it's stored!
+\begin{tcolorbox}[title=ASIDE, colback=white, colframe=blue]
+  Before proceeding, we performed a quick check to make sure NAS-0's
+  data was all nicely backed up on NAS-1. Always make sure the data's backed up
+  before messing with where it's stored!
+\end{tcolorbox}
 
 \qq We have a question to answer to help us diagnose the cause of the problem:
 Is ZFS telling DKMS to look in the wrong spot, or is DKMS looking in the wrong
@@ -1002,7 +1245,7 @@ it reported that the build directory was {\tt
   /var/lib/dkms/spl/0.7.9/2.6.32-431.11.2.el6.x86\_64/x86\_64}, then threw a
 configuration error saying to make sure that the {\tt kmod spl devel <kernel>}
 package is installed for our distribution; it failed to find {\tt spl\_config.h}
-in either {\tt /usr/src/spl-0.7.9/2.6.32-431.11.2.el6.x86\_64} or {\tt
+in either\\ {\tt /usr/src/spl-0.7.9/2.6.32-431.11.2.el6.x86\_64} or {\tt
   /usr/src/spl-0.7.9}. It then failed to build the ZFS module and continued the
 normal booting process. 
 

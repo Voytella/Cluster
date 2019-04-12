@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+  grub2\PYGZhy{}install  \PYGZhy{}\PYGZhy{}no\PYGZhy{}floppy /dev/sdb
+\end{Verbatim}

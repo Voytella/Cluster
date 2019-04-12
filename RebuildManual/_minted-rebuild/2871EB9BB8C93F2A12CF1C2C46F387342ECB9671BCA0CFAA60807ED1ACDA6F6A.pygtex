@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    grub2\PYGZhy{}install: error: embedding is not possible, but this is required \PYG{k}{for}
+    cross\PYGZhy{}disk install.
+\end{Verbatim}

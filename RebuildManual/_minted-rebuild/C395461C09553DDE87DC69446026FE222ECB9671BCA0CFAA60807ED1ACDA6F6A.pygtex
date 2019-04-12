@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+      rsync \PYGZhy{}av \PYGZhy{}\PYGZhy{}exclude \PYG{l+s+s1}{\PYGZsq{}/mnt*\PYGZsq{}} \PYGZhy{}\PYGZhy{}exclude \PYG{l+s+s1}{\PYGZsq{}/cvmfs\PYGZsq{}} / /mnt/nas1/CEBackup\PYGZhy{}20180803
+\end{Verbatim}

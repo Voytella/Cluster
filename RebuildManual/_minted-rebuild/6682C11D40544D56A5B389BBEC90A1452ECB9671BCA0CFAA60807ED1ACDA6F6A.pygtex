@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    grub2\PYGZhy{}install \PYGZhy{}\PYGZhy{}no\PYGZhy{}floppy \PYGZhy{}\PYGZhy{}directory\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}/mnt/sysimage/usr/lib/grub/i386\PYGZhy{}pc\PYGZsq{}}
+    /dev/sda
+\end{Verbatim}

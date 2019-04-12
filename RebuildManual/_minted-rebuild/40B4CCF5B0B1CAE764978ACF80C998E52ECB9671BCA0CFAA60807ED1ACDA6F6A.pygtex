@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    grub2\PYGZhy{}install: warning: Attempting to install GRUB to a disk with multiple
+    partition labels. This is not supported yet...
+\end{Verbatim}
