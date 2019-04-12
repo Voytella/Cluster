@@ -9,18 +9,38 @@
 \usepackage{tcolorbox}
 \usepackage{minted}
 \usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{titling}
 
 \begin{document}
 
 %----------BEGIN TITLE----------
 
-\title{Constructing a Rocks Cluster}
+\title{Installing Rocks 7 onto a High Throughput Computing Cluster}
 
 \date{\today}
 
 \thispagestyle{empty}
 
 \maketitle
+
+\begin{multicols}{2}
+
+\begin{center}
+  \includegraphics[width=0.4\textwidth]{cms.jpg}
+\end{center}
+
+\begin{center}
+  \includegraphics[width=0.7\textwidth]{osgLogo.jpg}
+\end{center}
+
+\begin{center}
+  \includegraphics[width=0.5\textwidth]{rocks_cluster_logo.png}
+\end{center}
+
+\end{multicols}
+
+\thispagestyle{empty}
 
 \newpage
 
@@ -38,10 +58,60 @@
 
 \section{Background}
 
-\qq 
+\qq Florida Tech's High Energy Physics Lab's High Throughput Computing Cluster
+is a sophisticated piece of computing machinery that has the capacity to not
+only aide research at Florida Tech, but around the world. In addition to serving
+as the HEP group's primary storage center, the cluster is associated with the
+Open Science Grid, which allows researchers from across the globe to run compute
+jobs on our machine. The cluster is glued together with the cluster-building Linux distribution
+Rocks. Rocks has its base in CentOS with additional features that ease the
+creation of computing clusters. 
 
-% introduction to the cluster
-% hardware terminology and function
+\begin{multicols}{2}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{labeledCluster.jpg}
+  \end{center}
+  \caption{A labeled picture of the cluster.}
+  \label{pic:labeledCluster}
+\end{figure}
+
+\columnbreak
+
+\begin{table}[H]
+  \caption{Descriptions of each labeled component of the cluster.}
+  \begin{center}
+    \begin{tabular}{|p{3cm}|p{5cm}|}
+      \hline
+      Compute\\ Element (CE) & The CE is the head node of the cluster. It manages
+                             all the other components, and is where
+                             administrators spend most of their time. \\
+      \hline
+      Storage Element (SE) & The SE is responsible for managing data transfers
+                             from CERN. Current scientific data is needed by
+                             researchers hoping to run jobs on the cluster. \\
+      \hline
+      NAS-0 & NAS-0 is the smaller of the cluster's two storage units. Its 16
+              750GB hard drives store the home directories of all the users. \\
+      \hline
+      NAS-1 & NAS-1 is the larger of the cluster's two storage units. The HEP
+              group researchers use its 50TB capacity to store and backup their
+              scientific data. \\
+      \hline
+      Nodes & The cluster's 20 compute nodes each have 8 processors ready to
+              compute incoming jobs. \\
+      \hline
+      Uninterruptible Power Supplies (UPSs) & The UPSs are large battery banks
+                                              that provide emergency power to
+                                              the cluster in the event of brief
+                                              power flickers. \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\end{multicols}
 
 %-----------END BACKGROUND-----------
 

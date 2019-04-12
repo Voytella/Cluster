@@ -168,6 +168,8 @@ INPUT /opt/local/share/texmf-texlive/tex/latex/framed/framed.sty
 INPUT /opt/local/share/texmf-texlive/tex/latex/framed/framed.sty
 INPUT /opt/local/share/texmf-texlive/tex/latex/tools/multicol.sty
 INPUT /opt/local/share/texmf-texlive/tex/latex/tools/multicol.sty
+INPUT /opt/local/share/texmf-texlive/tex/latex/titling/titling.sty
+INPUT /opt/local/share/texmf-texlive/tex/latex/titling/titling.sty
 INPUT rebuild.aex
 INPUT rebuild.aex
 INPUT rebuild.aux
@@ -199,6 +201,15 @@ INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmr17.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmr12.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmmi12.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmsy10.tfm
+INPUT cms.jpg
+INPUT ./cms.jpg
+INPUT ./cms.jpg
+INPUT osgLogo.jpg
+INPUT ./osgLogo.jpg
+INPUT ./osgLogo.jpg
+INPUT rocks_cluster_logo.png
+INPUT ./rocks_cluster_logo.png
+INPUT ./rocks_cluster_logo.png
 INPUT /opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmr17.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmbx12.tfm
@@ -214,6 +225,9 @@ INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmsy10.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmsy8.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmsy6.tfm
 OUTPUT rebuild.toc
+INPUT labeledCluster.jpg
+INPUT ./labeledCluster.jpg
+INPUT ./labeledCluster.jpg
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmbx12.tfm
 OUTPUT rebuild.pyg
 INPUT _minted-rebuild/default-pyg-prefix.pygstyle
