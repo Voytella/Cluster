@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_3) (preloaded format=pdflatex 2018.5.11)  12 APR 2019 00:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_3) (preloaded format=pdflatex 2018.5.11)  12 APR 2019 08:13
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -813,37 +813,15 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 LaTeX Warning: No \author given.
 
-<cms.jpg, id=123, 289.08pt x 289.08pt>
-File: cms.jpg Graphic file (type jpg)
- <use cms.jpg>
-Package pdftex.def Info: cms.jpg used on input line 30.
-(pdftex.def)             Requested size: 211.60355pt x 211.60007pt.
+<cluster.JPG, id=123, 2457.18pt x 3276.24pt>
+File: cluster.JPG Graphic file (type jpg)
+ <use cluster.JPG>
+Package pdftex.def Info: cluster.JPG used on input line 28.
+(pdftex.def)             Requested size: 370.31024pt x 493.7144pt.
+ [1
 
-<osgLogo.jpg, id=125, 722.7pt x 411.5375pt>
-File: osgLogo.jpg Graphic file (type jpg)
- <use osgLogo.jpg>
-Package pdftex.def Info: osgLogo.jpg used on input line 34.
-(pdftex.def)             Requested size: 370.31024pt x 210.87352pt.
-
-Overfull \hbox (110.80177pt too wide) in paragraph at lines 34--35
- [] 
- []
-
-<rocks_cluster_logo.png, id=126, 326.21875pt x 327.2225pt>
-File: rocks_cluster_logo.png Graphic file (type png)
-
-<use rocks_cluster_logo.png>
-Package pdftex.def Info: rocks_cluster_logo.png used on input line 38.
-(pdftex.def)             Requested size: 264.50847pt x 265.34335pt.
-
-Overfull \hbox (5.0pt too wide) in paragraph at lines 38--39
- [] 
- []
-
-[1
-
-{/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map} <./cms.jpg> <./osg
-Logo.jpg> <./rocks_cluster_logo.png>] (./rebuild.toc
+{/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map} <./cluster.JPG>] (
+./rebuild.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <12> on input line 3.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -854,25 +832,24 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \tf@toc=\write10
 \openout10 = `rebuild.toc'.
 
- [2]
-<labeledCluster.jpg, id=172, 545.03625pt x 957.5775pt>
+[2] <labeledCluster.jpg, id=167, 545.03625pt x 957.5775pt>
 File: labeledCluster.jpg Graphic file (type jpg)
 
 <use labeledCluster.jpg>
-Package pdftex.def Info: labeledCluster.jpg used on input line 74.
+Package pdftex.def Info: labeledCluster.jpg used on input line 62.
 (pdftex.def)             Requested size: 211.60355pt x 371.75879pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 91--94
+Underfull \hbox (badness 10000) in paragraph at lines 79--82
 \OT1/cmr/m/n/12 man-ag-ing data trans-fers
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 105--105
+Underfull \hbox (badness 10000) in paragraph at lines 93--93
 []|\OT1/cmr/m/n/12 Uninterruptible
  []
 
 
-Underfull \hbox (badness 6252) in paragraph at lines 105--105
+Underfull \hbox (badness 6252) in paragraph at lines 93--93
 \OT1/cmr/m/n/12 Power Sup-plies
  []
 
@@ -881,13 +858,13 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.127 
+l.115 
       pdfTeX warning (ext4): destination with the same identifier (name{table.1
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.127 
+l.115 
        <./labeledCluster.jpg>]
 \openout6 = `rebuild.pyg'.
 
@@ -905,20 +882,20 @@ l.127
 
 (./_minted-rebuild/DC8A7CBA13524EC58CE2CA228329C2452ECB9671BCA0CFAA60807ED1ACDA
 6F6A.pygtex) [4] [5]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 358.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 346.
 
  (/opt/local/share/texmf-texlive/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <12> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 358.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 346.
 
-Underfull \hbox (badness 10000) in paragraph at lines 358--359
+Underfull \hbox (badness 10000) in paragraph at lines 346--347
 []\OT1/cmr/m/n/12 Updates-CentOS-
  []
 
 
-Overfull \hbox (23.08475pt too wide) in paragraph at lines 375--398
+Overfull \hbox (23.08475pt too wide) in paragraph at lines 363--386
  [] 
  []
 
@@ -927,44 +904,44 @@ as been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.450 
+l.438 
       ] [7pdfTeX warning (ext4): destination with the same identifier (name{tab
 le.3}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.507 
+l.495 
       ] [8pdfTeX warning (ext4): destination with the same identifier (name{tab
 le.4}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.607 
+l.595 
       pdfTeX warning (ext4): destination with the same identifier (name{table.5
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.607 
+l.595 
       ] [9] [10pdfTeX warning (ext4): destination with the same identifier (nam
 e{figure.2}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.723 \newpage
+l.711 \newpage
               ]
 \openout6 = `rebuild.pyg'.
 
 
 (./_minted-rebuild/B543081012B0BFC82551BA638570CDD82ECB9671BCA0CFAA60807ED1ACDA
 6F6A.pygtex)
-Underfull \hbox (badness 10000) in paragraph at lines 744--748
+Underfull \hbox (badness 10000) in paragraph at lines 732--736
 []\OT1/cmtt/m/n/12 grub2-install: warning: Attempting to install GRUB to a disk
  with multiple
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 744--748
+Underfull \hbox (badness 10000) in paragraph at lines 732--736
 \OT1/cmtt/m/n/12 grub2-install: error: embedding is not possible, but this is r
 equired for
  []
@@ -979,7 +956,7 @@ equired for
 
 (./_minted-rebuild/8FABC0D94A4B9BE20EDE8CD611FD78572ECB9671BCA0CFAA60807ED1ACDA
 6F6A.pygtex)
-Underfull \hbox (badness 10000) in paragraph at lines 766--768
+Underfull \hbox (badness 10000) in paragraph at lines 754--756
 []\OT1/cmtt/m/n/12 grub2-install: error: /usr/lib/grub/i386-pc/modinfo.sh doesn
 't exist. Please
  []
@@ -989,7 +966,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 766--768
 
 (./_minted-rebuild/B0AAC81A79B341CB111661C0256CE44B2ECB9671BCA0CFAA60807ED1ACDA
 6F6A.pygtex)
-Underfull \hbox (badness 10000) in paragraph at lines 779--780
+Underfull \hbox (badness 10000) in paragraph at lines 767--768
 
  []
 
@@ -998,7 +975,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 779--780
 
 (./_minted-rebuild/927D4D7648859060CC5D28542231FE872ECB9671BCA0CFAA60807ED1ACDA
 6F6A.pygtex)
-Overfull \hbox (8.63124pt too wide) in paragraph at lines 793--796
+Overfull \hbox (8.63124pt too wide) in paragraph at lines 781--784
 []\OT1/cmtt/m/n/12 grub2-install: error: cannot open '/mnt/sysimage/boot/grub2/
 i386-pc/kernel.img':
  []
@@ -1008,7 +985,7 @@ i386-pc/kernel.img':
 
 (./_minted-rebuild/2CB18964C1AB9BFD1D5F1BACA27B261E2ECB9671BCA0CFAA60807ED1ACDA
 6F6A.pygtex)
-Overfull \hbox (107.37132pt too wide) in paragraph at lines 808--810
+Overfull \hbox (107.37132pt too wide) in paragraph at lines 796--798
 []\OT1/cmr/m/n/12 Ah ha! Let's run the in-staller's com-mand again, but the di-
 rec-tory will be changed to \OT1/cmtt/m/n/12 /mnt/sysimage/usr/lib/grub/i386-pc
 \OT1/cmr/m/n/12 : 
@@ -1054,14 +1031,14 @@ rec-tory will be changed to \OT1/cmtt/m/n/12 /mnt/sysimage/usr/lib/grub/i386-pc
 
 (./_minted-rebuild/D9F02BB7F21A4B997715CEFB6AACB5942ECB9671BCA0CFAA60807ED1ACDA
 6F6A.pygtex) [13]
-Overfull \hbox (17.66096pt too wide) in paragraph at lines 972--975
+Overfull \hbox (17.66096pt too wide) in paragraph at lines 960--963
 [] \OT1/cmr/m/n/12 To en-able ssh on a Ubuntu LiveCD, in-stall \OT1/cmtt/m/n/12
  openssh-server \OT1/cmr/m/n/12 with \OT1/cmtt/m/n/12 sudo apt install openssh-
 server\OT1/cmr/m/n/12 ,
  []
 
 
-Overfull \hbox (28.201pt too wide) in paragraph at lines 1015--1020
+Overfull \hbox (28.201pt too wide) in paragraph at lines 1003--1008
 \OT1/cmr/m/n/12 The res-cue ker-nel has the panic \OT1/cmtt/m/n/12 not syncing:
  VFS: Unable to mount root fs on unknown-block(0,0)\OT1/cmr/m/n/12 .
  []
@@ -1071,10 +1048,10 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1040 \qq
+l.1028 \qq
            What I thought was rescue mode is actually emergency mode; the re...
 ]
-Overfull \hbox (21.65413pt too wide) in paragraph at lines 1104--1108
+Overfull \hbox (21.65413pt too wide) in paragraph at lines 1092--1096
 [] \OT1/cmr/m/n/12 Af-ter a restart, \OT1/cmtt/m/n/12 insert-ethers \OT1/cmr/m/
 n/12 crashes on startup. It re-ports ``Ac-cess de-nied for user 'root'@'localho
 st''',
@@ -1085,41 +1062,41 @@ st''',
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1186 
+l.1174 
        ] [17]
 \openout6 = `rebuild.pyg'.
 
 
 (./_minted-rebuild/B727E502DDC1918ED0EC59E298FFB0DB2ECB9671BCA0CFAA60807ED1ACDA
 6F6A.pygtex)
-Underfull \hbox (badness 10000) in paragraph at lines 1265--1269
+Underfull \hbox (badness 10000) in paragraph at lines 1253--1257
 
  []
 
 
-Overfull \hbox (0.70944pt too wide) in paragraph at lines 1310--1321
+Overfull \hbox (0.70944pt too wide) in paragraph at lines 1298--1309
 \OT1/cmr/m/n/12 ported that the build di-rec-tory was \OT1/cmtt/m/n/12 /var/lib
 /dkms/spl/0.7.9/2.6.32-431.11.2.el6.x86[]64/x86[]64\OT1/cmr/m/n/12 ,
  []
 
 [18] [19]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1372.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1372.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1360.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1360.
  (./rebuild.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1372.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1372.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1360.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1360.
 
 Package rerunfilecheck Info: File `rebuild.out' has not changed.
 (rerunfilecheck)             Checksum: 7612C5928C28F58F7DB771D380688126;1925.
 runsystem(rm rebuild.pyg)...executed.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1372.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1360.
  ) 
 Here is how much of TeX's memory you used:
- 18546 strings out of 494936
- 353874 string characters out of 6180785
- 465490 words of memory out of 5000000
- 21429 multiletter control sequences out of 15000+600000
+ 18536 strings out of 494936
+ 353691 string characters out of 6180785
+ 465385 words of memory out of 5000000
+ 21421 multiletter control sequences out of 15000+600000
  9830 words of font info for 35 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  54i,10n,73p,945b,468s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1131,10 +1108,10 @@ exmf-texlive/fonts/type1/public/amsfonts/cm/cmr17.pfb></opt/local/share/texmf-t
 exlive/fonts/type1/public/amsfonts/cm/cmti12.pfb></opt/local/share/texmf-texliv
 e/fonts/type1/public/amsfonts/cm/cmtt12.pfb></opt/local/share/texmf-texlive/fon
 ts/type1/public/cm-super/sfrm1200.pfb>
-Output written on rebuild.pdf (19 pages, 623023 bytes).
+Output written on rebuild.pdf (19 pages, 2726510 bytes).
 PDF statistics:
- 307 PDF objects out of 1000 (max. 8388607)
- 270 compressed objects within 3 object streams
+ 302 PDF objects out of 1000 (max. 8388607)
+ 269 compressed objects within 3 object streams
  59 named destinations out of 1000 (max. 500000)
- 265 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 255 words of extra memory for PDF output out of 10000 (max. 10000000)
 
