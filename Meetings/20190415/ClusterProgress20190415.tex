@@ -1,0 +1,46 @@
+\documentclass{beamer}
+
+\input{../preamble}
+
+\usetheme{Copenhagen}
+\usecolortheme{beaver}
+
+\title{Cluster Progress}
+\date{\today}
+
+\begin{document}
+
+%----------BEGIN TITLE----------
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+%-----------END TITLE-----------
+
+%----------BEGIN NAS-0----------
+
+\begin{frame}
+  \frametitle{NAS-0 Drive Replacement}
+
+  \begin{itemize}
+    
+  \item The three 750GB replacement drives came in last week.
+  \item One of the drives was replaced, and is currently resilvering. 
+  \item The other two drives will be replaced when the current drive finishes resilvering. 
+
+    %following instructions from the last drive replacement on nas0:
+    % zpool offline, replace, zpool online, zpool replace
+    %new drive name gotten from output of dmesg | grep disk - shows disk name and port number.    
+  \end{itemize}
+
+  \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.9\textwidth]{nas0_drive_replacement_20190415.jpg}
+    \end{center}
+  \end{figure}
+
+\end{frame}
+
+%-----------END NAS-0-----------
+\end{document}
