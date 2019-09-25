@@ -1,0 +1,69 @@
+\documentclass{beamer}
+
+\input{../preamble}
+
+\usetheme{Copenhagen}
+\usecolortheme{beaver}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\title{Cluster Progress}
+\date{\today}
+
+\begin{document}
+
+%----------BEGIN TITLE----------
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+%-----------END TITLE-----------
+
+%----------BEGIN NAS-1----------
+
+\begin{frame}
+  \frametitle{NAS-1 Emergency Mode}
+
+  \begin{itemize}    
+  \item NAS-1 is continuing to boot into emergency mode.
+  \item The indicator light on drive 0:21 lit up, indicating that the drive was failing.
+  \item The command to replace the drive (storcli) could not be run due to controller 0 being in ``crit error''.
+    %unsure if this is a raid card issue or if this is because of the bad drive and nas1 being unmounted
+    %the last time a similar issue with nas-1 occoured, replacing the drive solved the issue. 
+  \item The faulty drive was replaced and began rebuilding, but soon afterwards controller 0 entered ``crit error'' state again.
+    %unsure again if this is b/c of the drive or if it really is a faulty raid card.
+    
+    %We could get a SATA hub and use zfs, but we can't get the data off nas1 since /nas1 isn't mounted
+    %Or, we could just replace the raid card, in which case I need to look up the model number and check to see if
+    %the array metadata is copied onto the drives or not.
+  \end{itemize}
+  
+
+\end{frame}
+%-----------END NAS-1-----------
+%----------BEGIN APC------------
+\begin{frame}
+  \frametitle{APC Battery issues}
+
+  \begin{itemize}
+  \item The indicator lights on the APC power supply have all turned off.
+    %according to the manual, this means the batteries are recharging. But the apc has not turned back on yet
+  \item The voltages on a few of the batteries are very low.
+    %The batteries might need to be replaced.
+    
+  \end{itemize}
+  
+  \end{frame}
+%-----------END APC-------------
+
+%t3 cluster meetings: need to get access to lxplus to sign up, and CERN lightweight acct doesnt have accest to lxplus.
+% solution: contact  former secretariat and renew my affiliation
+
+%meeting last Friday: Couldn't attend because I had class during the scheduled meeting time.
+
+
+%OSG: provided me a link to the guide on how to renew host certs, but no word back yet on my account status. 
+
+\end{document}
