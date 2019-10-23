@@ -1,0 +1,82 @@
+\documentclass{beamer}
+
+\input{../preamble}
+
+\usetheme{Copenhagen}
+\usecolortheme{beaver}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\title{Cluster Progress}
+\date{\today}
+
+\begin{document}
+
+%----------BEGIN TITLE----------
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+%-----------END TITLE-----------
+
+%----------BEGIN NAS-1----------
+
+\begin{frame}
+  \frametitle{NAS-1}
+
+  \begin{itemize}    
+  \item The drive has finished rebuilding, and everything is operational. 
+  \end{itemize}
+
+\end{frame}
+%-----------END NAS-1-----------
+
+%---------BEGIN NAS-0-----------
+\begin{frame}
+  \frametitle{NAS-0 ZFS}
+
+  \begin{itemize}
+  \item The correct version of ZFS has been installed.
+    %Version 7.3 - kept trying to install latest version 7.12 - would need to update kernel to use
+    %zfs is backwards compatible but didnt want to mess
+    %with updating the kernel and (breaking?) everything else (at least for now)
+    
+  \item The zpool was successfully reimported, though one drive was faulted.
+    %there are 2 groups of 6 drives (and 2 hot spares) with a fault tolerance of 2 per group
+    
+  \item One of the hot spares is currently resilvering to replace the faulted drive. 
+  \end{itemize}
+
+  \begin{figure}[H]
+    \begin{center}
+      \includegraphics[width=0.5\textwidth]{nas-0_zpool_drive_rebuild_2019-09-30_14-15_pm.jpg}
+    \end{center}
+      \end{figure}
+  
+\end{frame}
+%-----------END NAS-0-----------
+
+%---------BEGIN APC-UPS / Nodes---------
+\begin{frame}
+  \frametitle{APC / Nodes}
+
+  \begin{itemize}
+  \item The battery replacement was successful, and the APC is now operational.
+  \item Most of the nodes have been turned on successfully.
+    \begin{itemize}
+    %apc -  nas0,nas1,CE
+    %T-top: nas0,nas1,CE, switch,SE, nodes
+    %T-bot: SE, nodes
+    \item The top Tripplite's overload light turns orange once 6 nodes are turned on. 
+    \item The bottom Tripplite's overload light turns orange once 7 nodes are turned on.  
+    \end{itemize}    
+  \end{itemize}
+
+\end{frame}
+%-----------END APC-UPS / Nodes---------
+
+%OSG: provided me a link to the guide on how to renew host certs, but no word back yet on my account status. 
+
+\end{document}
