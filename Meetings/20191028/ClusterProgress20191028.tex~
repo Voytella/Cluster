@@ -1,0 +1,66 @@
+\documentclass{beamer}
+
+\input{../preamble}
+
+\usetheme{Copenhagen}
+\usecolortheme{beaver}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\title{Cluster Progress}
+\date{\today}
+
+\begin{document}
+
+%----------BEGIN TITLE----------
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+%-----------END TITLE-----------
+
+%---------BEGIN CE-----------
+\begin{frame}
+  \frametitle{CE Offline}
+
+  \begin{itemize}
+  \item The fans were cleaned, but this didn't seem to have an effect.
+  \item The PSU's don't seem to be the issue, as was initially suspected. 
+    \begin{itemize}
+    \item The PSU's in the CE and the SE were identical, so I swapped the working PSU's from the SE into the CE.
+      \item There was no change in the state of the CE, unfortunately. 
+    \end{itemize} 
+  \item When the power button is pressed, all hard drive slot LED's light up even if the slot is empty.
+    %they light up green - not blue for activity. Its hard to find documentation for this but its either connection or error I think. 
+    % the documentation website doesnt exist anymore (revamped), i couldnt find physical documentation either.
+  \item This issue is still under investigation to find the root cause and a potential fix.
+    %talked to Eric - probably a bad wire/connection or CPU
+    %unplugged the connections between the PSU and the other components - no change - so might be the CPU but can't say for sure yet
+  \end{itemize}
+\end{frame}
+%-----------END CE-----------
+
+%---------BEGIN NAS-1---------
+\begin{frame}
+  \frametitle{NAS-1 Controller Failure}
+
+  \begin{itemize}
+  \item The RAID Controller has again entered a crit fail state, though NAS-1 isn't in emergency mode this time.
+    \item This issue is still under investigation as well. 
+    \end{itemize}
+  
+  \end{frame}
+%-----------END NAS-1---------
+
+%tasks on hold:
+% * nodes/spare APC
+% * Tripplie monitoring software
+% * OSG Software
+% * Physically replace NAS-0 Drive - figure out the physical location (one is not being detected by the computer at all - naming is off)
+% * Try fixing drives - need USB/SATA Cable (only half of it on the cluster desk)
+
+\end{document}
+
+%Still working on the list of scripts/data - theres a lot and NAS-0 usually connects to ethernet through the CE, which is down currently. 
