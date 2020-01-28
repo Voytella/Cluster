@@ -1,0 +1,52 @@
+\documentclass{beamer}
+
+\input{../preamble}
+
+\usetheme{Copenhagen}
+\usecolortheme{beaver}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\title{Cluster Progress}
+\date{\today}
+
+\begin{document}
+
+%----------BEGIN TITLE----------
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+%-----------END TITLE-----------
+
+%----------BEGIN CE-------------
+\begin{frame}
+  \frametitle{Transplant CE}
+
+  \begin{itemize}
+  \item A spare hard drive is currently having an OS installed, to be used to create the zpool for the other 2 OS drives.
+    % can't mirror a drive in use - ``rpool'' root pool stuff is solarus-specific. 
+    % the installation took a few tries -> random errors that popped up then went away in the GUI that forced a reboot of the installer
+    % creating the .iso was taking longer than I originally thought -> custom kickstart file, CD detection issues, etc.
+    
+    % plan -> create zpool and then run CentOS installer and see if it sees the pool or the physical disks, go from there
+    %------------------------------------------------------------------------------------------------
+    % node doesnt support USB booting.
+    % cluster wont detect the CD -> so I need to make the liveCD with my computer at home
+  \end{itemize}
+\end{frame}
+%-----------END CE--------------
+
+%tasks on hold:
+% * NAS-1 controller failure - stuck on shutdown - waiting to see if it can figure itself out soon
+
+% * nodes/spare APC
+% * Tripplie monitoring software
+% * OSG Software
+
+% * Physically replace NAS-0 Drive - figure out the physical location (one is not being detected by the computer at all - naming is off)
+% * Try fixing drives - need USB/SATA Cable (only half of it on the cluster desk)
+
+\end{document}

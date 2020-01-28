@@ -1,0 +1,47 @@
+\documentclass{beamer}
+
+\input{../preamble}
+
+\usetheme{Copenhagen}
+\usecolortheme{beaver}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\title{Cluster Progress}
+\date{\today}
+
+\begin{document}
+
+%----------BEGIN TITLE----------
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+%-----------END TITLE-----------
+
+%----------BEGIN CE-------------
+\begin{frame}
+  \frametitle{Transplant CE}
+
+  \begin{itemize}
+  \item The ZFS mirror can't be set up on the current installation because the disk to be mirrored is in use by the OS
+  \item A possible solution to this is to create the zpool using a LiveCD, then run the ROCKS installer.
+    % this laptop doesnt have a CD drive, and the node doesnt support USB booting.
+    % cluster wont detect the CD -> so I need to make the liveCD with my computer at home
+  \end{itemize}
+\end{frame}
+%-----------END CE--------------
+
+%tasks on hold:
+% * NAS-1 controller failure - stuck on shutdown - waiting to see if it can figure itself out soon
+
+% * nodes/spare APC
+% * Tripplie monitoring software
+% * OSG Software
+
+% * Physically replace NAS-0 Drive - figure out the physical location (one is not being detected by the computer at all - naming is off)
+% * Try fixing drives - need USB/SATA Cable (only half of it on the cluster desk)
+
+\end{document}
